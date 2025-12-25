@@ -1,6 +1,7 @@
 "use client"
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { LayoutDashboard, Briefcase, NotepadText, Contact, TableProperties, Users, Mails, Images } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext'
@@ -214,11 +215,11 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
     <div className="fixed inset-0 z-40 md:hidden" role="dialog" aria-modal="true">
       <div className="fixed inset-0 bg-black/40" onClick={onClose} />
 
-      <nav className="relative z-50 h-full w-70 bg-blue-900 border-r border-gray-100">
+      <nav className="relative z-50 h-full w-[70%] bg-blue-900 border-r border-gray-100">
         <div className="h-full overflow-y-auto py-6 px-4">
           <div className="flex items-center justify-between mb-6">
             <Link href="/" className="flex flex-col items-center gap-3">
-              <Image src="/images/rayob.svg" alt="Rayob Logo" width={170} height={50} className="w-35 block rounded-md" />
+              <Image src="/images/cananusatrans.png" alt="CANANUSA Logo" width={170} height={50} className="w-20 block rounded-md" />
             </Link>
             <button aria-label="Close menu" onClick={onClose} className="p-2 rounded-md text-red-600 hover:bg-gray-100">
               <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
