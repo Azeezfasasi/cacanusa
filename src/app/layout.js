@@ -7,7 +7,7 @@ export const metadata = {
   title: 'The Christian Association of Nigerian- Americans (CANAN USA)',
   description: 'The Christian Association of Nigerian-Americans (CANAN USA) is a faith-based organization dedicated to fostering spiritual growth, community support, and cultural connection among Nigerian-Americans. We provide a platform for worship, fellowship, and outreach, promoting Christian values and unity within the diaspora.',
   icons: {
-    icon: '/rayob1.jpg',
+    icon: '/cananusatrans.png',
     apple: '/apple-icon.png',
   },
 }
