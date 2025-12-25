@@ -9,7 +9,7 @@ import { ProtectedRoute } from '@/components/ProtectedRoute';
 const ContactFormResponses = () => {
 		useEffect(() => {
 			loadResponses();
-			// eslint-disable-next-line react-hooks/exhaustive-deps
+			// eslint-disable-next-line
 		}, []);
 
 		async function loadResponses() {

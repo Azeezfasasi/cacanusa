@@ -22,7 +22,7 @@ const ContactFormResponses = () => {
 	// Mock data - Replace with actual API calls
 	useEffect(() => {
 		loadResponses()
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, [])
 
 	const loadResponses = async () => {

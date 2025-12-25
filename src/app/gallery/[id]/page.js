@@ -39,7 +39,7 @@ export default function GalleryDetailPage() {
     if (params.id) {
       fetchGallery();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-line
   }, [params.id]);
 
   const nextImage = () => {

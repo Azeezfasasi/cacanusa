@@ -2,19 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// Define the marker icon
-const customMarkerIcon = L.icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+// Dynamically import leaflet to avoid SSR issues
+const LeafletModule = dynamic(() => import('leaflet'), { ssr: false });
 
 // Dynamically import the map components to avoid SSR issues
 const MapContainer = dynamic(
@@ -36,9 +27,23 @@ const Popup = dynamic(
 
 export default function MapPreview({ latitude, longitude, locationName }) {
   const [isClient, setIsClient] = useState(false);
+  const [customMarkerIcon, setCustomMarkerIcon] = useState(null);
 
   useEffect(() => {
     setIsClient(true);
+    
+    // Initialize marker icon on client side
+    import('leaflet').then(L => {
+      setCustomMarkerIcon(L.icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+        iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      }));
+    });
   }, []);
 
   if (!isClient) {
@@ -70,7 +75,7 @@ export default function MapPreview({ latitude, longitude, locationName }) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         {latitude && longitude && (
-          <Marker position={[latitude, longitude]} icon={customMarkerIcon}>
+          <Marker position={[latitude, longitude]} icon={customMarkerIcon || undefined}>
             <Popup>{locationName || 'Your Location'}</Popup>
           </Marker>
         )}

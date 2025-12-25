@@ -84,7 +84,7 @@ function Count({ value = 0, duration = 800 }) {
 
     frame = requestAnimationFrame(step)
     return () => cancelAnimationFrame(frame)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [value])
 
   return <span className="text-2xl md:text-3xl font-bold text-gray-900">{display.toLocaleString()}</span>
@@ -140,7 +140,7 @@ export default function DashboardStats({ data = {} }) {
       const interval = setInterval(fetchStats, 5 * 60 * 1000);
       return () => clearInterval(interval);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [token]);
 
   // Use provided data if no token, otherwise use fetched stats

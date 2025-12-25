@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { ChevronRight, ChevronLeft, CheckCircle, Mail, Phone, MapPin, Users, Heart, Target } from 'lucide-react';
 import PageTitle from '@/components/home-component/PageTitle';
 
@@ -186,12 +187,12 @@ export default function JoinUs() {
                 <li>✓ You will gain access to exclusive community events and resources</li>
               </ul>
             </div>
-            <a
+            <Link
               href="/"
               className="inline-block bg-blue-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors"
             >
               Return to Home
-            </a>
+            </Link>
           </div>
         </div>
       </div>

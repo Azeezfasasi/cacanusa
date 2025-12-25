@@ -1,8 +1,6 @@
 "use client"
-import React, { useState } from 'react'
-import Link from 'next/link'
+import { useState } from 'react'
 import { usePathname } from 'next/navigation'
-import Image from 'next/image'
 import { LayoutDashboard, Briefcase, NotepadText, Contact, TableProperties, Users, Mails, Images } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext'
 
@@ -31,10 +29,6 @@ function Icon({ name }) {
     case 'Users':
     return (
       <Users className="w-5 h-5" />
-    )
-    case 'Newsletter':
-    return (
-      <Mails className="w-5 h-5" />
     )
     case 'Newsletter':
     return (

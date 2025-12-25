@@ -14,3 +14,5 @@
 //   const resolvedParams = await params;
 //   return removeLike(req, { params: resolvedParams });
 // }
+// Placeholder export to prevent module errors
+export const dynamic = 'force-dynamic';
