@@ -1,4 +1,4 @@
-import CompanyOverview from '@/app/server/models/CompanyOverview.js';
+import Companyoverview from '@/app/server/models/Companyoverview.js';
 import { connectDB } from '@/app/server/db/connect.js';
 
 /**
@@ -10,7 +10,7 @@ export async function GET(request, { params }) {
     const { id } = params;
     await connectDB();
 
-    const overview = await CompanyOverview.findById(id).lean();
+    const overview = await Companyoverview.findById(id).lean();
 
     if (!overview) {
       return new Response(
@@ -58,7 +58,7 @@ export async function PUT(request, { params }) {
 
     const body = await request.json();
 
-    const overview = await CompanyOverview.findByIdAndUpdate(id, body, {
+    const overview = await Companyoverview.findByIdAndUpdate(id, body, {
       new: true,
       runValidators: true
     });
@@ -108,7 +108,7 @@ export async function DELETE(request, { params }) {
     const { id } = params;
     await connectDB();
 
-    const overview = await CompanyOverview.findByIdAndDelete(id);
+    const overview = await Companyoverview.findByIdAndDelete(id);
 
     if (!overview) {
       return new Response(
