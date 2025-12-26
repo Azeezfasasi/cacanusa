@@ -226,8 +226,8 @@ const ContactFormResponses = () => {
 
 	if (loading) {
 		return (
-			<div className="flex justify-center items-center py-12">
-				<p className="text-gray-600"><Commet color="#155dfc" size="medium" text="Loading" textColor="#155dfc" /></p>
+			<div className="flex justify-center items-center py-12 h-screen">
+				<p className="text-gray-600"><Commet color="#1e3a8a" size="medium" text="Loading" textColor="#ff0000" /></p>
 			</div>
 		)
 	}

@@ -1,6 +1,7 @@
 'use client'
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { Commet } from "react-loading-indicators";
 
 export default function HomeAbout() {
   const [section, setSection] = useState(null)
@@ -41,7 +42,7 @@ export default function HomeAbout() {
     return (
       <section className="bg-gray-50 py-16">
         <div className="container mx-auto px-6 lg:px-20 flex justify-center">
-          <p className="text-gray-600">Loading welcome section...</p>
+          <p className="text-gray-600"><Commet color="#1e3a8a" size="medium" text="Loading" textColor="#ff0000" /></p>
         </div>
       </section>
     )

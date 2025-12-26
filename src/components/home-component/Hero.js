@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useRef, useState, useEffect, useLayoutEffect } from 'react'
 import { ArrowBigRightDash, ArrowBigLeftDash } from 'lucide-react';
+import { Commet } from "react-loading-indicators";
 
 export default function Hero() {
   const [slides, setSlides] = useState([])
@@ -110,7 +111,7 @@ export default function Hero() {
       <div className="mx-auto ">
         {loading && slides.length === 0 ? (
           <div className="h-[420px] md:h-[540px] flex items-center justify-center bg-gray-200">
-            <p className="text-gray-600">Loading hero slider...</p>
+            <p className="text-gray-600"><Commet color="#1e3a8a" size="medium" text="Loading" textColor="#ff0000" /></p>
           </div>
         ) : slides.length === 0 ? (
           <div className="h-[420px] md:h-[540px] flex items-center justify-center bg-gray-200">

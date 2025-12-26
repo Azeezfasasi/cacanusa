@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { Commet } from "react-loading-indicators";
 import { Users, Heart, Church, Zap, Crown, Star, Gift, Shield, CheckCircle } from 'lucide-react'
 
 const iconMap = {
@@ -105,7 +106,7 @@ const MembershipLevel = () => {
   if (loading) {
     return (
       <section className="w-full py-12 md:py-20 flex items-center justify-center">
-        <p className="text-gray-600">Loading membership levels...</p>
+        <p className="text-gray-600"><Commet color="#1e3a8a" size="medium" text="Loading" textColor="#ff0000" /></p>
       </section>
     )
   }

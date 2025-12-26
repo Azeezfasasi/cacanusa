@@ -2,8 +2,7 @@ import { authenticate, isAdmin } from "@/app/server/middleware/auth.js";
 import User from "@/app/server/models/User.js";
 import Blog from "@/app/server/models/Blog.js";
 import Contact from "@/app/server/models/Contact.js";
-import Quote from "@/app/server/models/Quote.js";
-import Project from "@/app/server/models/Project.js";
+import Joinus from "@/app/server/models/Joinus.js";
 import { connectDB } from "@/app/server/db/connect.js";
 import { NextResponse } from "next/server";
 
@@ -16,29 +15,35 @@ export async function GET(req) {
         await connectDB();
 
         // Fetch counts from all collections in parallel
-        const [usersCount, blogsCount, contactsCount, quotesCount, projectsCount] = await Promise.all([
+        const [
+          usersCount,
+          blogsCount,
+          contactsCount,
+          totalMembershipRequests,
+          pendingMembershipRequests,
+          adminUsersCount,
+          membersUsersCount,
+          committeeUsersCount,
+        ] = await Promise.all([
           User.countDocuments({ isActive: true }),
           Blog.countDocuments({ status: "published" }),
           Contact.countDocuments(),
-          Quote.countDocuments(),
-          Project.countDocuments(),
-        ]);
-
-        // Count pending/open items
-        const [pendingContacts, pendingQuotes] = await Promise.all([
-          Contact.countDocuments({ status: "pending" }),
-          Quote.countDocuments({ status: "pending" }),
+          Joinus.countDocuments(),
+          Joinus.countDocuments({ status: "pending" }),
+          User.countDocuments({ role: "admin", isActive: true }),
+          User.countDocuments({ role: "member", isActive: true }),
+          User.countDocuments({ role: "committee", isActive: true }),
         ]);
 
         const stats = {
           users: usersCount,
           blogs: blogsCount,
           contacts: contactsCount,
-          quotes: quotesCount,
-          projects: projectsCount,
-          requests: pendingQuotes + pendingContacts, // Combined pending items
-          pendingContacts,
-          pendingQuotes,
+          membershipRequests: totalMembershipRequests,
+          pendingMembershipRequests,
+          adminUsers: adminUsersCount,
+          membersUsers: membersUsersCount,
+          committeeUsers: committeeUsersCount,
         };
 
         return NextResponse.json(

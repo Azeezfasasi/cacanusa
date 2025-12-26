@@ -2,6 +2,7 @@
 
 import { CheckCircle } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Commet } from "react-loading-indicators";
 
 export default function WhyChooseUs() {
   const [features, setFeatures] = useState([]);
@@ -50,7 +51,7 @@ export default function WhyChooseUs() {
       <section className="bg-gray-50 py-16">
         <div className="container mx-auto px-6 lg:px-20">
           <div className="text-center">
-            <p className="text-gray-600">Loading features...</p>
+            <p className="text-gray-600"><Commet color="#1e3a8a" size="medium" text="Loading" textColor="#ff0000" /></p>
           </div>
         </div>
       </section>

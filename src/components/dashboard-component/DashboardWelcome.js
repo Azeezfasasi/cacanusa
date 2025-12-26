@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useAuth } from "@/context/AuthContext";
 import { Briefcase, NotepadText } from 'lucide-react';
 import Link from 'next/link';
+import { Commet } from "react-loading-indicators";
 
 function getGreeting(date) {
   const hour = date.getHours();
@@ -34,8 +35,12 @@ export default function DashboardWelcome() {
 
   if (loading) {
     return (
-      <section className="bg-white rounded-lg shadow-sm p-5 md:p-6 lg:p-8 text-center">
-        <div className="text-gray-500 font-semibold">Loading...</div>
+      <section className="bg-gray-50 py-16">
+        <div className="container mx-auto px-6 lg:px-20">
+          <div className="text-center">
+            <p className="text-gray-600"><Commet color="#1e3a8a" size="medium" text="Loading" textColor="#ff0000" /></p>
+          </div>
+        </div>
       </section>
     );
   }

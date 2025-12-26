@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Clock } from "lucide-react";
 import MapPreview from "@/components/MapPreview";
+import { Commet } from "react-loading-indicators";
 
 export default function ContactUsMain() {
   const [formData, setFormData] = useState({
@@ -90,7 +91,9 @@ export default function ContactUsMain() {
     return (
       <section className="bg-gray-50 py-16" id="contact">
         <div className="container mx-auto px-6 lg:px-20">
-          <p className="text-center text-gray-600">Loading contact information...</p>
+          <div className="text-center">
+            <p className="text-gray-600"><Commet color="#1e3a8a" size="medium" text="Loading" textColor="#ff0000" /></p>
+          </div>
         </div>
       </section>
     );

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Star } from "lucide-react";
+import { Commet } from "react-loading-indicators";
 
 const defaultTestimonials = [
   {
@@ -62,7 +63,7 @@ export default function TestimonialsSection() {
     return (
       <section className="bg-gray-50 py-16">
         <div className="container mx-auto px-6 lg:px-20 text-center">
-          <p className="text-gray-600">Loading testimonials...</p>
+          <p className="text-gray-600"><Commet color="#1e3a8a" size="medium" text="Loading" textColor="#ff0000" /></p>
         </div>
       </section>
     );

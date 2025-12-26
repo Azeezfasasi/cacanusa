@@ -272,7 +272,7 @@ const ManageBlogPage = () => {
 			{/* Posts Table */}
 			<div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
 				{loading ? (
-					<div className="p-8 text-center text-gray-500"><Commet color="#155dfc" size="medium" text="Loading" textColor="#155dfc" /></div>
+					<div className="p-8 text-center text-gray-500"><Commet color="#1e3a8a" size="medium" text="Loading" textColor="#ff0000" /></div>
 				) : currentPosts.length === 0 ? (
 					<div className="p-8 text-center text-gray-500">
 						<p className="text-lg font-medium">No posts found</p>

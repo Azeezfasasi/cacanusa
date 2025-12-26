@@ -19,7 +19,15 @@ export default function Dashboard() {
   }, [isAuthenticated, loading, router]);
 
   if (loading) {
-    return <div className="flex items-center justify-center h-screen"><Commet color="#155dfc" size="medium" text="Loading" textColor="#155dfc" /></div>;
+    return (
+      <section className="bg-gray-50 py-16">
+        <div className="container mx-auto px-6 lg:px-20">
+          <div className="text-center">
+            <p className="text-gray-600"><Commet color="#1e3a8a" size="medium" text="Loading" textColor="#ff0000" /></p>
+          </div>
+        </div>
+      </section>
+    )
   }
   if (!isAuthenticated) {
     return null;

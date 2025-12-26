@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, ReactNode } from 'react';
 import { Trash2, MessageSquare, CheckCircle, Clock, XCircle, Eye, Edit } from 'lucide-react';
+import { Commet } from "react-loading-indicators";
 
 export default function MemberRegRequest() {
   const [applications, setApplications] = useState([]);
@@ -194,7 +195,9 @@ export default function MemberRegRequest() {
         {/* Applications Table */}
         <div className="bg-white rounded-lg shadow overflow-hidden">
           {loading ? (
-            <div className="p-6 sm:p-8 text-center text-sm sm:text-base">Loading...</div>
+            <div className='text-center'>
+              <Commet color="#1e3a8a" size="medium" text="Loading" textColor="#ff0000" />
+            </div>
           ) : applications.length === 0 ? (
             <div className="p-6 sm:p-8 text-center text-gray-500 text-sm sm:text-base">No applications found</div>
           ) : (

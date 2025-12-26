@@ -145,21 +145,25 @@ export default function DashboardStats({ data = {} }) {
 
   // Use provided data if no token, otherwise use fetched stats
   const displayStats = stats || data || {
-    users: 0,
+    user: 0,
     blogs: 0,
-    contacts: 0,
-    quotes: 0,
-    projects: 0,
-    requests: 0,
+    contacts: 0, 
+    membershipRequests: 0,
+    pendingMembershipRequests: 0,
+    adminUsers: 0,
+    membersUsers: 0,
+    committeeUsers: 0,
   };
 
   const items = [
     { key: 'users', label: 'Active Users', value: displayStats.users, icon: 'users' },
     { key: 'blogs', label: 'Published Blogs', value: displayStats.blogs, icon: 'blogs' },
     { key: 'contacts', label: 'Contact Forms', value: displayStats.contacts, icon: 'contacts' },
-    { key: 'quotes', label: 'Quote Requests', value: displayStats.quotes, icon: 'quotes' },
-    { key: 'projects', label: 'Projects', value: displayStats.projects, icon: 'projects' },
-    { key: 'requests', label: 'Pending Requests', value: displayStats.requests, icon: 'requests' },
+    { key: 'membershipRequests', label: 'Membership Requests', value: displayStats.membershipRequests, icon: 'quotes' },
+    { key: 'pendingMembershipRequests', label: 'Pending Requests', value: displayStats.pendingMembershipRequests, icon: 'requests' },
+    { key: 'adminUsers', label: 'Admin Users', value: displayStats.adminUsers, icon: 'users' },
+    { key: 'membersUsers', label: 'Members Users', value: displayStats.membersUsers, icon: 'users' },
+    { key: 'committeeUsers', label: 'Committee Users', value: displayStats.committeeUsers, icon: 'users' },
   ];
 
   if (error && !stats) {

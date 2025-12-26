@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { Commet } from "react-loading-indicators";
 
 const defaultOverview = {
   whoWeAre: {
@@ -83,7 +84,7 @@ export default function CompanyOverview() {
     return (
       <section className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-6 lg:px-20 text-center">
-          <p className="text-gray-600">Loading company overview...</p>
+          <p className="text-gray-600"><Commet color="#1e3a8a" size="medium" text="Loading" textColor="#ff0000" /></p>
         </div>
       </section>
     );
