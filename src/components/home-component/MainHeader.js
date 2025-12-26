@@ -136,7 +136,7 @@ export default function MainHeader() {
                           <Link
                             key={si.href}
                             href={si.href}
-                            className={`block px-4 py-2 text-sm ${isActive(si.href) ? 'text-blue-900 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                            className={`block px-4 py-2 text-sm ${isActive(si.href) ? 'text-red-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                           >
                             {si.label}
                           </Link>
@@ -151,7 +151,7 @@ export default function MainHeader() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className={`transition ${isActive(l.href) ? 'text-blue-900 font-semibold' : 'text-gray-700 hover:text-gray-900'}`}
+                  className={`transition ${isActive(l.href) ? 'text-blue-900 font-semibold' : 'text-gray-700 hover:text-red-700'}`}
                 >
                   {l.label}
                 </Link>
@@ -189,9 +189,9 @@ export default function MainHeader() {
                     <Link href="/dashboard" className="block px-4 py-2 font-medium text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-300">
                       Dashboard
                     </Link>
-                    {user?.role === 'admin' || user?.role === 'staff-member' ? (
-                    <Link href="/dashboard/all-projects" className="block px-4 py-2 font-medium text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-300">
-                     Manage Projects
+                    {user?.role === 'admin' || user?.role === 'committee' || user?.role === 'it-support' ? (
+                    <Link href="/dashboard/member-registration-request" className="block px-4 py-2 font-medium text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-300">
+                     Manage Registrations Requests
                     </Link>
                     ) : null}
                     <Link href="/dashboard/my-profile" className="block px-4 py-2 font-medium text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-300">
@@ -211,8 +211,8 @@ export default function MainHeader() {
               </div>
             ) : (
               <>
-                <Link href="/login" className="px-4 py-2 text-sm font-semibold border border-blue-900 hover:border-blue-800 text-gray-900 hover:text-blue-950 rounded-md">Login</Link>
-                <Link href="/join-us" className="px-4 py-2 bg-blue-900 text-white rounded-md text-sm font-medium hover:bg-blue-800">Join Us</Link>
+                <Link href="/login" className="px-4 py-2 text-sm font-semibold border border-green-700 hover:border-blue-800 text-gray-900 hover:text-blue-950 rounded-md">Login</Link>
+                <Link href="/join-us" className="px-4 py-2 bg-green-700 text-white rounded-md text-sm font-medium hover:bg-red-700">Join Us</Link>
               </>
             )}
           </div>
@@ -224,9 +224,9 @@ export default function MainHeader() {
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               onClick={() => setOpen((s) => !s)}
-              className="relative z-20 flex items-center justify-center w-11 h-11 rounded-lg bg-white/70 backdrop-blur border border-blue-200 shadow-sm"
+              className="relative z-20 flex items-center justify-center w-11 h-11 rounded-lg bg-white/70 backdrop-blur border border-green-200 shadow-sm"
             >
-              <Menu size={24} className="text-blue-600" /> 
+              <Menu size={24} className="text-green-700" /> 
             </button>
           </div>
         </div>
@@ -309,8 +309,8 @@ export default function MainHeader() {
                       <p className="text-xs text-gray-500">{user.email}</p>
                     </div>
                   </div>
-                  <Link href="/dashboard" onClick={() => setOpen(false)} className="block text-center text-gray-700 border border-blue-500 rounded-md px-4 py-2 hover:text-blue-600">Dashboard</Link>
-                  <Link href="/dashboard/my-profile" onClick={() => setOpen(false)} className="block text-center text-gray-700 border border-blue-500 rounded-md px-4 py-2 hover:text-blue-600">My Profile</Link>
+                  <Link href="/dashboard" onClick={() => setOpen(false)} className="block text-center text-gray-700 border border-green-700 rounded-md px-4 py-2 hover:text-green-700">Dashboard</Link>
+                  <Link href="/dashboard/my-profile" onClick={() => setOpen(false)} className="block text-center text-gray-700 border border-green-700 rounded-md px-4 py-2 hover:text-green-700">My Profile</Link>
                   <button onClick={() => {
                     logout()
                     setOpen(false)
@@ -318,8 +318,8 @@ export default function MainHeader() {
                 </>
               ) : (
                 <>
-                  <Link href="/login" onClick={() => setOpen(false)} className="block text-center text-gray-700 border border-blue-500 rounded-md px-4 py-2 hover:text-blue-600">Login</Link>
-                  <Link href="/join-us" onClick={() => setOpen(false)} className="block bg-blue-500 text-white px-4 py-2 rounded-md text-center">Join Us</Link>
+                  <Link href="/login" onClick={() => setOpen(false)} className="block text-center text-gray-700 border border-green-700 rounded-md px-4 py-2 hover:text-green-700">Login</Link>
+                  <Link href="/join-us" onClick={() => setOpen(false)} className="block bg-green-700 text-white px-4 py-2 rounded-md text-center">Join Us</Link>
                 </>
               )}
             </div>

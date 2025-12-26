@@ -4,10 +4,10 @@ import { useAuth } from "../../../context/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 const roles = [
-  { value: "client", label: "Client" },
+  { value: "member", label: "Member" },
   { value: "admin", label: "Admin" },
-  { value: "staff-member", label: "Staff Member" },
-  { value: "super-admin", label: "Super Admin" },
+  { value: "committee", label: "Committee" },
+  { value: "it-support", label: "IT Support" },
 ];
 
 export default function AddUserPage() {
@@ -18,7 +18,7 @@ export default function AddUserPage() {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "client",
+    role: "member",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -53,7 +53,7 @@ export default function AddUserPage() {
           email: "",
           password: "",
           confirmPassword: "",
-          role: "client",
+          role: "member",
         });
       } else {
         setError(data.message || "Failed to create user.");

@@ -2,35 +2,37 @@
 
 import React, { useState, useCallback, useEffect } from 'react'
 import { Trash2, Eye, Reply, Search, Filter, ChevronLeft, ChevronRight, X } from 'lucide-react'
-// import { useAuth } from '../../../context/AuthContext';
+import { useAuth } from '../../../context/AuthContext';
 import { Commet } from "react-loading-indicators";
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const ContactFormResponses = () => {
-		useEffect(() => {
-			loadResponses();
-			// eslint-disable-next-line
-		}, []);
+	const { user } = useAuth();
 
-		async function loadResponses() {
-			setLoading(true);
-			try {
-				const res = await fetch('/api/contact');
-				const data = await res.json();
-				if (data.success && Array.isArray(data.contacts)) {
-					setResponses(data.contacts);
-					applyFilters(data.contacts, searchQuery, statusFilter);
-				} else {
-					setResponses([]);
-					applyFilters([], searchQuery, statusFilter);
-				}
-			} catch (error) {
+	useEffect(() => {
+		loadResponses();
+		// eslint-disable-next-line
+	}, []);
+
+	async function loadResponses() {
+		setLoading(true);
+		try {
+			const res = await fetch('/api/contact');
+			const data = await res.json();
+			if (data.success && Array.isArray(data.contacts)) {
+				setResponses(data.contacts);
+				applyFilters(data.contacts, searchQuery, statusFilter);
+			} else {
 				setResponses([]);
 				applyFilters([], searchQuery, statusFilter);
-			} finally {
-				setLoading(false);
 			}
+		} catch (error) {
+			setResponses([]);
+			applyFilters([], searchQuery, statusFilter);
+		} finally {
+			setLoading(false);
 		}
+	}
 	const [responses, setResponses] = useState([])
 	const [filteredResponses, setFilteredResponses] = useState([])
 	const [loading, setLoading] = useState(false)
@@ -122,8 +124,8 @@ const ContactFormResponses = () => {
 			return
 		}
 		if (!user || !user._id) {
-			alert('You must be logged in as an admin or staff to reply.')
-			return
+			alert('User information not available. Please login again.');
+			return;
 		}
 		try {
 			console.log('Replying to contact ID:', selectedResponse?._id);
@@ -167,17 +169,18 @@ const ContactFormResponses = () => {
 	// Change status
 	const handleChangeStatus = async (response, newStatus) => {
 		if (!user || !user._id) {
-			alert('You must be logged in as an admin or staff to change status.')
-			return
+			alert('User information not available. Please login again.');
+			return;
 		}
 		try {
-			console.log('Changing status for contact ID:', response?._id);
+			console.log('Changing status for contact ID:', response?._id, 'New Status:', newStatus, 'Sender ID:', user._id);
 			const res = await fetch(`/api/contact/${response._id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ status: newStatus, senderId: user._id }),
 			})
 			const data = await res.json()
+			console.log('API Response:', data);
 			if (data.success) {
 				loadResponses()
 				alert('Status updated successfully!')
@@ -186,7 +189,7 @@ const ContactFormResponses = () => {
 			}
 		} catch (error) {
 			console.error('Failed to update status:', error)
-			alert('Failed to update status')
+			alert(`Failed to update status: ${error.message}`)
 		}
 	}
 
@@ -230,7 +233,7 @@ const ContactFormResponses = () => {
 	}
 
 	return (
-		<ProtectedRoute allowedRoles={['admin', 'staff-member']}>
+		<ProtectedRoute allowedRoles={['admin', 'committee', 'it-support']}>
 		<div className="bg-gray-50 py-4 md:py-8 px-0 sm:px-6 lg:px-8">
 			<div className="max-w-7xl mx-auto overflow-x-hidden">
 				<h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">Contact Form Responses</h1>
@@ -594,7 +597,7 @@ const ContactFormResponses = () => {
 							<div className="p-6 space-y-4">
 								<div>
 									<label className="block text-sm font-medium text-gray-700 mb-2">From</label>
-									<p className="text-gray-900">admin@rayobengineering.com</p>
+									<p className="text-gray-900">info@canausa.net</p>
 								</div>
 
 								<div>

@@ -24,7 +24,7 @@ export default function DashboardLayout({ children }) {
   }, [])
 
   return (
-    <ProtectedRoute allowedRoles={['admin', 'staff-member', 'client']}>
+    <ProtectedRoute allowedRoles={['admin', 'committee', 'member', 'it-support']}>
       <div className="min-h-screen bg-gray-50 overflow-x-hidden">
         <DashboardHeader onToggleSidebar={toggleSidebar} onToggleMobileMenu={toggleMobileMenu} />
 

@@ -87,11 +87,11 @@ const campaignSchema = new mongoose.Schema({
   },
   senderEmail: {
     type: String,
-    default: process.env.NEWSLETTER_FROM_EMAIL || 'noreply@rayobengineering.com',
+    default: process.env.NEWSLETTER_FROM_EMAIL || 'noreply@cananusa.net',
   },
   senderName: {
     type: String,
-    default: 'Rayob Engineering',
+    default: 'CANAN USA',
   },
   recipients: {
     type: {
@@ -210,9 +210,9 @@ const activityLogSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Create models
-const Subscriber = mongoose.model('Subscriber', subscriberSchema);
-const Campaign = mongoose.model('Campaign', campaignSchema);
-const Template = mongoose.model('Template', templateSchema);
-const ActivityLog = mongoose.model('ActivityLog', activityLogSchema);
+const Subscriber = mongoose.models.Subscriber || mongoose.model('Subscriber', subscriberSchema);
+const Campaign = mongoose.models.Campaign || mongoose.model('Campaign', campaignSchema);
+const Template = mongoose.models.Template || mongoose.model('Template', templateSchema);
+const ActivityLog = mongoose.models.ActivityLog || mongoose.model('ActivityLog', activityLogSchema);
 
 export { Subscriber, Campaign, Template, ActivityLog };

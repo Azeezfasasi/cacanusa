@@ -225,7 +225,7 @@ export default function ProfileManagement() {
   };
 
   return (
-    <ProtectedRoute allowedRoles={['admin', 'staff-member', 'client']}>
+    <ProtectedRoute allowedRoles={['admin', 'committee', 'member', 'it-support']}>
     <div className="min-h-screen bg-gray-50 pt-0 pb-6 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
@@ -415,7 +415,7 @@ export default function ProfileManagement() {
                     onChange={handleProfileChange}
                     disabled={profileLoading}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition disabled:bg-gray-100"
-                    placeholder="Engineering"
+                    placeholder="Enter your department"
                   />
                 </div>
 
@@ -430,7 +430,7 @@ export default function ProfileManagement() {
                     onChange={handleProfileChange}
                     disabled={profileLoading}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition disabled:bg-gray-100"
-                    placeholder="Senior Engineer"
+                    placeholder="Pasteur, Manager, etc."
                   />
                 </div>
               </div>

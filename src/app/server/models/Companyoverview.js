@@ -88,7 +88,7 @@ const CompanyOverviewSchema = new mongoose.Schema(
       },
       alt: {
         type: String,
-        default: 'Rayob Engineering Overview',
+        default: 'CANAN USA Overview',
         maxlength: [200, 'Alt text cannot exceed 200 characters']
       }
     },

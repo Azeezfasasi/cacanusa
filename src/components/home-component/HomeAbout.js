@@ -84,7 +84,7 @@ export default function HomeAbout() {
 
           <a
             href={section.button?.href || defaultSection.button.href}
-            className="inline-block bg-blue-900 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-800 transition"
+            className="inline-block bg-red-700 text-white px-6 py-3 rounded-lg shadow hover:bg-red-800 transition"
           >
             {section.button?.label || defaultSection.button.label}
           </a>

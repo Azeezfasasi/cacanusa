@@ -57,7 +57,7 @@ const defaultOverview = {
   },
   image: {
     url: '/images/placeholder.png',
-    alt: 'Rayob Engineering Overview'
+    alt: 'CANAN USA Overview'
   }
 }
 
@@ -102,7 +102,7 @@ export default function CompanyOverviewContent() {
       setUploading(true)
       const formDataForUpload = new FormData()
       formDataForUpload.append('file', file)
-      formDataForUpload.append('folder', 'rayob/company-overview')
+      formDataForUpload.append('folder', 'cananusa/company-overview')
 
       const response = await fetch('/api/upload', {
         method: 'POST',
@@ -166,39 +166,39 @@ export default function CompanyOverviewContent() {
   }
 
   if (loading) {
-    return <div className="p-6"><p className="text-gray-600">Loading...</p></div>
+    return <div className="p-3 sm:p-4 md:p-6"><p className="text-gray-600 text-sm">Loading...</p></div>
   }
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Company Overview Management</h1>
+    <div className="p-0 sm:p-4 md:p-6 max-w-6xl mx-auto">
+      <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">Company Overview Management</h1>
 
       {error && (
-        <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+        <div className="mb-4 p-3 sm:p-4 bg-red-100 border border-red-400 text-red-700 rounded text-sm">
           {error}
         </div>
       )}
       {success && (
-        <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+        <div className="mb-4 p-3 sm:p-4 bg-green-100 border border-green-400 text-green-700 rounded text-sm">
           {success}
         </div>
       )}
 
-      <div className="space-y-8 bg-white rounded-lg shadow p-8">
+      <div className="space-y-6 sm:space-y-8 bg-white rounded-lg shadow p-4 sm:p-6 md:p-8">
         {/* Image Section */}
-        <section className="border-b pb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Company Image</h2>
+        <section className="border-b pb-4 sm:pb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Company Image</h2>
           <div className="space-y-4">
             {/* Photo Upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
                 Upload Image
               </label>
               <div className="flex gap-2">
                 <label className="flex-1 flex items-center justify-center px-3 py-2 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition">
                   <div className="flex items-center gap-2">
                     <Upload size={16} className="text-gray-500" />
-                    <span className="text-sm text-gray-600">
+                    <span className="text-xs sm:text-sm text-gray-600">
                       {uploading ? 'Uploading...' : 'Click to upload'}
                     </span>
                   </div>
@@ -216,7 +216,7 @@ export default function CompanyOverviewContent() {
 
             {/* Or Image URL */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Or Enter Image URL</label>
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Or Enter Image URL</label>
               <input
                 type="text"
                 value={overview.image?.url || ''}
@@ -225,19 +225,19 @@ export default function CompanyOverviewContent() {
                   image: { ...overview.image, url: e.target.value }
                 })}
                 placeholder="https://example.com/image.jpg"
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 text-sm"
               />
               <p className="text-xs text-gray-500 mt-1">Leave empty to use uploaded image or paste URL directly</p>
             </div>
 
             {/* Image Preview */}
             {overview.image?.url && (
-              <div className="border border-gray-200 rounded-lg p-4">
-                <p className="text-sm font-medium text-gray-700 mb-2">Preview</p>
+              <div className="border border-gray-200 rounded-lg p-3 sm:p-4">
+                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">Preview</p>
                 <img
                   src={overview.image.url}
                   alt={overview.image.alt || 'Company overview'}
-                  className="max-w-md h-auto rounded-lg"
+                  className="max-w-full sm:max-w-md h-auto rounded-lg"
                   onError={(e) => {
                     e.target.src = '/images/placeholder.png'
                   }}
@@ -246,7 +246,7 @@ export default function CompanyOverviewContent() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Image Alt Text</label>
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Image Alt Text</label>
               <input
                 type="text"
                 value={overview.image?.alt || ''}
@@ -254,18 +254,18 @@ export default function CompanyOverviewContent() {
                   ...overview,
                   image: { ...overview.image, alt: e.target.value }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 text-sm"
               />
             </div>
           </div>
         </section>
 
         {/* Who We Are Section */}
-        <section className="border-b pb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Who We Are</h2>
+        <section className="border-b pb-4 sm:pb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Who We Are</h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Section Title</label>
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Section Title</label>
               <input
                 type="text"
                 value={overview.whoWeAre?.title || ''}
@@ -273,12 +273,12 @@ export default function CompanyOverviewContent() {
                   ...overview,
                   whoWeAre: { ...overview.whoWeAre, title: e.target.value }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 text-sm"
               />
             </div>
             {overview.whoWeAre?.paragraphs?.map((para, idx) => (
               <div key={idx}>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Paragraph {idx + 1}</label>
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Paragraph {idx + 1}</label>
                 <textarea
                   value={para || ''}
                   onChange={(e) => {
@@ -291,7 +291,7 @@ export default function CompanyOverviewContent() {
                   }}
                   maxLength={500}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 text-sm"
                 />
                 <p className="text-xs text-gray-500 mt-1">{(para || '').length}/500</p>
               </div>
@@ -300,11 +300,11 @@ export default function CompanyOverviewContent() {
         </section>
 
         {/* Vision Section */}
-        <section className="border-b pb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Vision</h2>
+        <section className="border-b pb-4 sm:pb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Vision</h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Section Title</label>
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Section Title</label>
               <input
                 type="text"
                 value={overview.vision?.title || ''}
@@ -312,11 +312,11 @@ export default function CompanyOverviewContent() {
                   ...overview,
                   vision: { ...overview.vision, title: e.target.value }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 text-sm"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Description</label>
               <textarea
                 value={overview.vision?.description || ''}
                 onChange={(e) => setOverview({
@@ -325,7 +325,7 @@ export default function CompanyOverviewContent() {
                 })}
                 maxLength={1000}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 text-sm"
               />
               <p className="text-xs text-gray-500 mt-1">{(overview.vision?.description || '').length}/1000</p>
             </div>
@@ -333,11 +333,11 @@ export default function CompanyOverviewContent() {
         </section>
 
         {/* Mission Section */}
-        <section className="border-b pb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Mission</h2>
+        <section className="border-b pb-4 sm:pb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Mission</h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Section Title</label>
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Section Title</label>
               <input
                 type="text"
                 value={overview.mission?.title || ''}
@@ -345,11 +345,11 @@ export default function CompanyOverviewContent() {
                   ...overview,
                   mission: { ...overview.mission, title: e.target.value }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 text-sm"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Description</label>
               <textarea
                 value={overview.mission?.description || ''}
                 onChange={(e) => setOverview({
@@ -358,7 +358,7 @@ export default function CompanyOverviewContent() {
                 })}
                 maxLength={1000}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 text-sm"
               />
               <p className="text-xs text-gray-500 mt-1">{(overview.mission?.description || '').length}/1000</p>
             </div>
@@ -366,11 +366,11 @@ export default function CompanyOverviewContent() {
         </section>
 
         {/* Core Values Section */}
-        <section className="pb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Core Values</h2>
+        <section className="pb-4 sm:pb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Core Values</h2>
           <div className="space-y-4 mb-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Section Title</label>
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Section Title</label>
               <input
                 type="text"
                 value={overview.coreValues?.title || ''}
@@ -378,17 +378,17 @@ export default function CompanyOverviewContent() {
                   ...overview,
                   coreValues: { ...overview.coreValues, title: e.target.value }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 text-sm"
               />
             </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {overview.coreValues?.values?.map((value, idx) => (
-              <div key={idx} className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div key={idx} className="bg-gray-50 p-4 sm:p-6 rounded-lg border border-gray-200">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Value Name</label>
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Value Name</label>
                     <input
                       type="text"
                       value={value.name || ''}
@@ -401,11 +401,11 @@ export default function CompanyOverviewContent() {
                         })
                       }}
                       maxLength={50}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 text-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Color</label>
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Color</label>
                     <select
                       value={value.colorClass || 'blue-900'}
                       onChange={(e) => {
@@ -416,7 +416,7 @@ export default function CompanyOverviewContent() {
                           coreValues: { ...overview.coreValues, values: newValues }
                         })
                       }}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 text-sm"
                     >
                       <option value="blue-900">Blue</option>
                       <option value="amber-600">Amber</option>
@@ -427,7 +427,7 @@ export default function CompanyOverviewContent() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Description</label>
                   <textarea
                     value={value.description || ''}
                     onChange={(e) => {
@@ -440,7 +440,7 @@ export default function CompanyOverviewContent() {
                     }}
                     maxLength={200}
                     rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 text-sm"
                   />
                   <p className="text-xs text-gray-500 mt-1">{(value.description || '').length}/200</p>
                 </div>
@@ -450,13 +450,13 @@ export default function CompanyOverviewContent() {
         </section>
 
         {/* Save Button */}
-        <div className="flex gap-2 pt-6 border-t">
+        <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 pt-6 border-t">
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
+            className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 text-sm"
           >
-            <Save size={18} /> {saving ? 'Saving...' : 'Save Changes'}
+            <Save size={16} /> {saving ? 'Saving...' : 'Save Changes'}
           </button>
         </div>
       </div>

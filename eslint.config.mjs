@@ -15,7 +15,7 @@ export default [
       ...js.configs.recommended.rules,
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs['core-web-vitals'].rules,
-      'no-unused-vars': 'warn',
+      'no-unused-vars': 'off',
       'no-undef': 'warn',
       '@next/next/no-img-element': 'warn',
       // Disable rules that aren't available in this ESLint setup

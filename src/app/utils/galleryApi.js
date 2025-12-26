@@ -13,7 +13,7 @@ const API_BASE = getApiBase();
 /**
  * Upload image to Cloudinary via API
  */
-export const uploadImageToCloudinary = async (fileData, folderName = 'rayob/gallery') => {
+export const uploadImageToCloudinary = async (fileData, folderName = 'cananusa/gallery') => {
   try {
     if (!fileData) {
       throw new Error('File data is required');

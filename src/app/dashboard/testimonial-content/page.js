@@ -138,8 +138,8 @@ export default function TestimonialContent() {
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Testimonials Management</h1>
+    <div className="p-0 md:p-6 max-w-7xl mx-auto">
+      <h1 className="text-[24px] md:text-3xl font-bold text-gray-900 mb-6">Testimonials Management</h1>
 
       {error && (
         <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">

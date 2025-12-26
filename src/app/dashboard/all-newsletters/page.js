@@ -118,7 +118,7 @@ export default function AllNewsletter() {
   };
 
   return (
-    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
+    <ProtectedRoute allowedRoles={['admin', 'committee', 'it-support']}>
     <div className="space-y-6 w-fit lg:w-full">
       {/* Header */}
       <div className="flex flex-col lg:flex-row items-center justify-between">

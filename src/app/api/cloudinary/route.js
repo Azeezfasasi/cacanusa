@@ -11,7 +11,7 @@ cloudinary.config({
  */
 export async function POST(req) {
   try {
-    const { fileData, folderName = 'rayob/gallery' } = await req.json();
+    const { fileData, folderName = 'cananusa/gallery' } = await req.json();
 
     if (!fileData) {
       return Response.json(

@@ -132,7 +132,7 @@ export const sendApplicationConfirmation = async (memberData) => {
         </div>
         
         <div class="footer">
-          <p>&copy; 2024 CANAN USA. All rights reserved.</p>
+          <p>&copy; 2026 CANAN USA. All rights reserved.</p>
         </div>
       </div>
     </body>

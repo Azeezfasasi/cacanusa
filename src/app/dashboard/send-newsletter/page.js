@@ -211,7 +211,7 @@ export default function SendNewsletter() {
   };
 
   return (
-    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
+    <ProtectedRoute allowedRoles={['admin', 'committee', 'it-support']}>
     <div className="space-y-6">
       {/* Header */}
       <div>

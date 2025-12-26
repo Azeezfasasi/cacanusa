@@ -60,7 +60,7 @@ export default function TeamSection() {
               Meet Our Leadership
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Our team combines industry expertise, technical excellence, and dedication to deliver outstanding engineering solutions.
+              Our team combines expertise, technical excellence, and dedication to deliver outstanding support.
             </p>
           </div>
           <div className="text-center py-12">
@@ -80,7 +80,7 @@ export default function TeamSection() {
             Meet Our Leadership
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Our team combines industry expertise, technical excellence, and dedication to deliver outstanding engineering solutions.
+            Our team combines industry expertise, technical excellence, and dedication to deliver outstanding support.
           </p>
         </div>
 

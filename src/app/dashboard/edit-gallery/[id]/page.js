@@ -7,8 +7,8 @@ import { fetchGallery, updateGallery, uploadImageToCloudinary, deleteImageFromCl
 import { Upload, X, Loader, ArrowLeft } from 'lucide-react';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 
-const CATEGORIES = ['project', 'engineering', 'fibre', 'maintenance', 'other'];
-const TAGS = ['vip', 'active', 'engaged', 'new', 'featured', 'recommended'];
+const CATEGORIES = ['awareness-campaign', 'humanitarian-support', 'prayer-mobilization', 'community event', 'congressional-engagement', 'legal-interventions', 'leadership-development', 'others'];
+const TAGS = ['vip', 'active', 'members', 'new', 'featured', 'recommended'];
 
 export default function EditGalleryPage() {
   const router = useRouter();
@@ -82,7 +82,7 @@ export default function EditGalleryPage() {
           const base64 = reader.result;
 
           try {
-            const result = await uploadImageToCloudinary(base64, 'rayob/gallery');
+            const result = await uploadImageToCloudinary(base64, 'cananusa/gallery');
 
             setFormData(prev => ({
               ...prev,
@@ -167,7 +167,7 @@ export default function EditGalleryPage() {
   }
 
   return (
-    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
+    <ProtectedRoute allowedRoles={['admin', 'committee', 'it-support']}>
     <div className="min-h-screen bg-gray-50 py-6 sm:py-8">
       <div className="max-w-2xl mx-auto px-3 sm:px-4">
         {/* Back Button */}

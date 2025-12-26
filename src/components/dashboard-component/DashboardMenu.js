@@ -49,21 +49,21 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
   const { user } = useAuth()
   const pathname = usePathname() || ''
   const items = [
-    { href: '/dashboard', label: 'Dashboard', icon: 'dashboard', roles: ['admin', 'client', 'staff-member'] },
-    { href: '/dashboard/member-registration-request', label: 'Member Registration Requests', icon: 'Quote Requests', roles: ['admin', 'staff-member'] },
-    { href: '/dashboard/contact-form-responses', label: 'Contact Form Responses', icon: 'Contact', roles: ['admin', 'staff-member'] },
+    { href: '/dashboard', label: 'Dashboard', icon: 'dashboard', roles: ['admin', 'member', 'committee', 'it-support'] },
+    { href: '/dashboard/member-registration-request', label: 'Member Registration Requests', icon: 'Quote Requests', roles: ['admin', 'committee', 'it-support'] },
+    { href: '/dashboard/contact-form-responses', label: 'Contact Form Responses', icon: 'Contact', roles: ['admin', 'committee', 'it-support'] },
     {
       href: '/dashboard/blog',
       label: 'Blog',
       icon: 'blog',
-      roles: ['admin', 'staff-member'],
+      roles: ['admin', 'committee', 'it-support'],
       children: [
-        { href: '/dashboard/add-blog', label: 'Add Blog', roles: ['admin', 'staff-member'] },
-        { href: '/dashboard/manage-blog', label: 'Manage Blogs', roles: ['admin', 'staff-member'] }
+        { href: '/dashboard/add-blog', label: 'Add Blog', roles: ['admin', 'committee', 'it-support'] },
+        { href: '/dashboard/manage-blog', label: 'Manage Blogs', roles: ['admin', 'committee', 'it-support'] }
       ]
     },
-    { href: '/blog', label: 'View Blogs', icon: 'dashboard', roles: ['client'] },
-    { href: '/join-us', label: 'Join Us', icon: 'dashboard', roles: ['client'] },
+    { href: '/blog', label: 'View Blogs', icon: 'dashboard', roles: ['member'] },
+    { href: '/join-us', label: 'Join Us', icon: 'dashboard', roles: ['member'] },
     {
       href: '/dashboard/users',
       label: 'Manage Users',
@@ -79,60 +79,59 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
       href: '/dashboard/all-newsletter',
       label: 'Newsletter Management',
       icon: 'Newsletter',
-      roles: ['admin', 'staff-member'],
+      roles: ['admin', 'committee', 'it-support'],
       children: [
-        { href: '/dashboard/send-newsletter', label: 'Send Newsletter', roles: ['admin', 'staff-member'] },
-        { href: '/dashboard/all-newsletters', label: 'All Newsletters', roles: ['admin', 'staff-member'] },
-        { href: '/dashboard/subscribers', label: 'Subscribers', roles: ['admin', 'staff-member'] },
+        { href: '/dashboard/send-newsletter', label: 'Send Newsletter', roles: ['admin', 'committee', 'it-support'] },
+        { href: '/dashboard/all-newsletters', label: 'All Newsletters', roles: ['admin', 'committee', 'it-support'] },
+        { href: '/dashboard/subscribers', label: 'Subscribers', roles: ['admin', 'committee', 'it-support'] },
       ]
     },
     {
       href: '/dashboard/gallery',
       label: 'Gallery Management',
       icon: 'Gallery',
-      roles: ['admin', 'staff-member'],
+      roles: ['admin', 'committee', 'it-support'],
       children: [
-        { href: '/dashboard/add-gallery', label: 'Add Gallery', roles: ['admin', 'staff-member'] },
-        { href: '/dashboard/all-gallery', label: 'All Gallery', roles: ['admin', 'staff-member'] },
+        { href: '/dashboard/add-gallery', label: 'Add Gallery', roles: ['admin', 'committee', 'it-support'] },
+        { href: '/dashboard/all-gallery', label: 'All Gallery', roles: ['admin', 'committee', 'it-support'] },
       ]
     },
-    { href: '/gallery', label: 'Our Gallery', icon: 'projects', roles: ['client'] },
-    { href: '/dashboard/my-profile', label: 'Profile', icon: 'dashboard', roles: ['admin', 'client', 'staff-member'] },
+    { href: '/gallery', label: 'Our Gallery', icon: 'projects', roles: ['member'] },
+    { href: '/dashboard/my-profile', label: 'Profile', icon: 'dashboard', roles: ['admin', 'member', 'committee', 'it-support'] },
 
     // Page Content Management
     {
       href: '/dashboard/homepage-contents',
       label: 'HomePage Contents',
       icon: 'Gallery',
-      roles: ['admin', 'staff-member'],
+      roles: ['admin', 'it-support'],
       children: [
-        { href: '/dashboard/hero-content', label: 'Hero Content', roles: ['admin', 'staff-member'] },
-        { href: '/dashboard/welcome-cta-content', label: 'Welcome CTA', roles: ['admin', 'staff-member'] },
-        { href: '/dashboard/company-overview-content', label: 'Company Overview', roles: ['admin', 'staff-member'] },
-        { href: '/dashboard/member-support-content', label: 'Member Support', roles: ['admin', 'staff-member'] },
-        { href: '/dashboard/member-levels-content', label: 'Member Levels', roles: ['admin', 'staff-member'] },
-        { href: '/dashboard/testimonial-content', label: 'Testimonials', roles: ['admin', 'staff-member'] },
+        { href: '/dashboard/hero-content', label: 'Hero Content', roles: ['admin', 'it-support'] },
+        { href: '/dashboard/welcome-cta-content', label: 'Welcome CTA', roles: ['admin', 'it-support'] },
+        { href: '/dashboard/company-overview-content', label: 'Company Overview', roles: ['admin', 'it-support'] },
+        { href: '/dashboard/member-support-content', label: 'Member Support', roles: ['admin', 'it-support'] },
+        { href: '/dashboard/member-levels-content', label: 'Member Levels', roles: ['admin', 'it-support'] },
+        { href: '/dashboard/testimonial-content', label: 'Testimonials', roles: ['admin', 'it-support'] },
       ]
     },
     {
       href: '/dashboard/about-contents',
       label: 'About Page Contents',
       icon: 'Gallery',
-      roles: ['admin', 'staff-member'],
+      roles: ['admin', 'it-support'],
       children: [
-        { href: '/dashboard/company-overview-content', label: 'Company Overview', roles: ['admin', 'staff-member'] },
-        { href: '/dashboard/team-content', label: 'Team', roles: ['admin', 'staff-member'] },
-        { href: '/dashboard/membership-levels-content', label: 'Member Levels', roles: ['admin', 'staff-member'] },
-        { href: '/dashboard/why-choose-us-content', label: 'Why Choose Us', roles: ['admin', 'staff-member'] },
+        { href: '/dashboard/company-overview-content', label: 'Company Overview', roles: ['admin', 'it-support'] },
+        { href: '/dashboard/team-content', label: 'Team', roles: ['admin', 'it-support'] },
+        { href: '/dashboard/why-choose-us-content', label: 'Why Choose Us', roles: ['admin', 'it-support'] },
       ]
     },
     {
       href: '/dashboard/contact-contents',
       label: 'Contact Page Contents',
       icon: 'Gallery',
-      roles: ['admin', 'staff-member'],
+      roles: ['admin', 'it-support'],
       children: [
-        { href: '/dashboard/contact-details-content', label: 'Contact Details', roles: ['admin', 'staff-member'] },
+        { href: '/dashboard/contact-details-content', label: 'Contact Details', roles: ['admin', 'it-support'] },
       ]
     },
   ]
@@ -215,7 +214,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
     <div className="fixed inset-0 z-40 md:hidden" role="dialog" aria-modal="true">
       <div className="fixed inset-0 bg-black/40" onClick={onClose} />
 
-      <nav className="relative z-50 h-full w-[70%] bg-blue-900 border-r border-gray-100">
+      <nav className="relative z-50 h-full w-[85%] bg-blue-900 border-r border-gray-100">
         <div className="h-full overflow-y-auto py-6 px-4">
           <div className="flex items-center justify-between mb-6">
             <Link href="/" className="flex flex-col items-center gap-3">

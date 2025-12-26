@@ -79,8 +79,8 @@ export const replyToQuote = async (req, quoteId) => {
     if (!sender) {
       return NextResponse.json({ success: false, message: "Sender not found" }, { status: 400 });
     }
-    if (sender.role !== 'admin' && sender.role !== 'staff-member') {
-      return NextResponse.json({ success: false, message: "Sender is not authorized to reply (must be admin or staff-member)" }, { status: 403 });
+    if (sender.role !== 'admin' && sender.role !== 'committee' && sender.role !== 'it-support') {
+      return NextResponse.json({ success: false, message: "Sender is not authorized to reply (must be admin, committee or IT Support)" }, { status: 403 });
     }
     const quote = await Quote.findById(quoteId);
     if (!quote) return NextResponse.json({ success: false, message: "Quote not found" }, { status: 404 });

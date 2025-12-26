@@ -13,8 +13,8 @@ const galleryItemSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['project', 'engineering', 'fibre', 'maintenance', 'other'],
-    default: 'other',
+    enum: ['awareness-campaign', 'humanitarian-support', 'prayer-mobilization', 'community event', 'congressional-engagement', 'legal-interventions', 'leadership-development', 'others'],
+    default: 'others',
   },
   images: [
     {

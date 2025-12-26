@@ -125,7 +125,7 @@ export default function MemberSupportContent() {
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-0 md:p-6 max-w-7xl mx-auto">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">Member Support Content Management</h1>
 
       {error && (

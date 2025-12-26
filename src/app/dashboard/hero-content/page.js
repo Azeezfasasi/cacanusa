@@ -50,7 +50,7 @@ export default function HeroContent() {
       setUploading(true)
       const formDataForUpload = new FormData()
       formDataForUpload.append('file', file)
-      formDataForUpload.append('folder', 'rayob/hero-slider')
+      formDataForUpload.append('folder', 'cananusa/hero-slider')
 
       const response = await fetch('/api/upload', {
         method: 'POST',
@@ -215,39 +215,39 @@ export default function HeroContent() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-3 sm:p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Hero Slider Management</h1>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Hero Slider Management</h1>
           <button
             onClick={() => { resetForm(); setShowForm(!showForm) }}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="flex items-center justify-center sm:justify-start gap-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm sm:text-base whitespace-nowrap"
           >
-            <Plus size={20} /> {showForm ? 'Cancel' : 'Add Slide'}
+            <Plus size={18} /> {showForm ? 'Cancel' : 'Add Slide'}
           </button>
         </div>
 
         {/* Messages */}
         {error && (
-          <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          <div className="mb-4 p-3 sm:p-4 bg-red-100 border border-red-400 text-red-700 rounded text-sm">
             {error}
           </div>
         )}
         {success && (
-          <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+          <div className="mb-4 p-3 sm:p-4 bg-green-100 border border-green-400 text-green-700 rounded text-sm">
             {success}
           </div>
         )}
 
         {/* Form */}
         {showForm && (
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <h2 className="text-2xl font-bold mb-4">
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">
               {editingId ? 'Edit Slide' : 'Create New Slide'}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 {/* Title */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -432,19 +432,19 @@ export default function HeroContent() {
               </div>
 
               {/* Submit Button */}
-              <div className="flex gap-3">
-                <button
-                  type="submit"
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
-                >
-                  {editingId ? 'Update Slide' : 'Create Slide'}
-                </button>
+              <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3">
                 <button
                   type="button"
                   onClick={() => { resetForm(); setShowForm(false) }}
-                  className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 font-medium"
+                  className="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 font-medium text-sm"
                 >
                   Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm"
+                >
+                  {editingId ? 'Update Slide' : 'Create Slide'}
                 </button>
               </div>
             </form>
@@ -453,41 +453,42 @@ export default function HeroContent() {
 
         {/* Slides List */}
         <div className="bg-white rounded-lg shadow">
-          <div className="overflow-x-auto">
+          {/* Desktop Table */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b bg-gray-50">
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Order</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Title</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">CTA</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Status</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Actions</th>
+                  <th className="px-4 sm:px-6 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Order</th>
+                  <th className="px-4 sm:px-6 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Title</th>
+                  <th className="px-4 sm:px-6 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">CTA</th>
+                  <th className="px-4 sm:px-6 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Status</th>
+                  <th className="px-4 sm:px-6 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
+                    <td colSpan={5} className="px-4 sm:px-6 py-4 text-center text-gray-500 text-sm">
                       Loading slides...
                     </td>
                   </tr>
                 ) : slides.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
+                    <td colSpan={5} className="px-4 sm:px-6 py-4 text-center text-gray-500 text-sm">
                       No slides yet. Create one to get started!
                     </td>
                   </tr>
                 ) : (
                   slides.map((slide) => (
                     <tr key={slide._id} className="border-b hover:bg-gray-50">
-                      <td className="px-6 py-4 text-sm text-gray-700">
+                      <td className="px-4 sm:px-6 py-4 text-xs sm:text-sm text-gray-700">
                         <div className="flex gap-1">
                           <button
                             onClick={() => handleReorder(slide._id, Math.max(0, slide.order - 1))}
                             className="p-1 hover:bg-gray-200 rounded"
                             title="Move up"
                           >
-                            <ArrowUpDown size={16} className="rotate-180" />
+                            <ArrowUpDown size={14} className="rotate-180" />
                           </button>
                           <span className="px-2">{slide.order}</span>
                           <button
@@ -495,20 +496,20 @@ export default function HeroContent() {
                             className="p-1 hover:bg-gray-200 rounded"
                             title="Move down"
                           >
-                            <ArrowUpDown size={16} />
+                            <ArrowUpDown size={14} />
                           </button>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-700 max-w-xs truncate">
+                      <td className="px-4 sm:px-6 py-4 text-xs sm:text-sm text-gray-700 max-w-xs truncate">
                         {slide.title}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-700">
+                      <td className="px-4 sm:px-6 py-4 text-xs sm:text-sm text-gray-700">
                         {slide.cta.label}
                       </td>
-                      <td className="px-6 py-4 text-sm">
+                      <td className="px-4 sm:px-6 py-4 text-xs sm:text-sm">
                         <button
                           onClick={() => handleToggleActive(slide)}
-                          className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${
+                          className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
                             slide.isActive
                               ? 'bg-green-100 text-green-700'
                               : 'bg-gray-100 text-gray-700'
@@ -516,27 +517,27 @@ export default function HeroContent() {
                         >
                           {slide.isActive ? (
                             <>
-                              <Eye size={14} /> Active
+                              <Eye size={12} /> Active
                             </>
                           ) : (
                             <>
-                              <EyeOff size={14} /> Inactive
+                              <EyeOff size={12} /> Inactive
                             </>
                           )}
                         </button>
                       </td>
-                      <td className="px-6 py-4 text-sm space-x-2">
+                      <td className="px-4 sm:px-6 py-4 text-xs sm:text-sm flex gap-1">
                         <button
                           onClick={() => handleEdit(slide)}
-                          className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+                          className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-xs"
                         >
-                          <Edit2 size={14} /> Edit
+                          <Edit2 size={12} /> Edit
                         </button>
                         <button
                           onClick={() => handleDelete(slide._id)}
-                          className="inline-flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200"
+                          className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-xs"
                         >
-                          <Trash2 size={14} /> Delete
+                          <Trash2 size={12} /> Delete
                         </button>
                       </td>
                     </tr>
@@ -545,12 +546,88 @@ export default function HeroContent() {
               </tbody>
             </table>
           </div>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden divide-y">
+            {loading ? (
+              <div className="p-4 text-center text-gray-500 text-sm">
+                Loading slides...
+              </div>
+            ) : slides.length === 0 ? (
+              <div className="p-4 text-center text-gray-500 text-sm">
+                No slides yet. Create one to get started!
+              </div>
+            ) : (
+              slides.map((slide) => (
+                <div key={slide._id} className="p-4 border-b hover:bg-gray-50">
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex-1">
+                      <p className="font-semibold text-sm text-gray-900">{slide.title}</p>
+                      <p className="text-xs text-gray-600 mt-1">CTA: {slide.cta.label}</p>
+                    </div>
+                    <button
+                      onClick={() => handleToggleActive(slide)}
+                      className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium flex-shrink-0 ml-2 ${
+                        slide.isActive
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-gray-100 text-gray-700'
+                      }`}
+                    >
+                      {slide.isActive ? <Eye size={12} /> : <EyeOff size={12} />}
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 mb-3 text-xs">
+                    <div>
+                      <p className="text-gray-600">Order</p>
+                      <div className="flex items-center gap-1 mt-1">
+                        <button
+                          onClick={() => handleReorder(slide._id, Math.max(0, slide.order - 1))}
+                          className="p-1 hover:bg-gray-200 rounded"
+                          title="Move up"
+                        >
+                          <ArrowUpDown size={12} className="rotate-180" />
+                        </button>
+                        <span className="font-medium">{slide.order}</span>
+                        <button
+                          onClick={() => handleReorder(slide._id, slide.order + 1)}
+                          className="p-1 hover:bg-gray-200 rounded"
+                          title="Move down"
+                        >
+                          <ArrowUpDown size={12} />
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Status</p>
+                      <p className="font-medium mt-1">{slide.isActive ? 'Active' : 'Inactive'}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEdit(slide)}
+                      className="flex-1 px-2 py-2 bg-blue-50 text-blue-600 rounded text-xs font-medium hover:bg-blue-100 flex items-center justify-center gap-1"
+                    >
+                      <Edit2 size={12} /> Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(slide._id)}
+                      className="flex-1 px-2 py-2 bg-red-50 text-red-600 rounded text-xs font-medium hover:bg-red-100 flex items-center justify-center gap-1"
+                    >
+                      <Trash2 size={12} /> Delete
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
 
         {/* Preview Info */}
-        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <h3 className="font-semibold text-blue-900 mb-2">📝 About Hero Slider</h3>
-          <ul className="text-sm text-blue-800 space-y-1">
+        <div className="mt-6 p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <h3 className="font-semibold text-blue-900 mb-2 text-sm">📝 About Hero Slider</h3>
+          <ul className="text-xs sm:text-sm text-blue-800 space-y-1">
             <li>• Slides are displayed in order from smallest to largest order number</li>
             <li>• Only active slides are shown on the homepage</li>
             <li>• Images are displayed on large screens (lg and up)</li>

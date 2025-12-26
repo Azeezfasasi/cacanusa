@@ -138,7 +138,7 @@ export default function AddBlogPage() {
   }
 
   return (
-    <ProtectedRoute allowedRoles={['admin', 'staff-member']}>
+    <ProtectedRoute allowedRoles={['admin', 'committee', 'it-support']}>
     <div className="min-h-screen bg-gray-50 py-6 px-0 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
@@ -162,7 +162,7 @@ export default function AddBlogPage() {
             <div className="space-y-4">
               <div>
                 <label htmlFor="postTitle" className="block text-sm font-medium text-gray-700 mb-2">Post Title *</label>
-                <input type="text" id="postTitle" name="postTitle" value={formData.postTitle} onChange={handleInputChange} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none" placeholder="e.g., Tips for Modern Construction" />
+                <input type="text" id="postTitle" name="postTitle" value={formData.postTitle} onChange={handleInputChange} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none" placeholder="Enter blog title" />
                 <p className="text-xs text-gray-500 mt-1">This will appear as the main headline</p>
               </div>
 
@@ -180,13 +180,14 @@ export default function AddBlogPage() {
                 <div>
                   <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
                   <select id="category" name="category" value={formData.category} onChange={handleInputChange} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none">
-                    <option value="" disabled>Select category</option>
-                    <option value="construction">Construction</option>
-                    <option value="project-updates">Project Updates</option>
-                    <option value="industry-news">Industry News</option>
-                    <option value="tips-tricks">Tips & Tricks</option>
-                    <option value="company-news">Company News</option>
-                    <option value="case-studies">Case Studies</option>
+                    <option value="" disabled>--Select category--</option>
+                    <option value="awareness-campaign">Awareness Campain</option>
+                    <option value="humanitarian-support">Humanitarian Support</option>
+                    <option value="prayer-mobilization">Prayer Mobilization</option>
+                    <option value="community event">Community Event</option>
+                    <option value="congressional-engagement">Congressional Engagement</option>
+                    <option value="legal-interventions">Legal Interventions</option>
+                    <option value="leadership-development">Leadership Development</option>
                   </select>
                 </div>
               </div>
@@ -203,7 +204,7 @@ export default function AddBlogPage() {
           {/* Tags */}
           <div>
             <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
-            <input type="text" id="tags" name="tags" value={formData.tags} onChange={handleInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none" placeholder="Separate tags with commas (e.g., construction, safety)" />
+            <input type="text" id="tags" name="tags" value={formData.tags} onChange={handleInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none" placeholder="Separate tags with commas (e.g., support, awareness)" />
             <p className="text-xs text-gray-500 mt-1">Separate multiple tags with commas</p>
           </div>
 
@@ -243,6 +244,7 @@ export default function AddBlogPage() {
 
             <div>
               <label htmlFor="blogImages" className="block text-sm font-medium text-gray-700 mb-2 mt-4">Blog Images</label>
+              <p className='text-green-800'>You can select up to 5 images</p>
               <input type="file" id="blogImages" name="blogImages" multiple onChange={handleBlogImagesChange} accept="image/*" className="w-full px-4 py-2 border border-gray-300 rounded-md" />
               
               {/* Blog Images Preview Grid */}

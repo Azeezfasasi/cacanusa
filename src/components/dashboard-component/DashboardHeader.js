@@ -59,7 +59,7 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
             </button>
 
             <Link href="/" className="flex items-center gap-3">
-              <Image src="/images/cananusatrans.png" alt="Rayob Logo" width={160} height={40} className="w-14 md:w-16 block rounded-md p-1" />
+              <Image src="/images/cananusatrans.png" alt="CANAN USA Logo" width={160} height={40} className="w-14 md:w-16 block rounded-md p-1" />
             </Link>
           </div>
 
@@ -92,12 +92,12 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
                     <li>
                       <Link href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition w-full text-left">Back to Home</Link>
                     </li>
-                    {user?.role === 'admin' || user?.role === 'staff-member' ? (
+                    {user?.role === 'admin' || user?.role === 'committee' || user?.role === 'it-support' ? (
                     <li>
-                      <Link href="/dashboard/all-projects" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition w-full text-left">Member Requests</Link>
+                      <Link href="/dashboard/member-registration-request" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition w-full text-left">Registration Requests</Link>
                     </li>
                     ) : null}
-                    {user?.role === 'admin' || user?.role === 'staff-member' ? (
+                    {user?.role === 'admin' || user?.role === 'committee' || user?.role === 'it-support' ? (
                     <li>
                       <Link href="/dashboard/my-profile" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition w-full text-left">Profile</Link>
                     </li>

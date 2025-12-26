@@ -5,7 +5,7 @@ import { ProtectedRoute } from '@/components/ProtectedRoute'
 
 export default function CreateBlogPage() {
 	return (
-		<ProtectedRoute allowedRoles={['admin', 'staff-member']}>
+		<ProtectedRoute allowedRoles={['admin', 'committee', 'it-support']}>
 		<div className="container mx-auto px-6 lg:px-20 py-12">
 			<PageTitle title="Create Blog Post" subtitle="Add a new blog post to your website" breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Manage Blog', href: '/dashboard/manage-blog' }, { label: 'Create Post' }]} />
 			<div className="mt-6">

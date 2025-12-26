@@ -205,7 +205,7 @@ export default function SubscribeToNewsletter() {
               <button
                 type="submit"
                 disabled={isLoading || status === 'success'}
-                className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-900 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 group"
+                className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-red-900 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-red-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 group"
               >
                 {isLoading ? (
                   <>

@@ -16,12 +16,14 @@ export default function Gallery() {
 
   const CATEGORIES = [
     { value: 'all', label: 'All Categories' },
-    { value: 'events', label: 'Events' },
-    { value: 'charitable', label: 'Charitable Work' },
-    { value: 'cultural', label: 'Cultural Celebrations' },
-    { value: 'community', label: 'Community Outreach' },
-    { value: 'advocacy', label: 'Advocacy & Awareness' },
-    { value: 'other', label: 'Other' },
+    { value: 'awareness-campaign', label: 'Awareness Campaigns' },
+    { value: 'humanitarian-support', label: 'Humanitarian Support' },
+    { value: 'prayer-mobilization', label: 'Prayer Mobilization' },
+    { value: 'community event', label: 'Community Events' },
+    { value: 'congressional-engagement', label: 'Congressional Engagement' },
+    { value: 'legal-interventions', label: 'Legal Interventions' },
+    { value: 'leadership-development', label: 'Leadership Development' },
+    { value: 'others', label: 'Others' },
   ];
 
   useEffect(() => {

@@ -271,9 +271,10 @@ export default function AllUsersPage() {
         />
         <select value={role} onChange={e => { setRole(e.target.value); setPage(1); }} className="border px-3 py-2 rounded-lg outline-none border-gray-400 focus:ring-2 focus:ring-blue-500 text-[14px] md:text-base">
           <option value="">All Roles</option>
-          <option value="client">Client</option>
+          <option value="member">Member</option>
           <option value="admin">Admin</option>
-          <option value="staff-member">Staff Member</option>
+          <option value="committee">Committee</option>
+          <option value="it-support">IT Support</option>
         </select>
         <select value={status} onChange={e => { setStatus(e.target.value); setPage(1); }} className="border px-3 py-2 rounded-lg outline-none border-gray-400 focus:ring-2 focus:ring-blue-500 text-[14px] md:text-base">
           <option value="">All Status</option>
@@ -528,9 +529,10 @@ export default function AllUsersPage() {
                 className="w-full px-3 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="">-- Select Role --</option>
-                <option value="client">Client</option>
+                <option value="member">Member</option>
                 <option value="admin">Admin</option>
-                <option value="staff-member">Staff Member</option>
+                <option value="committee">Committee</option>
+                <option value="it-support">IT Support</option>
               </select>
             </div>
             <div className="flex gap-3">

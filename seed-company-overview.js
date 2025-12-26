@@ -81,7 +81,7 @@ const CompanyOverviewSchema = new mongoose.Schema(
       },
       alt: {
         type: String,
-        default: 'Rayob Engineering Overview',
+        default: 'CANAN USA Overview',
         maxlength: [200, 'Alt text cannot exceed 200 characters']
       }
     },
@@ -169,7 +169,7 @@ const seedCompanyOverview = async () => {
       },
       image: {
         url: '/images/placeholder.png',
-        alt: 'Rayob Engineering Overview'
+        alt: 'CANAN USA Overview'
       },
       isPublished: true
     };

@@ -50,7 +50,7 @@ const defaultOverview = {
   },
   image: {
     url: "/images/placeholder.png",
-    alt: "Rayob Engineering Overview"
+    alt: "CANAN USA Overview"
   }
 };
 

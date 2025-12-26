@@ -12,7 +12,7 @@ cloudinary.config({
  * @param {string} folderName - Folder name in Cloudinary
  * @returns {Promise<Object>} Upload result with url and publicId
  */
-export const uploadToCloudinary = async (fileData, folderName = 'rayob') => {
+export const uploadToCloudinary = async (fileData, folderName = 'cananusa') => {
   try {
     if (!process.env.CLOUDINARY_CLOUD_NAME) {
       throw new Error('Cloudinary is not configured');

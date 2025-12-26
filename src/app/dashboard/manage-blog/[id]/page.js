@@ -247,7 +247,7 @@ function EditBlogContent() {
 	}
 
 	return (
-		<ProtectedRoute allowedRoles={['admin', 'staff-member']}>
+		<ProtectedRoute allowedRoles={['admin', 'committee', 'it-support']}>
 		<div className="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-4xl mx-auto">
 				{/* Header with Back Button */}
@@ -452,13 +452,14 @@ function EditBlogContent() {
 									required
 									className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
 								>
-									<option value="">Select a category</option>
-									<option value="construction">Construction</option>
-									<option value="project-updates">Project Updates</option>
-									<option value="industry-news">Industry News</option>
-									<option value="tips-tricks">Tips & Tricks</option>
-									<option value="company-news">Company News</option>
-									<option value="case-studies">Case Studies</option>
+									<option value="" disabled>--Select a category--</option>
+									<option value="awareness-campaign">Awareness Campain</option>
+									<option value="humanitarian-support">Humanitarian Support</option>
+									<option value="prayer-mobilization">Prayer Mobilization</option>
+									<option value="community event">Community Event</option>
+									<option value="congressional-engagement">Congressional Engagement</option>
+									<option value="legal-interventions">Legal Interventions</option>
+									<option value="leadership-development">Leadership Development</option>
 								</select>
 							</div>
 						<div>

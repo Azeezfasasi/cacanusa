@@ -237,7 +237,7 @@ export default function MemberSupport() {
         </div>
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-700 rounded-3xl shadow-2xl overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-600 to-red-700 rounded-3xl shadow-2xl overflow-hidden">
           <div className="relative px-6 md:px-12 py-10 md:py-16 text-center">
             {/* Decorative elements */}
             <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20"></div>

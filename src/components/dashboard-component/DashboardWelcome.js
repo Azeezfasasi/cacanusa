@@ -67,11 +67,11 @@ export default function DashboardWelcome() {
           </div>
         </div>
 
-        {user?.role === 'admin' || user?.role === 'staff-member' ? (
+        {user?.role === 'admin' || user?.role === 'committee' || user?.role === 'it-support' ? (
         <div className="flex flex-col lg:flex-row md:items-center gap-3">
-          <Link href="/dashboard/add-projects" className="inline-flex justify-center items-center gap-2 px-3 py-1 md:py-2 bg-blue-900 text-white rounded-md text-sm hover:bg-blue-800 cursor-pointer">
+          <Link href="/dashboard/member-registration-request" className="inline-flex justify-center items-center gap-2 px-3 py-1 md:py-2 bg-blue-900 text-white rounded-md text-sm hover:bg-blue-800 cursor-pointer">
             <Briefcase />
-            Add Projects
+            Manage Registration Requests
           </Link>
 
           <Link href="/dashboard/add-blog" className="inline-flex justify-center items-center gap-2 px-3 py-1 md:py-2 border bg-gray-100 border-gray-200 rounded-md text-sm text-gray-700 hover:bg-gray-50 cursor-pointer">

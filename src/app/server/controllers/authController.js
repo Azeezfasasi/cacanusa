@@ -78,8 +78,8 @@ export const register = async (req) => {
     try {
       await transporter.sendMail({
         to: email,
-        subject: "Email Verification - Rayob Engineering",
-        html: `<h2>Welcome to Rayob Engineering</h2>
+        subject: "Email Verification - CANAN USA",
+        html: `<h2>Welcome to CANAN USA</h2>
                <p>Please click the link below to verify your email:</p>
                <a href="${verificationLink}">Verify Email</a>
                <p>This link expires in 24 hours.</p>`,
@@ -235,7 +235,7 @@ export const createUserByAdmin = async (req) => {
         { status: 400 }
       );
     }
-    if (!["client", "admin", "staff-member", "super-admin"].includes(role)) {
+    if (!["member", "admin", "committee", "it-support"].includes(role)) {
       return NextResponse.json(
         { success: false, message: "Invalid role" },
         { status: 400 }
@@ -381,7 +381,7 @@ export const forgotPassword = async (req) => {
     try {
       await transporter.sendMail({
         to: email,
-        subject: "Password Reset - Rayob Engineering",
+        subject: "Password Reset - CANAN USA",
         html: `<h2>Password Reset Request</h2>
                <p>Click the link below to reset your password:</p>
                <a href="${resetLink}">Reset Password</a>
@@ -780,9 +780,9 @@ export const changeUserRole = async (req, userId) => {
     const body = await req.json();
     const { role, permissions } = body;
 
-    if (!role || !["client", "admin", "staff-member"].includes(role)) {
+    if (!role || !["member", "admin", "committee", "it-support"].includes(role)) {
       return NextResponse.json(
-        { success: false, message: "Invalid role. Must be one of: client, admin, staff-member" },
+        { success: false, message: "Invalid role. Must be one of: member, admin, committee, it-support" },
         { status: 400 }
       );
     }

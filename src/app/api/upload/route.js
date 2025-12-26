@@ -8,7 +8,7 @@ export async function POST(request) {
   try {
     const formData = await request.formData();
     const file = formData.get('file');
-    const folder = formData.get('folder') || 'rayob/uploads';
+    const folder = formData.get('folder') || 'cananusa/uploads';
 
     if (!file) {
       return new Response(
