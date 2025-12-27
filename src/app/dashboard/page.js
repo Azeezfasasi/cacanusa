@@ -35,7 +35,7 @@ export default function Dashboard() {
   }
 
   return (
-    <>
+    <div className="h-screen overflow-y-auto">
       <DashboardWelcome />
 
       {user?.role === 'admin' ? (
@@ -44,6 +44,6 @@ export default function Dashboard() {
           <MembershipStatusChart />
         </>
       ) : null}
-    </>
+    </div>
   );
 }
