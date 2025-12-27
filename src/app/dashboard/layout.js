@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react"
 import DashboardHeader from "@/components/dashboard-component/DashboardHeader";
 import DashboardMenu from "@/components/dashboard-component/DashboardMenu";
 import { ProtectedRoute } from "../../components/ProtectedRoute"
+import DashboardBottomNav from '@/components/dashboard-component/DasboardBottomNav'
 
 // This is a client layout so we can manage sidebar collapse state.
 export default function DashboardLayout({ children }) {
@@ -32,6 +33,9 @@ export default function DashboardLayout({ children }) {
           <DashboardMenu collapsed={collapsed} mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
 
           <main className="flex-1 p-6">{children}</main>
+        </div>
+        <div className="mt-[100px]">
+          <DashboardBottomNav />
         </div>
       </div>
     </ProtectedRoute>

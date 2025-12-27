@@ -253,7 +253,7 @@ export default function MemberSupport() {
               </p>
               <a
                 href={data.ctaSection?.buttonLink || '/join-us'}
-                className="inline-flex items-center px-8 md:px-10 py-3 md:py-4 bg-white text-blue-600 font-bold rounded-lg hover:bg-gray-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 text-base md:text-lg"
+                className="inline-flex items-center px-8 md:px-10 py-3 md:py-4 bg-gradient-to-tr from-blue-500 to-green-500 text-white font-bold rounded-lg hover:bg-gray-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 text-base md:text-lg"
               >
                 {data.ctaSection?.buttonLabel}
                 <FaArrowRight className="w-5 h-5 ml-2" />

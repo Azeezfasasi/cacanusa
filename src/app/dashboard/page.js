@@ -5,6 +5,7 @@ import DashboardWelcome from "@/components/dashboard-component/DashboardWelcome"
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { Commet } from "react-loading-indicators";
+import MembershipStatusChart from "@/components/dashboard-component/MembershipStatusChart";
 
 export default function Dashboard() {
   const { isAuthenticated, loading } = useAuth();
@@ -38,7 +39,10 @@ export default function Dashboard() {
       <DashboardWelcome />
 
       {user?.role === 'admin' ? (
-        <DashboardStats />
+        <>
+          <DashboardStats />
+          <MembershipStatusChart />
+        </>
       ) : null}
     </>
   );

@@ -231,7 +231,7 @@ const MembershipLevel = () => {
               {content.ctaSection?.primaryButton?.label}
             </a>
             <a
-              href={content.ctaSection?.secondaryButton?.link || '#'}
+              href={content.ctaSection?.secondaryButton?.link || '/membership'}
               className="px-8 py-3 border-2 border-gray-900 text-gray-900 font-semibold rounded-lg hover:bg-gray-900 hover:text-white transition-all duration-300 inline-block"
             >
               {content.ctaSection?.secondaryButton?.label}

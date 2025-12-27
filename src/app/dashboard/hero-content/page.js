@@ -242,15 +242,15 @@ export default function HeroContent() {
 
         {/* Form */}
         {showForm && (
-          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold mb-4">
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 mb-6 overflow-x-hidden">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-4 sm:mb-6 break-words">
               {editingId ? 'Edit Slide' : 'Create New Slide'}
             </h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+            <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 {/* Title */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Title *
                   </label>
                   <input
@@ -260,13 +260,13 @@ export default function HeroContent() {
                     onChange={handleFormChange}
                     placeholder="Slide title"
                     maxLength={200}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
 
                 {/* Order */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Display Order
                   </label>
                   <input
@@ -275,14 +275,14 @@ export default function HeroContent() {
                     value={formData.order}
                     onChange={handleFormChange}
                     min={0}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
               </div>
 
               {/* Subtitle */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Subtitle *
                 </label>
                 <textarea
@@ -292,14 +292,14 @@ export default function HeroContent() {
                   placeholder="Slide subtitle/description"
                   maxLength={500}
                   rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 {/* CTA Label */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     CTA Button Label *
                   </label>
                   <input
@@ -309,13 +309,13 @@ export default function HeroContent() {
                     onChange={handleFormChange}
                     placeholder="e.g., Join Now"
                     maxLength={50}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
 
                 {/* CTA Link */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     CTA Link *
                   </label>
                   <input
@@ -324,14 +324,14 @@ export default function HeroContent() {
                     value={formData.cta.href}
                     onChange={handleFormChange}
                     placeholder="e.g., /join-us"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
               </div>
 
               {/* Background */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Background (Gradient or Color)
                 </label>
                 <input
@@ -340,20 +340,20 @@ export default function HeroContent() {
                   value={formData.bg}
                   onChange={handleFormChange}
                   placeholder="e.g., linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent overflow-x-auto"
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 {/* Image Upload */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Upload Image
                   </label>
-                  <label className="flex items-center justify-center px-3 py-2 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition">
+                  <label className="flex items-center justify-center px-3 py-3 sm:py-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition">
                     <div className="flex items-center gap-2">
-                      <Upload size={16} className="text-gray-500" />
-                      <span className="text-sm text-gray-600">
+                      <Upload size={16} className="text-gray-500 flex-shrink-0" />
+                      <span className="text-xs sm:text-sm text-gray-600">
                         {uploading ? 'Uploading...' : 'Click to upload'}
                       </span>
                     </div>
@@ -365,12 +365,12 @@ export default function HeroContent() {
                       className="hidden"
                     />
                   </label>
-                  <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 5MB</p>
+                  <p className="text-xs text-gray-500 mt-2">PNG, JPG, GIF up to 5MB</p>
                 </div>
 
                 {/* Or Image URL */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Or Enter Image URL
                   </label>
                   <input
@@ -379,20 +379,20 @@ export default function HeroContent() {
                     value={formData.image.src}
                     onChange={handleFormChange}
                     placeholder="https://example.com/image.jpg"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Leave empty to use uploaded image or paste URL directly</p>
+                  <p className="text-xs text-gray-500 mt-2">Leave empty or paste URL directly</p>
                 </div>
               </div>
 
               {/* Image Preview */}
               {formData.image.src && (
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <p className="text-sm font-medium text-gray-700 mb-2">Preview</p>
+                <div className="border border-gray-200 rounded-lg p-3 sm:p-4">
+                  <p className="text-sm font-medium text-gray-700 mb-3">Preview</p>
                   <img
                     src={formData.image.src}
                     alt={formData.image.alt || 'Slide preview'}
-                    className="max-w-sm h-auto rounded-lg"
+                    className="max-w-full h-auto rounded-lg"
                     onError={(e) => {
                       e.target.src = '/images/placeholder.png'
                     }}
@@ -402,7 +402,7 @@ export default function HeroContent() {
 
               {/* Image Alt Text */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Image Alt Text
                 </label>
                 <input
@@ -412,7 +412,7 @@ export default function HeroContent() {
                   onChange={handleFormChange}
                   placeholder="Describe the image"
                   maxLength={200}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
@@ -426,23 +426,23 @@ export default function HeroContent() {
                   onChange={handleFormChange}
                   className="w-4 h-4 text-blue-600 rounded"
                 />
-                <label htmlFor="isActive" className="ml-2 text-sm font-medium text-gray-700">
+                <label htmlFor="isActive" className="ml-3 text-sm font-medium text-gray-700">
                   Active (Show in hero slider)
                 </label>
               </div>
 
               {/* Submit Button */}
-              <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3">
+              <div className="flex flex-col-reverse sm:flex-row gap-3 pt-2">
                 <button
                   type="button"
                   onClick={() => { resetForm(); setShowForm(false) }}
-                  className="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 font-medium text-sm"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 font-medium text-sm transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm transition"
                 >
                   {editingId ? 'Update Slide' : 'Create Slide'}
                 </button>

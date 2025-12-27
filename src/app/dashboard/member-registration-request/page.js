@@ -146,34 +146,34 @@ export default function MemberRegRequest() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8">Membership Applications</h1>
+    <div className="min-h-screen bg-gray-50 pb-20 sm:pb-0 md:pb-0 mx-auto">
+      <div className="max-w-7xl mx-auto px-0 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 lg:py-12 ">
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-8">Membership Applications</h1>
 
         {/* Statistics */}
         {stats && (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-6 sm:mb-8">
-            <div className="bg-white rounded-lg p-4 sm:p-6 shadow">
-              <p className="text-gray-600 text-xs sm:text-sm">Total Applications</p>
-              <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.totalApplications}</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8">
+            <div className="bg-white rounded-lg p-3 sm:p-5 md:p-6 shadow hover:shadow-sm transition">
+              <p className="text-gray-600 text-xs font-medium mb-1.5">Total Applications</p>
+              <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">{stats.totalApplications}</p>
             </div>
-            <div className="bg-white rounded-lg p-4 sm:p-6 shadow">
-              <p className="text-gray-600 text-xs sm:text-sm">Pending</p>
-              <p className="text-2xl sm:text-3xl font-bold text-yellow-600">{stats.byStatus.pending}</p>
+            <div className="bg-white rounded-lg p-3 sm:p-5 md:p-6 shadow hover:shadow-sm transition">
+              <p className="text-gray-600 text-xs font-medium mb-1.5">Pending</p>
+              <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-yellow-600">{stats.byStatus.pending}</p>
             </div>
-            <div className="bg-white rounded-lg p-4 sm:p-6 shadow">
-              <p className="text-gray-600 text-xs sm:text-sm">Approved</p>
-              <p className="text-2xl sm:text-3xl font-bold text-green-600">{stats.byStatus.approved}</p>
+            <div className="bg-white rounded-lg p-3 sm:p-5 md:p-6 shadow hover:shadow-sm transition">
+              <p className="text-gray-600 text-xs font-medium mb-1.5">Approved</p>
+              <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-600">{stats.byStatus.approved}</p>
             </div>
-            <div className="bg-white rounded-lg p-4 sm:p-6 shadow">
-              <p className="text-gray-600 text-xs sm:text-sm">Rejected</p>
-              <p className="text-2xl sm:text-3xl font-bold text-red-600">{stats.byStatus.rejected}</p>
+            <div className="bg-white rounded-lg p-3 sm:p-5 md:p-6 shadow hover:shadow-sm transition">
+              <p className="text-gray-600 text-xs font-medium mb-1.5">Rejected</p>
+              <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-red-600">{stats.byStatus.rejected}</p>
             </div>
           </div>
         )}
 
         {/* Filter */}
-        <div className="mb-6 flex gap-1 sm:gap-2 overflow-x-auto pb-2">
+        <div className="mb-4 sm:mb-5 md:mb-6 flex flex-wrap gap-2 sm:gap-2 overflow-x-auto pb-2 -mx-3 sm:-mx-4 md:-mx-6 lg:-mx-8 px-3 sm:px-4 md:px-6 lg:px-8">
           {['all', 'pending', 'under-review', 'approved', 'rejected'].map(status => (
             <button
               key={status}
@@ -181,10 +181,10 @@ export default function MemberRegRequest() {
                 setFilter(status);
                 setPage(1);
               }}
-              className={`px-3 sm:px-4 py-2 rounded-lg capitalize transition text-xs sm:text-sm whitespace-nowrap ${
+              className={`px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg capitalize transition text-xs sm:text-sm font-medium whitespace-nowrap flex-shrink-0 ${
                 filter === status
-                  ? 'bg-blue-900 text-white'
-                  : 'bg-white text-gray-700 border border-gray-300 hover:border-blue-900'
+                  ? 'bg-blue-900 text-white shadow-md'
+                  : 'bg-white text-gray-700 border border-gray-300 hover:border-blue-900 hover:shadow-sm'
               }`}
             >
               {status}
@@ -273,61 +273,61 @@ export default function MemberRegRequest() {
               {/* Mobile Card View */}
               <div className="md:hidden divide-y">
                 {applications.map(app => (
-                  <div key={app._id} className="p-4 border-b hover:bg-gray-50">
-                    <div className="flex justify-between items-start mb-3">
-                      <div className="flex-1">
-                        <p className="font-semibold text-sm text-gray-900">
+                  <div key={app._id} className="p-3 sm:p-4 border-b hover:bg-gray-50 transition">
+                    <div className="flex justify-between items-start gap-2 mb-3">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-sm text-gray-900 truncate">
                           {app.firstName} {app.lastName}
                         </p>
-                        <p className="text-xs text-gray-600 truncate">{app.email}</p>
+                        <p className="text-xs text-gray-600 truncate mt-0.5">{app.email}</p>
                       </div>
                       <span
-                        className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusBadge(
+                        className={`inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0 ${getStatusBadge(
                           app.status
                         )}`}
                       >
                         {getStatusIcon(app.status)}
-                        <span className="hidden sm:inline">{app.status}</span>
+                        <span className="hidden sm:inline capitalize">{app.status}</span>
                       </span>
                     </div>
 
                     <div className="grid grid-cols-2 gap-2 mb-3 text-xs">
                       <div>
-                        <p className="text-gray-600">Type</p>
-                        <p className="font-medium capitalize text-gray-900">{app.membershipType}</p>
+                        <p className="text-gray-600 font-medium mb-0.5">Type</p>
+                        <p className="font-semibold text-gray-900 capitalize text-xs">{app.membershipType}</p>
                       </div>
                       <div>
-                        <p className="text-gray-600">Submitted</p>
-                        <p className="font-medium text-gray-900">
-                          {new Date(app.createdAt).toLocaleDateString()}
+                        <p className="text-gray-600 font-medium mb-0.5">Submitted</p>
+                        <p className="font-semibold text-gray-900 text-xs">
+                          {new Date(app.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex gap-2">
+                    <div className="flex gap-1.5 sm:gap-2">
                       <button
                         onClick={() => setSelectedApp(app)}
-                        className="flex-1 px-3 py-2 bg-blue-50 text-blue-600 rounded text-xs font-medium hover:bg-blue-100 flex items-center justify-center gap-1"
+                        className="flex-1 px-2 sm:px-3 py-2 bg-blue-50 text-blue-600 rounded text-xs font-semibold hover:bg-blue-100 active:bg-blue-200 transition flex items-center justify-center gap-1"
                       >
-                        <Eye className="w-4 h-4" />
-                        View
+                        <Eye className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">View</span>
                       </button>
                       <button
                         onClick={() => {
                           setSelectedApp(app);
                           setShowReplyModal(true);
                         }}
-                        className="flex-1 px-3 py-2 bg-green-50 text-green-600 rounded text-xs font-medium hover:bg-green-100 flex items-center justify-center gap-1"
+                        className="flex-1 px-2 sm:px-3 py-2 bg-green-50 text-green-600 rounded text-xs font-semibold hover:bg-green-100 active:bg-green-200 transition flex items-center justify-center gap-1"
                       >
-                        <MessageSquare className="w-4 h-4" />
-                        Reply
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Reply</span>
                       </button>
                       <button
                         onClick={() => handleDelete(app._id)}
-                        className="flex-1 px-3 py-2 bg-red-50 text-red-600 rounded text-xs font-medium hover:bg-red-100 flex items-center justify-center gap-1"
+                        className="flex-1 px-2 sm:px-3 py-2 bg-red-50 text-red-600 rounded text-xs font-semibold hover:bg-red-100 active:bg-red-200 transition flex items-center justify-center gap-1"
                       >
-                        <Trash2 className="w-4 h-4" />
-                        Delete
+                        <Trash2 className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Delete</span>
                       </button>
                     </div>
                   </div>
@@ -335,22 +335,22 @@ export default function MemberRegRequest() {
               </div>
 
               {/* Pagination */}
-              <div className="px-4 sm:px-6 py-3 sm:py-4 border-t flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                <span className="text-xs sm:text-sm text-gray-600">
+              <div className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 border-t flex flex-col sm:flex-row justify-between items-center gap-3 bg-gray-50">
+                <span className="text-xs sm:text-sm text-gray-600 font-medium">
                   Page {page} of {totalPages}
                 </span>
                 <div className="flex gap-2 w-full sm:w-auto">
                   <button
                     onClick={() => setPage(Math.max(1, page - 1))}
                     disabled={page === 1}
-                    className="flex-1 sm:flex-none px-3 sm:px-4 py-2 border rounded-lg disabled:opacity-50 text-xs sm:text-sm"
+                    className="flex-1 sm:flex-none px-3 sm:px-4 py-2 border border-gray-300 rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 active:bg-gray-100 transition text-xs sm:text-sm font-medium"
                   >
                     Previous
                   </button>
                   <button
                     onClick={() => setPage(Math.min(totalPages, page + 1))}
                     disabled={page === totalPages}
-                    className="flex-1 sm:flex-none px-3 sm:px-4 py-2 border rounded-lg disabled:opacity-50 text-xs sm:text-sm"
+                    className="flex-1 sm:flex-none px-3 sm:px-4 py-2 border border-gray-300 rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 active:bg-gray-100 transition text-xs sm:text-sm font-medium"
                   >
                     Next
                   </button>
@@ -363,18 +363,18 @@ export default function MemberRegRequest() {
 
       {/* View Detail Modal */}
       {selectedApp && !showReplyModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-3 sm:p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-            <div className="p-4 sm:p-6 border-b sticky top-0 bg-white flex justify-between items-center gap-2">
-              <h2 className="text-lg sm:text-2xl font-bold truncate">{selectedApp.firstName} {selectedApp.lastName}</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-3 sm:p-4 md:p-6 z-50 overflow-y-auto">
+          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto my-4 sm:my-auto">
+            <div className="p-4 sm:p-6 border-b sticky top-0 bg-white flex justify-between items-center gap-3">
+              <h2 className="text-base sm:text-xl md:text-2xl font-bold truncate">{selectedApp.firstName} {selectedApp.lastName}</h2>
               <button
                 onClick={() => setSelectedApp(null)}
-                className="text-gray-500 hover:text-gray-700 text-2xl flex-shrink-0"
+                className="text-gray-400 hover:text-gray-600 text-2xl flex-shrink-0 transition"
               >
                 ×
               </button>
             </div>
-            <div className="p-4 sm:p-6 space-y-4">
+            <div className="p-4 sm:p-6 md:p-8 space-y-5 sm:space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <p className="text-xs sm:text-sm text-gray-600">Email</p>
@@ -397,12 +397,12 @@ export default function MemberRegRequest() {
               </div>
 
               <div>
-                <p className="text-xs sm:text-sm text-gray-600">Interests</p>
-                <div className="flex flex-wrap gap-2 mt-1">
+                <p className="text-xs sm:text-sm font-medium text-gray-600 mb-3">Interests</p>
+                <div className="flex flex-wrap gap-2">
                   {selectedApp.interests.map(interest => (
                     <span
                       key={interest}
-                      className="bg-blue-100 text-blue-900 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm"
+                      className="bg-blue-100 text-blue-900 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium"
                     >
                       {interest}
                     </span>
@@ -411,24 +411,24 @@ export default function MemberRegRequest() {
               </div>
 
               <div>
-                <p className="text-xs sm:text-sm text-gray-600">Motivation</p>
-                <p className="text-gray-900 text-sm mt-1">{selectedApp.motivation}</p>
+                <p className="text-xs sm:text-sm font-medium text-gray-600">Motivation</p>
+                <p className="text-gray-900 text-sm sm:text-base leading-relaxed mt-2">{selectedApp.motivation}</p>
               </div>
 
               {selectedApp.adminNotes && (
-                <div>
-                  <p className="text-xs sm:text-sm text-gray-600">Admin Notes</p>
-                  <p className="text-gray-900 text-sm mt-1">{selectedApp.adminNotes}</p>
+                <div className="space-y-2 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600">Admin Notes</p>
+                  <p className="text-gray-900 text-sm sm:text-base leading-relaxed">{selectedApp.adminNotes}</p>
                 </div>
               )}
 
-              <div className="border-t pt-4 flex flex-col sm:flex-row gap-2">
+              <div className="border-t pt-5 flex flex-col sm:flex-row gap-3">
                 <select
                   onChange={e => {
                     handleStatusChange(selectedApp._id, e.target.value);
                     setSelectedApp(null);
                   }}
-                  className="flex-1 px-3 sm:px-4 py-2 border rounded-lg text-sm"
+                  className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-900"
                 >
                   <option value="">Change Status</option>
                   <option value="pending">Pending</option>
@@ -438,7 +438,7 @@ export default function MemberRegRequest() {
                 </select>
                 <button
                   onClick={() => setShowReplyModal(true)}
-                  className="px-4 sm:px-6 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-800 text-sm font-medium"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 bg-blue-900 text-white rounded-lg hover:bg-blue-800 active:bg-blue-900 transition text-sm font-semibold"
                 >
                   Reply
                 </button>
@@ -450,41 +450,41 @@ export default function MemberRegRequest() {
 
       {/* Reply Modal */}
       {showReplyModal && selectedApp && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-3 sm:p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-            <div className="p-4 sm:p-6 border-b flex justify-between items-center gap-2">
-              <h2 className="text-lg sm:text-2xl font-bold truncate">Reply to {selectedApp.firstName}</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-3 sm:p-4 md:p-6 z-50 overflow-y-auto">
+          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto my-4 sm:my-auto">
+            <div className="p-4 sm:p-6 border-b sticky top-0 bg-white flex justify-between items-center gap-3">
+              <h2 className="text-base sm:text-xl md:text-2xl font-bold truncate">Reply to {selectedApp.firstName}</h2>
               <button
                 onClick={() => {
                   setShowReplyModal(false);
                   setReplyText('');
                 }}
-                className="text-gray-500 hover:text-gray-700 text-2xl flex-shrink-0"
+                className="text-gray-400 hover:text-gray-600 text-2xl flex-shrink-0 transition"
               >
                 ×
               </button>
             </div>
-            <div className="p-4 sm:p-6">
+            <div className="p-4 sm:p-6 md:p-8">
               <textarea
                 value={replyText}
                 onChange={e => setReplyText(e.target.value)}
                 placeholder="Type your reply here..."
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 text-sm"
-                rows="6"
+                className="w-full px-3 sm:px-4 py-3 sm:py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent text-sm resize-none"
+                rows="7"
               />
-              <div className="mt-6 flex flex-col-reverse sm:flex-row gap-2 justify-end">
+              <div className="mt-6 flex flex-col-reverse sm:flex-row gap-3 justify-end">
                 <button
                   onClick={() => {
                     setShowReplyModal(false);
                     setReplyText('');
                   }}
-                  className="px-4 sm:px-6 py-2 border rounded-lg hover:bg-gray-50 text-sm font-medium"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 active:bg-gray-100 transition text-sm font-semibold"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={() => handleSendReply(selectedApp._id)}
-                  className="px-4 sm:px-6 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-800 text-sm font-medium"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 bg-blue-900 text-white rounded-lg hover:bg-blue-800 active:bg-blue-900 transition text-sm font-semibold"
                 >
                   Send Reply
                 </button>
