@@ -35,7 +35,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="h-screen overflow-y-auto">
+    <div>
       <DashboardWelcome />
 
       {user?.role === 'admin' ? (

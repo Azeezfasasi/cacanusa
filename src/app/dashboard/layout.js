@@ -27,14 +27,12 @@ export default function DashboardLayout({ children }) {
   return (
     <ProtectedRoute allowedRoles={['admin', 'committee', 'member', 'it-support']}>
       <div className="min-h-screen bg-gray-50 overflow-x-hidden">
-        <div className="sticky top-0 hidden">
-          <DashboardHeader onToggleSidebar={toggleSidebar} onToggleMobileMenu={toggleMobileMenu} />
-        </div>
+        <DashboardHeader onToggleSidebar={toggleSidebar} onToggleMobileMenu={toggleMobileMenu} />
 
-        <div className="flex">
+        <div className="flex pt-16">
           <DashboardMenu collapsed={collapsed} mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
 
-          <main className="flex-1 p-6">{children}</main>
+          <main className="flex-1 p-6 pt-4">{children}</main>
         </div>
         <div className="mt-[100px]">
           <DashboardBottomNav />
