@@ -13,7 +13,6 @@ export default function JoinUs() {
     lastName: '',
     email: '',
     phone: '',
-    dateOfBirth: '',
     gender: '',
     
     // Step 2: Location & Background
@@ -348,16 +347,7 @@ export default function JoinUs() {
                       <option value="male">Male</option>
                       <option value="female">Female</option>
                     </select>
-                    {/* <input
-                      type=""
-                      name="dateOfBirth"
-                      value={formData.dateOfBirth}
-                      onChange={handleInputChange}
-                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 transition ${
-                        errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                    /> */}
-                    {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>}
+                    {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
                   </div>
                 </div>
               </div>

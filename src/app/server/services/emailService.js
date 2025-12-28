@@ -313,7 +313,7 @@ export const sendAdminNotification = async (memberData) => {
             <p><strong>Name:</strong> ${memberData.firstName} ${memberData.lastName}</p>
             <p><strong>Email:</strong> ${memberData.email}</p>
             <p><strong>Phone:</strong> ${memberData.phone}</p>
-            <p><strong>Date of Birth:</strong> ${new Date(memberData.dateOfBirth).toLocaleDateString()}</p>
+            <p><strong>Gender:</strong> ${memberData.gender}</p>
           </div>
           
           <div class="info-box">
