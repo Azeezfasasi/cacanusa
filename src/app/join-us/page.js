@@ -14,6 +14,7 @@ export default function JoinUs() {
     email: '',
     phone: '',
     dateOfBirth: '',
+    gender: '',
     
     // Step 2: Location & Background
     country: '',
@@ -92,7 +93,7 @@ export default function JoinUs() {
       if (!formData.email.trim()) newErrors.email = 'Email is required';
       if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Invalid email format';
       if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
-      if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of birth is required';
+      if (!formData.gender) newErrors.gender = 'Gender is required';
     }
 
     if (step === 2) {
@@ -337,17 +338,25 @@ export default function JoinUs() {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Date of Birth *
+                      Gender *
                     </label>
-                    <input
-                      type="date"
+                    <select name='gender' id='gender' onChange={handleInputChange}
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 transition ${
+                        errors.gender ? 'border-red-500' : 'border-gray-300'
+                      }`}>
+                      <option value="">--Select Gender--</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                    {/* <input
+                      type=""
                       name="dateOfBirth"
                       value={formData.dateOfBirth}
                       onChange={handleInputChange}
                       className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 transition ${
                         errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
                       }`}
-                    />
+                    /> */}
                     {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>}
                   </div>
                 </div>

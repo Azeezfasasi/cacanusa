@@ -17,7 +17,7 @@ export async function POST(request) {
       'lastName',
       'email',
       'phone',
-      'dateOfBirth',
+      'gender',
       'country',
       'state',
       'city',

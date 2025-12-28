@@ -26,6 +26,11 @@ const joinusSchema = new mongoose.Schema(
     },
     dateOfBirth: {
       type: Date,
+      required: false,
+    },
+
+    gender: {
+      type: String,
       required: true,
     },
 
