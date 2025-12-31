@@ -10,16 +10,23 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
   const role = user?.role ? user.role.replace('-', ' ') : 'User';
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [notificationDropdownOpen, setNotificationDropdownOpen] = useState(false);
+  const notificationRef = useRef(null);
   const [logo, setLogo] = useState(null);
   const [logoLoading, setLogoLoading] = useState(true);
+  const [notifications, setNotifications] = useState([]);
+  const [notificationsLoading, setNotificationsLoading] = useState(false);
 
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
       }
+      if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+        setNotificationDropdownOpen(false);
+      }
     }
-    if (dropdownOpen) {
+    if (dropdownOpen || notificationDropdownOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     } else {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -27,7 +34,7 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [dropdownOpen]);
+  }, [dropdownOpen, notificationDropdownOpen]);
 
   // Fetch logo
   useEffect(() => {
@@ -49,6 +56,54 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
     
     fetchLogo();
   }, []);
+
+  // Fetch notifications when notification dropdown opens
+  useEffect(() => {
+    if (!notificationDropdownOpen) return;
+
+    const fetchNotifications = async () => {
+      setNotificationsLoading(true);
+      try {
+        const [registrationRes, welcomeRes] = await Promise.all([
+          fetch('/api/joinus?status=pending&limit=5'),
+          fetch('/api/welcome?limit=5')
+        ]);
+
+        const registrationData = registrationRes.ok ? await registrationRes.json() : { data: [] };
+        const welcomeData = welcomeRes.ok ? await welcomeRes.json() : { data: [] };
+
+        const combinedNotifications = [
+          ...(registrationData.data || []).map(item => ({
+            id: item._id,
+            type: 'registration',
+            title: `Registration Request: ${item.firstName} ${item.lastName}`,
+            message: item.email,
+            timestamp: item.createdAt,
+            data: item
+          })),
+          ...(welcomeData.data || []).map(item => ({
+            id: item._id,
+            type: 'welcome',
+            title: `Welcome Form: ${item.title}`,
+            message: item.description1 || 'New submission',
+            timestamp: item.createdAt,
+            data: item
+          }))
+        ];
+
+        // Sort by timestamp, newest first
+        combinedNotifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        setNotifications(combinedNotifications);
+        console.log('Notifications loaded:', combinedNotifications);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      } finally {
+        setNotificationsLoading(false);
+      }
+    };
+
+    fetchNotifications();
+  }, [notificationDropdownOpen]);
 
   const handleLogout = () => {
     logout();
@@ -107,12 +162,87 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
             </Link>
           </div>
 
+          {/* Notifications section */}
           <div className="flex items-center gap-4">
-            <button aria-label="Notifications" className="p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-900">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-              </svg>
-            </button>
+            <div className="relative" ref={notificationRef}>
+              <button 
+                aria-label="Notifications" 
+                onClick={() => setNotificationDropdownOpen((open) => !open)}
+                className="p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-900 relative"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                </svg>
+                {notifications.length > 0 && (
+                  <span className="absolute top-1 right-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                    {notifications.length}
+                  </span>
+                )}
+              </button>
+
+              {/* Notifications Dropdown */}
+              {notificationDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-md shadow-lg z-50 animate-fade-in max-h-96 overflow-y-auto">
+                  <div className="p-4 border-b border-gray-200 bg-gray-50">
+                    <h3 className="font-semibold text-gray-900">Notifications</h3>
+                  </div>
+                  
+                  {notificationsLoading ? (
+                    <div className="p-4 text-center text-gray-500">Loading...</div>
+                  ) : notifications.length === 0 ? (
+                    <div className="p-4 text-center text-gray-500">No new notifications</div>
+                  ) : (
+                    <ul className="divide-y divide-gray-200">
+                      {notifications.map((notification) => (
+                        <li key={notification.id} className="hover:bg-gray-50 transition">
+                          <Link 
+                            href={notification.type === 'registration' 
+                              ? '/dashboard/member-registration-request' 
+                              : '/dashboard/contact-details'}
+                            className="block px-4 py-3"
+                            onClick={() => setNotificationDropdownOpen(false)}
+                          >
+                            <div className="flex items-start gap-3">
+                              <div className={`flex-shrink-0 w-2 h-2 rounded-full mt-2 ${
+                                notification.type === 'registration' ? 'bg-blue-500' : 'bg-green-500'
+                              }`}></div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium text-gray-900 truncate">
+                                  {notification.title}
+                                </p>
+                                <p className="text-sm text-gray-500 truncate">
+                                  {notification.message}
+                                </p>
+                                <p className="text-xs text-gray-400 mt-1">
+                                  {new Date(notification.timestamp).toLocaleDateString()}
+                                </p>
+                              </div>
+                              <span className={`text-xs font-semibold px-2 py-1 rounded whitespace-nowrap ${
+                                notification.type === 'registration' 
+                                  ? 'bg-blue-100 text-blue-800' 
+                                  : 'bg-green-100 text-green-800'
+                              }`}>
+                                {notification.type === 'registration' ? 'Registration' : 'Welcome'}
+                              </span>
+                            </div>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  
+                  <div className="p-3 border-t border-gray-200 bg-gray-50">
+                    <Link 
+                      href="/dashboard/member-registration-request" 
+                      className="block text-center text-sm font-medium text-blue-600 hover:text-blue-800 py-2"
+                      onClick={() => setNotificationDropdownOpen(false)}
+                    >
+                      View All Requests
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
 
             <div className="relative" ref={dropdownRef}>
               <button
