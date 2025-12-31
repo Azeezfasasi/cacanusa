@@ -449,6 +449,17 @@ export default function CompanyOverviewContent() {
           </div>
         </section>
 
+        {error && (
+        <div className="mb-4 p-3 sm:p-4 bg-red-100 border border-red-400 text-red-700 rounded text-sm">
+          {error}
+        </div>
+        )}
+        {success && (
+          <div className="mb-4 p-3 sm:p-4 bg-green-100 border border-green-400 text-green-700 rounded text-sm">
+            {success}
+          </div>
+        )}
+
         {/* Save Button */}
         <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 pt-6 border-t">
           <button

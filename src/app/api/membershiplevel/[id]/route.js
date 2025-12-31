@@ -9,7 +9,7 @@ export async function GET(request, { params }) {
   try {
     await connectDB();
 
-    const { id } = params;
+    const { id } = await params;
     const data = await MembershipLevel.findById(id).lean();
 
     if (!data) {
@@ -58,7 +58,7 @@ export async function PUT(request, { params }) {
   try {
     await connectDB();
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
 
     const data = await MembershipLevel.findByIdAndUpdate(id, body, {
@@ -113,7 +113,7 @@ export async function DELETE(request, { params }) {
   try {
     await connectDB();
 
-    const { id } = params;
+    const { id } = await params;
 
     const data = await MembershipLevel.findByIdAndDelete(id).lean();
 

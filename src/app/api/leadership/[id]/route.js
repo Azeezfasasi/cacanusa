@@ -7,7 +7,8 @@ import { deleteFromCloudinary } from '@/app/server/utils/cloudinaryService';
 export async function GET(request, { params }) {
   try {
     await connectDB();
-    const leader = await Leadership.findById(params.id);
+    const { id } = await params;
+    const leader = await Leadership.findById(id);
 
     if (!leader) {
       return NextResponse.json({ error: 'Leadership member not found' }, { status: 404 });
@@ -28,9 +29,10 @@ export async function PUT(request, { params }) {
   try {
     await connectDB();
     const body = await request.json();
+    const { id } = await params;
 
     const leader = await Leadership.findByIdAndUpdate(
-      params.id,
+      id,
       body,
       { new: true, runValidators: true }
     );
@@ -53,7 +55,8 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     await connectDB();
-    const leader = await Leadership.findByIdAndDelete(params.id);
+    const { id } = await params;
+    const leader = await Leadership.findByIdAndDelete(id);
 
     if (!leader) {
       return NextResponse.json({ error: 'Leadership member not found' }, { status: 404 });

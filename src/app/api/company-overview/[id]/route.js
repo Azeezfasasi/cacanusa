@@ -7,7 +7,7 @@ import { connectDB } from '@/app/server/db/connect.js';
  */
 export async function GET(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     await connectDB();
 
     const overview = await Companyoverview.findById(id).lean();
@@ -53,7 +53,7 @@ export async function GET(request, { params }) {
  */
 export async function PUT(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     await connectDB();
 
     const body = await request.json();
@@ -105,7 +105,7 @@ export async function PUT(request, { params }) {
  */
 export async function DELETE(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     await connectDB();
 
     const overview = await Companyoverview.findByIdAndDelete(id);

@@ -6,7 +6,7 @@ import Department from '@/app/server/models/Department';
 export async function GET(request, { params }) {
   try {
     await connectDB();
-    const { id } = params;
+    const { id } = await params;
 
     const department = await Department.findById(id);
 
@@ -31,7 +31,7 @@ export async function GET(request, { params }) {
 export async function PUT(request, { params }) {
   try {
     await connectDB();
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
 
     const { name, description, displayOrder, isActive } = body;
@@ -68,7 +68,7 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     await connectDB();
-    const { id } = params;
+    const { id } = await params;
 
     // Check if any leadership members use this department
     const Leadership = require('@/app/server/models/Leadership').default;

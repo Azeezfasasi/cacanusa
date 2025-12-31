@@ -9,7 +9,7 @@ export async function GET(request, { params }) {
   try {
     await connectDB();
 
-    const { id } = params;
+    const { id } = await params;
     const testimonial = await Testimonial.findById(id).lean();
 
     if (!testimonial) {
@@ -58,7 +58,7 @@ export async function PUT(request, { params }) {
   try {
     await connectDB();
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
 
     const testimonial = await Testimonial.findByIdAndUpdate(id, body, {
@@ -113,7 +113,7 @@ export async function DELETE(request, { params }) {
   try {
     await connectDB();
 
-    const { id } = params;
+    const { id } = await params;
 
     const testimonial = await Testimonial.findByIdAndDelete(id).lean();
 

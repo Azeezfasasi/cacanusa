@@ -173,8 +173,8 @@ export default function ManageDepartmentsPage() {
                     <thead className="bg-gray-100 border-b">
                       <tr>
                         <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Name</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Description</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Order</th>
+                        <th className="hidden md:table-cell px-4 py-3 text-left text-sm font-semibold text-gray-900">Description</th>
+                        <th className="hidden sm:table-cell px-4 py-3 text-left text-sm font-semibold text-gray-900">Order</th>
                         <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Status</th>
                         <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Actions</th>
                       </tr>
@@ -183,10 +183,10 @@ export default function ManageDepartmentsPage() {
                       {departments.map((dept, index) => (
                         <tr key={dept._id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                           <td className="px-4 py-3 text-sm text-gray-900 font-medium">{dept.name}</td>
-                          <td className="px-4 py-3 text-sm text-gray-600">
+                          <td className="hidden md:table-cell px-4 py-3 text-sm text-gray-600">
                             {dept.description || '-'}
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-600">
+                          <td className="hidden sm:table-cell px-4 py-3 text-sm text-gray-600">
                             {dept.displayOrder}
                           </td>
                           <td className="px-4 py-3">
@@ -198,20 +198,20 @@ export default function ManageDepartmentsPage() {
                               {dept.isActive ? 'Active' : 'Inactive'}
                             </span>
                           </td>
-                          <td className="px-4 py-3 flex gap-2">
+                          <td className="px-4 py-3 flex flex-col sm:flex-row gap-2">
                             <button
                               onClick={() => openModal(dept)}
-                              className="inline-flex items-center gap-1 bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100 text-sm"
+                              className="inline-flex items-center justify-center gap-1 bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100 text-xs sm:text-sm whitespace-nowrap"
                             >
                               <Edit className="h-4 w-4" />
-                              Edit
+                              <span className="hidden sm:inline">Edit</span>
                             </button>
                             <button
                               onClick={() => handleDelete(dept._id, dept.name)}
-                              className="inline-flex items-center gap-1 bg-red-50 text-red-600 px-2 py-1 rounded hover:bg-red-100 text-sm"
+                              className="inline-flex items-center justify-center gap-1 bg-red-50 text-red-600 px-2 py-1 rounded hover:bg-red-100 text-xs sm:text-sm whitespace-nowrap"
                             >
                               <Trash2 className="h-4 w-4" />
-                              Delete
+                              <span className="hidden sm:inline">Delete</span>
                             </button>
                           </td>
                         </tr>

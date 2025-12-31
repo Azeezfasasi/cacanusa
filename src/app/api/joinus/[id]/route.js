@@ -10,7 +10,7 @@ export async function GET(request, { params }) {
   try {
     await connectDB();
 
-    const { id } = params;
+    const { id } = await params;
 
     const application = await Joinus.findById(id);
 
@@ -48,7 +48,7 @@ export async function PUT(request, { params }) {
   try {
     await connectDB();
 
-    const { id } = params;
+    const { id } = await params;
     const updateData = await request.json();
 
     // Fields that can be edited by admin
@@ -125,7 +125,7 @@ export async function DELETE(request, { params }) {
   try {
     await connectDB();
 
-    const { id } = params;
+    const { id } = await params;
 
     const application = await Joinus.findByIdAndDelete(id);
 
