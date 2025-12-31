@@ -1,4 +1,4 @@
-import Companyoverview from '@/app/server/models/Companyoverview.js';
+import CompanyOverview from '@/app/server/models/Companyoverview.js';
 import { connectDB } from '@/app/server/db/connect.js';
 
 /**
