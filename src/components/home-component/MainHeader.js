@@ -143,7 +143,8 @@ export default function MainHeader() {
               if (l.label === 'About Us') {
                 const submenu = [
                   { href: '/about-us', label: 'About Us' },
-                  { href: '/gallery', label: 'Gallery' }
+                  { href: '/gallery', label: 'Gallery' },
+                  { href: '/leadership', label: 'Our Leadership' },
                 ]
 
                 return (

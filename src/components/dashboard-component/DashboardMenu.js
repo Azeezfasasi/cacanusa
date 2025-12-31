@@ -121,7 +121,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
       roles: ['admin', 'it-support'],
       children: [
         { href: '/dashboard/company-overview-content', label: 'Company Overview', roles: ['admin', 'it-support'] },
-        { href: '/dashboard/team-content', label: 'Team', roles: ['admin', 'it-support'] },
+        { href: '/dashboard/team-content', label: 'Executive Leaders', roles: ['admin', 'it-support'] },
         { href: '/dashboard/why-choose-us-content', label: 'Why Choose Us', roles: ['admin', 'it-support'] },
       ]
     },
@@ -169,15 +169,15 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
 
   // Desktop / large screens: persistent sidebar
   const desktopNav = (
-    <nav className={`hidden md:flex pt-[30px] h-full bg-blue-900 border-r border-gray-100 ${collapsed ? 'w-16' : 'w-75'} transition-width duration-200`} aria-label="Dashboard navigation">
+    <nav className={`hidden md:flex pt-[15px] h-full bg-blue-900 border-r border-gray-100 ${collapsed ? 'w-16' : 'w-75'} transition-width duration-200`} aria-label="Dashboard navigation">
       <div className="h-full overflow-y-auto py-6 px-2">
         <ul className="space-y-1">
           {items.map(i => {
             // Check if user has access to this item
             if (!hasAccess(i.roles)) return null;
 
-            const active = pathname === i.href || pathname.startsWith(i.href + '/')
             const hasChildren = Array.isArray(i.children) && i.children.length > 0
+            const active = hasChildren ? (pathname === i.href || pathname.startsWith(i.href + '/')) : pathname === i.href
             const isOpen = openKey === i.href
             // Filter children based on access
             const visibleChildren = hasChildren ? i.children.filter(c => hasAccess(c.roles)) : [];
@@ -251,8 +251,8 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
                 // Check if user has access to this item
                 if (!hasAccess(i.roles)) return null;
 
-                const active = pathname === i.href || pathname.startsWith(i.href + '/')
                 const hasChildren = Array.isArray(i.children) && i.children.length > 0
+                const active = hasChildren ? (pathname === i.href || pathname.startsWith(i.href + '/')) : pathname === i.href
                 const isOpen = openKey === i.href
                 // Filter children based on access
                 const visibleChildren = hasChildren ? i.children.filter(c => hasAccess(c.roles)) : [];

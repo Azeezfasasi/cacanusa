@@ -81,15 +81,16 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
               </svg>
             </button>
 
+            {/* Dynamic logo */}
             <Link href="/" className="flex items-center gap-3">
               {!logoLoading && logo ? (
-                <div style={{ width: `${logo.width}px`, height: `${logo.height}px`, position: 'relative', maxWidth: '150px' }}>
+                <div style={{ width: '80px', height: '80px', position: 'relative', maxWidth: '150px' }}>
                   <Image 
                     src={logo.url} 
                     alt={logo.alt} 
                     fill
                     sizes="(max-width: 768px) 80px, 100px"
-                    className="object-contain rounded-md p-1" 
+                    className="w-[70px] md:w-[100px] object-contain rounded-md p-1" 
                     priority
                   />
                 </div>
@@ -99,7 +100,7 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
                   alt="CANAN USA Logo" 
                   width={80} 
                   height={40} 
-                  className="w-14 md:w-16 block rounded-md p-1" 
+                  className="w-[70px] md:w-[100px] block rounded-md p-1" 
                   priority
                 />
               )}
