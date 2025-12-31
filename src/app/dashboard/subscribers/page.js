@@ -201,7 +201,7 @@ export default function Subscribers() {
 
   return (
     <ProtectedRoute allowedRoles={['admin', 'committee', 'it-support']}>
-    <div className="space-y-6 w-fit lg:w-full">
+    <div className="space-y-6 w-fit lg:w-full mt-8">
       {/* Header */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between">
         <div>

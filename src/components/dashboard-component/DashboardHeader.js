@@ -58,7 +58,7 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
   return (
     <header className="w-full bg-white border-b border-gray-100 shadow-sm fixed top-0 left-0 right-0 z-40">
       <div className="mx-auto px-4 sm:px-6 lg:px-12">
-        <div className="flex items-center justify-between h-23 md:h-27">
+        <div className="flex items-center justify-between h-18 md:h-18">
           <div className="flex items-center gap-4">
             {/* Mobile hamburger: visible on small screens */}
             <button
@@ -97,7 +97,7 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
                 <Image 
                   src="/images/cananusatrans.png" 
                   alt="CANAN USA Logo" 
-                  width={100} 
+                  width={80} 
                   height={40} 
                   className="w-14 md:w-16 block rounded-md p-1" 
                   priority
@@ -135,6 +135,11 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
                     <li>
                       <Link href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition w-full text-left">Back to Home</Link>
                     </li>
+                    {user?.role === 'admin' || user?.role === 'committee' || user?.role === 'it-support' ? (
+                    <li>
+                      <Link href="https://accounts.zoho.com/" target='_blank' className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition w-full text-left">Access Zoho Email</Link>
+                    </li>
+                    ) : null}
                     {user?.role === 'admin' || user?.role === 'committee' || user?.role === 'it-support' ? (
                     <li>
                       <Link href="/dashboard/member-registration-request" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition w-full text-left">Registration Requests</Link>

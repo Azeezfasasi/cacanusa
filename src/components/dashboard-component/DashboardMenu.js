@@ -135,6 +135,16 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
       ]
     },
     {
+      href: '/dashboard/our-leadership',
+      label: 'Manage Leadership',
+      icon: 'Gallery',
+      roles: ['admin', 'it-support'],
+      children: [
+        { href: '/dashboard/manage-leadership', label: 'Leadership', roles: ['admin', 'it-support'] },
+        { href: '/dashboard/manage-departments', label: 'Leadership Departments', roles: ['admin', 'it-support'] },
+      ]
+    },
+    {
       href: '/dashboard/contact-contents',
       label: 'Contact Page Contents',
       icon: 'Gallery',

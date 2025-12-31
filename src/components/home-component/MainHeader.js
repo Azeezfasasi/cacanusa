@@ -230,6 +230,11 @@ export default function MainHeader() {
                      Manage Registrations Requests
                     </Link>
                     ) : null}
+                    {user?.role === 'admin' || user?.role === 'committee' || user?.role === 'it-support' ? (
+                    <Link href="https://accounts.zoho.com/" target='_blank' className="block px-4 py-2 font-medium text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-300">
+                     Access Zoho Email
+                    </Link>
+                    ) : null}
                     <Link href="/dashboard/my-profile" className="block px-4 py-2 font-medium text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-300">
                       My Profile
                     </Link>

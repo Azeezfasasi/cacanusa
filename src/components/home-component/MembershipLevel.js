@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { Commet } from "react-loading-indicators";
 import { Users, Heart, Church, Zap, Crown, Star, Gift, Shield, CheckCircle } from 'lucide-react'
+import Link from 'next/link';
 
 const iconMap = {
   Users,
@@ -180,11 +181,11 @@ const MembershipLevel = () => {
                   </p>
 
                   {/* CTA Button */}
-                  <button
-                    className="w-full py-2 px-4 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 bg-white/20 hover:bg-white text-white hover:text-gray-900 border border-white/30 hover:border-white backdrop-blur-md"
+                  <Link href="/join-us"
+                    className="w-full py-2 px-4 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 bg-white/20 hover:bg-white text-white hover:text-gray-900 border border-white/30 hover:border-white backdrop-blur-md text-center"
                   >
                     Learn More
-                  </button>
+                  </Link>
                 </div>
               </div>
             )

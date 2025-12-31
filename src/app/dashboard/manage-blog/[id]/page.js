@@ -191,7 +191,20 @@ function EditBlogContent() {
 				data.append('featuredImage', formData.featuredImage)
 			}
 			
-			// Add new blog images
+			// Add existing blog image URLs (those that start with http or https)
+			const existingImageUrls = []
+			formData.blogImagePreviews.forEach((preview) => {
+				if (preview && (preview.startsWith('http://') || preview.startsWith('https://'))) {
+					existingImageUrls.push(preview)
+				}
+			})
+			
+			// Send existing image URLs as a JSON array
+			if (existingImageUrls.length > 0) {
+				data.append('existingBlogImages', JSON.stringify(existingImageUrls))
+			}
+			
+			// Add only new File objects (those not starting with http)
 			if (formData.blogImages && formData.blogImages.length > 0) {
 				formData.blogImages.forEach((img) => {
 					data.append('blogImages', img)

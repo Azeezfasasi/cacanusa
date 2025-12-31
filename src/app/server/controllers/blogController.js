@@ -93,6 +93,7 @@ export async function updateBlog(req, { params }) {
     const { id } = await params;
     const form = await req.formData();
     const blogData = {};
+    const newBlogImages = [];
     
     for (const [key, value] of form.entries()) {
       if (key === 'featuredImage' && value instanceof File) {
@@ -104,6 +105,24 @@ export async function updateBlog(req, { params }) {
           'blog'
         );
         blogData[key] = uploadResult.secure_url;
+      } else if (key === 'blogImages' && value instanceof File) {
+        // Upload new blog images to Cloudinary
+        const buffer = await value.arrayBuffer();
+        const uploadResult = await uploadToCloudinary(
+          Buffer.from(buffer),
+          value.name,
+          'blog'
+        );
+        newBlogImages.push(uploadResult.secure_url);
+      } else if (key === 'existingBlogImages') {
+        // Parse existing image URLs from JSON string
+        try {
+          const existingImages = JSON.parse(value);
+          blogData.blogImages = [...existingImages, ...newBlogImages];
+        } catch (e) {
+          console.error('Error parsing existing blog images:', e);
+          blogData.blogImages = newBlogImages;
+        }
       } else if (key === 'tags') {
         // Parse tags from comma-separated string
         blogData[key] = value
@@ -113,9 +132,14 @@ export async function updateBlog(req, { params }) {
       } else if (key === 'publishDate' && value) {
         // Convert date string to ISO format
         blogData[key] = new Date(value).toISOString();
-      } else if (value && key !== 'featuredImagePreview') {
+      } else if (value && key !== 'featuredImagePreview' && key !== 'blogImages') {
         blogData[key] = value;
       }
+    }
+
+    // If we have new blog images but no existing images were specified, just use the new ones
+    if (newBlogImages.length > 0 && !blogData.blogImages) {
+      blogData.blogImages = newBlogImages;
     }
 
     const blog = await Blog.findByIdAndUpdate(id, blogData, { new: true });
