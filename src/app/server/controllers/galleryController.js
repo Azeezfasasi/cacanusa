@@ -10,23 +10,24 @@ import {
  */
 export const createGallery = async (req, res) => {
   try {
-    const { title, description, category, images, featured, status, businessName, location, tags, createdBy } = req.body;
+    const { title, description, category, media, featured, status, businessName, location, tags, createdBy } = req.body;
 
     // Validate required fields
     if (!title) {
       return res.status(400).json({ message: 'Title is required' });
     }
 
-    if (!Array.isArray(images) || images.length === 0) {
-      return res.status(400).json({ message: 'At least one image is required' });
+    if (!Array.isArray(media) || media.length === 0) {
+      return res.status(400).json({ message: 'At least one image or video is required' });
     }
 
-    // Validate and process images
-    const processedImages = images.map((img, index) => {
+    // Validate and process media (both images and videos)
+    const processedMedia = media.map((item, index) => {
       return {
-        url: img.url,
-        publicId: img.publicId,
-        alt: img.alt || '',
+        url: item.url,
+        publicId: item.publicId,
+        alt: item.alt || '',
+        type: item.type || 'image', // 'image' or 'video'
         displayOrder: index,
       };
     });
@@ -34,8 +35,8 @@ export const createGallery = async (req, res) => {
     const newGallery = new Gallery({
       title,
       description: description || '',
-      category: category || 'other',
-      images: processedImages,
+      category: category || 'others',
+      media: processedMedia,
       featured: featured || false,
       status: status || 'active',
       businessName: businessName || '',
@@ -157,7 +158,7 @@ export const getAllGalleries = async (req, res) => {
 export const updateGallery = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, category, featured, status, businessName, location, tags, images } = req.body;
+    const { title, description, category, featured, status, businessName, location, tags, media } = req.body;
 
     if (!id) {
       return res.status(400).json({ message: 'Gallery ID is required' });
@@ -179,22 +180,23 @@ export const updateGallery = async (req, res) => {
     if (location !== undefined) gallery.location = location;
     if (tags) gallery.tags = Array.isArray(tags) ? tags : [];
 
-    // Update images if provided
-    if (images && Array.isArray(images)) {
-      // Delete removed images from Cloudinary
-      const oldPublicIds = gallery.images.map(img => img.publicId);
-      const newPublicIds = images.map(img => img.publicId);
+    // Update media if provided (both images and videos)
+    if (media && Array.isArray(media)) {
+      // Delete removed media from Cloudinary
+      const oldPublicIds = gallery.media.map(item => item.publicId);
+      const newPublicIds = media.map(item => item.publicId);
       const idsToDelete = oldPublicIds.filter(id => !newPublicIds.includes(id));
 
       if (idsToDelete.length > 0) {
         await deleteMultipleFromCloudinary(idsToDelete);
       }
 
-      // Update images with new display order
-      gallery.images = images.map((img, index) => ({
-        url: img.url,
-        publicId: img.publicId,
-        alt: img.alt || '',
+      // Update media with new display order
+      gallery.media = media.map((item, index) => ({
+        url: item.url,
+        publicId: item.publicId,
+        alt: item.alt || '',
+        type: item.type || 'image',
         displayOrder: index,
       }));
     }

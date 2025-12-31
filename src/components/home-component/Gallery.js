@@ -84,7 +84,10 @@ export default function Gallery() {
     setFilteredGalleries(filtered);
   }, [searchQuery, selectedCategory, galleries]);
 
-  const toggleLike = (galleryId) => {
+  const toggleLike = async (galleryId) => {
+    const newLiked = !likedGalleries.has(galleryId);
+    
+    // Update UI immediately
     setLikedGalleries(prev => {
       const newSet = new Set(prev);
       if (newSet.has(galleryId)) {
@@ -94,6 +97,46 @@ export default function Gallery() {
       }
       return newSet;
     });
+
+    // Save to backend
+    try {
+      const userId = localStorage.getItem('userId') || 'anonymous';
+      const response = await fetch(`/api/gallery/${galleryId}/like`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          liked: newLiked,
+          userId,
+        }),
+      });
+
+      if (!response.ok) {
+        // Revert on error
+        setLikedGalleries(prev => {
+          const newSet = new Set(prev);
+          if (newSet.has(galleryId)) {
+            newSet.delete(galleryId);
+          } else {
+            newSet.add(galleryId);
+          }
+          return newSet;
+        });
+      }
+    } catch (error) {
+      console.error('Error updating like:', error);
+      // Revert on error
+      setLikedGalleries(prev => {
+        const newSet = new Set(prev);
+        if (newSet.has(galleryId)) {
+          newSet.delete(galleryId);
+        } else {
+          newSet.add(galleryId);
+        }
+        return newSet;
+      });
+    }
   };
 
   if (loading) {
@@ -200,9 +243,9 @@ export default function Gallery() {
                     <div className="group bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer h-full flex flex-col">
                       {/* Image Container */}
                       <div className="relative overflow-hidden bg-gray-200 h-48 sm:h-56">
-                        {gallery.images && gallery.images.length > 0 ? (
+                        {((gallery.media && gallery.media.length > 0) || (gallery.images && gallery.images.length > 0)) ? (
                           <Image
-                            src={gallery.images[0].url}
+                            src={(gallery.media?.[0] || gallery.images?.[0])?.url}
                             alt={gallery.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -220,9 +263,9 @@ export default function Gallery() {
                           </div>
                         )}
 
-                        {/* Image Count */}
+                        {/* Media Count */}
                         <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 bg-black bg-opacity-70 text-white px-2.5 sm:px-3 py-1 rounded-full text-xs font-medium">
-                          {gallery.images?.length || 0} images
+                          {(gallery.media?.length || gallery.images?.length || 0)} items
                         </div>
 
                         {/* Like Button */}
@@ -302,7 +345,7 @@ export default function Gallery() {
                         {/* View Stats */}
                         <div className="flex items-center gap-2 text-xs text-gray-500 mt-3 pt-3 border-t border-gray-100">
                           <Eye className="h-4 w-4" />
-                          <span>{gallery.viewCount || 0} views</span>
+                          <span>{gallery.views || 0} views</span>
                         </div>
                       </div>
                     </div>
@@ -317,9 +360,9 @@ export default function Gallery() {
                     <div className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-4 sm:p-5 cursor-pointer flex gap-4 sm:gap-6">
                       {/* Image */}
                       <div className="relative w-24 sm:w-32 h-24 sm:h-32 shrink-0 rounded-lg overflow-hidden bg-gray-200">
-                        {gallery.images && gallery.images.length > 0 ? (
+                        {((gallery.media && gallery.media.length > 0) || (gallery.images && gallery.images.length > 0)) ? (
                           <Image
-                            src={gallery.images[0].url}
+                            src={(gallery.media?.[0] || gallery.images?.[0])?.url}
                             alt={gallery.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -412,7 +455,7 @@ export default function Gallery() {
                           </div>
                           <div className="flex items-center gap-1 text-gray-500">
                             <Eye className="h-4 w-4" />
-                            <span>{gallery.viewCount || 0} views</span>
+                            <span>{gallery.views || 0} views</span>
                           </div>
                         </div>
                       </div>

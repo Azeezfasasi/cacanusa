@@ -1,10 +1,12 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import { Plus, Trash2, Edit2, Eye, EyeOff, ArrowUpDown } from 'lucide-react'
+import { Plus, Trash2, Edit2, Eye, EyeOff, ArrowUpDown, Upload } from 'lucide-react'
+import Image from 'next/image'
 
 export default function WelcomeCTA() {
   const [sections, setSections] = useState([])
   const [loading, setLoading] = useState(true)
+  const [uploading, setUploading] = useState(false)
   const [editingId, setEditingId] = useState(null)
   const [showForm, setShowForm] = useState(false)
   const [formData, setFormData] = useState({
@@ -37,6 +39,44 @@ export default function WelcomeCTA() {
       console.error(err)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    try {
+      setUploading(true)
+      const formDataForUpload = new FormData()
+      formDataForUpload.append('file', file)
+      formDataForUpload.append('folder', 'cananusa/welcome-sections')
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formDataForUpload
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        setFormData(prev => ({
+          ...prev,
+          image: {
+            ...prev.image,
+            src: result.secure_url
+          }
+        }))
+        setSuccess('Image uploaded successfully')
+        setTimeout(() => setSuccess(''), 3000)
+      } else {
+        const error = await response.json()
+        setError(error.error || 'Failed to upload image')
+      }
+    } catch (error) {
+      console.error('Upload error:', error)
+      setError(error.message || 'Failed to upload image')
+    } finally {
+      setUploading(false)
     }
   }
 
@@ -273,37 +313,76 @@ export default function WelcomeCTA() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                {/* Image URL */}
+                {/* Image Upload */}
                 <div>
                   <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-                    Image URL
+                    Upload Image
+                  </label>
+                  <label className="flex items-center justify-center px-3 py-3 sm:py-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition">
+                    <div className="flex items-center gap-2">
+                      <Upload size={16} className="text-gray-500 flex-shrink-0" />
+                      <span className="text-xs sm:text-sm text-gray-600">
+                        {uploading ? 'Uploading...' : 'Click to upload'}
+                      </span>
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      disabled={uploading}
+                      className="hidden"
+                    />
+                  </label>
+                  <p className="text-xs text-gray-500 mt-2">PNG, JPG, GIF up to 5MB</p>
+                </div>
+
+                {/* Or Image URL */}
+                <div>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+                    Or Enter Image URL
                   </label>
                   <input
                     type="text"
                     name="image.src"
                     value={formData.image.src}
                     onChange={handleFormChange}
-                    placeholder="e.g., /images/about.jpg"
+                    placeholder="https://example.com/image.jpg"
                     className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                   />
-                </div>
-
-                {/* Image Alt Text */}
-                <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-                    Image Alt Text
-                  </label>
-                  <input
-                    type="text"
-                    name="image.alt"
-                    value={formData.image.alt}
-                    onChange={handleFormChange}
-                    placeholder="Describe the image"
-                    maxLength={200}
-                    className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                  />
+                  <p className="text-xs text-gray-500 mt-2">Leave empty or paste URL directly</p>
                 </div>
               </div>
+
+              {/* Image Alt Text */}
+              <div>
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+                  Image Alt Text
+                </label>
+                <input
+                  type="text"
+                  name="image.alt"
+                  value={formData.image.alt}
+                  onChange={handleFormChange}
+                  placeholder="Describe the image"
+                  maxLength={200}
+                  className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                />
+              </div>
+
+              {/* Image Preview */}
+              {formData.image.src && (
+                <div className="border border-gray-200 rounded-lg p-3 sm:p-4">
+                  <p className="text-sm font-medium text-gray-700 mb-3">Preview</p>
+                  <img
+                    src={formData.image.src}
+                    alt={formData.image.alt || 'Preview'}
+                    className="max-w-full h-auto rounded-lg"
+                    onError={(e) => {
+                      e.target.src = '/images/placeholder.png'
+                    }}
+                  />
+                </div>
+              )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 {/* Button Label */}
@@ -330,6 +409,7 @@ export default function WelcomeCTA() {
                   <input
                     type="text"
                     name="button.href"
+                    readOnly
                     value={formData.button.href}
                     onChange={handleFormChange}
                     placeholder="e.g., /about-us"

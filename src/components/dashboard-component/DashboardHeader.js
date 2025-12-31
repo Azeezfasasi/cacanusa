@@ -10,6 +10,8 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
   const role = user?.role ? user.role.replace('-', ' ') : 'User';
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [logo, setLogo] = useState(null);
+  const [logoLoading, setLogoLoading] = useState(true);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -27,6 +29,27 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
     };
   }, [dropdownOpen]);
 
+  // Fetch logo
+  useEffect(() => {
+    const fetchLogo = async () => {
+      try {
+        const response = await fetch('/api/logo');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.logo) {
+            setLogo(data.logo);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching logo:', error);
+      } finally {
+        setLogoLoading(false);
+      }
+    };
+    
+    fetchLogo();
+  }, []);
+
   const handleLogout = () => {
     logout();
     setDropdownOpen(false);
@@ -35,7 +58,7 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
   return (
     <header className="w-full bg-white border-b border-gray-100 shadow-sm fixed top-0 left-0 right-0 z-40">
       <div className="mx-auto px-4 sm:px-6 lg:px-12">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-23 md:h-27">
           <div className="flex items-center gap-4">
             {/* Mobile hamburger: visible on small screens */}
             <button
@@ -59,7 +82,27 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
             </button>
 
             <Link href="/" className="flex items-center gap-3">
-              <Image src="/images/cananusatrans.png" alt="CANAN USA Logo" width={160} height={40} className="w-14 md:w-16 block rounded-md p-1" />
+              {!logoLoading && logo ? (
+                <div style={{ width: `${logo.width}px`, height: `${logo.height}px`, position: 'relative', maxWidth: '150px' }}>
+                  <Image 
+                    src={logo.url} 
+                    alt={logo.alt} 
+                    fill
+                    sizes="(max-width: 768px) 80px, 100px"
+                    className="object-contain rounded-md p-1" 
+                    priority
+                  />
+                </div>
+              ) : (
+                <Image 
+                  src="/images/cananusatrans.png" 
+                  alt="CANAN USA Logo" 
+                  width={100} 
+                  height={40} 
+                  className="w-14 md:w-16 block rounded-md p-1" 
+                  priority
+                />
+              )}
             </Link>
           </div>
 

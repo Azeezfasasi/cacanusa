@@ -152,31 +152,44 @@ export default function ViewGalleryPage() {
               </div>
             )}
 
-            {/* Images */}
+            {/* Images/Media */}
             <div>
               <h3 className="text-xs sm:text-sm font-semibold text-gray-700 mb-4">
-                Images ({gallery.images?.length || 0})
+                Media ({(gallery.media?.length || gallery.images?.length || 0)})
               </h3>
-              {gallery.images && gallery.images.length > 0 ? (
+              {(gallery.media && gallery.media.length > 0) || (gallery.images && gallery.images.length > 0) ? (
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4">
-                  {gallery.images.map((img, index) => (
+                  {(gallery.media || gallery.images || []).map((item, index) => (
                     <div key={index} className="relative group">
-                      <Image
-                        src={img.url}
-                        alt={img.alt || `Image ${index + 1}`}
-                        width={200}
-                        height={160}
-                        className="w-full h-20 sm:h-32 lg:h-40 object-cover rounded-lg"
-                      />
+                      {item.type === 'video' ? (
+                        <>
+                          <video
+                            src={item.url}
+                            className="w-full h-20 sm:h-32 lg:h-40 object-cover rounded-lg bg-gray-300"
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-lg">
+                            <span className="text-white text-2xl">🎬</span>
+                          </div>
+                        </>
+                      ) : (
+                        <Image
+                          src={item.url}
+                          alt={item.alt || `Media ${index + 1}`}
+                          width={200}
+                          height={160}
+                          className="w-full h-20 sm:h-32 lg:h-40 object-cover rounded-lg"
+                        />
+                      )}
                       <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-1 sm:p-2 rounded-b-lg">
-                        <p className="text-xs sm:text-sm">{index + 1}/{gallery.images.length}</p>
-                        {img.alt && <p className="text-xs truncate">{img.alt}</p>}
+                        <p className="text-xs sm:text-sm">{index + 1}/{(gallery.media?.length || gallery.images?.length || 0)}</p>
+                        {item.alt && <p className="text-xs truncate">{item.alt}</p>}
+                        {item.type && <p className="text-xs">{item.type === 'video' ? '🎬 Video' : '🖼️ Image'}</p>}
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500">No images</p>
+                <p className="text-gray-500">No media</p>
               )}
             </div>
 

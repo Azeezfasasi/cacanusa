@@ -21,13 +21,13 @@ export default function AddGalleryPage() {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    category: 'accommodation',
+    category: '',
     featured: false,
     status: 'active',
     businessName: '',
     location: '',
     tags: [],
-    images: [],
+    media: [], // Contains both images and videos
   });
 
   const handleInputChange = (e) => {
@@ -47,7 +47,7 @@ export default function AddGalleryPage() {
     }));
   };
 
-  const handleImageUpload = async (e) => {
+  const handleMediaUpload = async (e) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
@@ -56,6 +56,14 @@ export default function AddGalleryPage() {
 
     try {
       for (const file of files) {
+        const isVideo = file.type.startsWith('video/');
+        const isImage = file.type.startsWith('image/');
+
+        if (!isImage && !isVideo) {
+          setError(`${file.name} is not a valid image or video file`);
+          continue;
+        }
+
         // Convert file to base64
         const reader = new FileReader();
         reader.onloadend = async () => {
@@ -66,11 +74,12 @@ export default function AddGalleryPage() {
 
             setFormData(prev => ({
               ...prev,
-              images: [...prev.images, {
+              media: [...prev.media, {
                 url: result.url,
                 publicId: result.publicId,
                 alt: '',
-                displayOrder: prev.images.length,
+                type: isVideo ? 'video' : 'image',
+                displayOrder: prev.media.length,
               }],
             }));
           } catch (err) {
@@ -80,7 +89,7 @@ export default function AddGalleryPage() {
         reader.readAsDataURL(file);
       }
 
-      setSuccess(`${files.length} image(s) uploaded successfully`);
+      setSuccess(`${files.length} file(s) uploaded successfully`);
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       setError(`Upload failed: ${err.message}`);
@@ -89,10 +98,10 @@ export default function AddGalleryPage() {
     }
   };
 
-  const removeImage = (index) => {
+  const removeMedia = (index) => {
     setFormData(prev => ({
       ...prev,
-      images: prev.images.filter((_, i) => i !== index),
+      media: prev.media.filter((_, i) => i !== index),
     }));
   };
 
@@ -107,8 +116,8 @@ export default function AddGalleryPage() {
       return;
     }
 
-    if (formData.images.length === 0) {
-      setError('At least one image is required');
+    if (formData.media.length === 0) {
+      setError('At least one image or video is required');
       return;
     }
 
@@ -189,9 +198,10 @@ export default function AddGalleryPage() {
                 onChange={handleInputChange}
                 className="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
+                <option value="">Select a category</option>
                 {CATEGORIES.map(cat => (
                   <option key={cat} value={cat}>
-                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                    {cat.charAt(0).toUpperCase() + cat.slice(1).replace('-', ' ')}
                   </option>
                 ))}
               </select>
@@ -280,25 +290,27 @@ export default function AddGalleryPage() {
               </div>
             </div>
 
-            {/* Image Upload */}
+            {/* Media Upload */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Images * (At least 1 required)
+                Images & Videos * (At least 1 required)
+                <span className="block text-xs text-blue-600">You can upload multiple (images or videos) files at once.</span>
               </label>
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-6">
                 <div className="text-center">
                   <Upload className="mx-auto h-12 w-12 text-gray-400 mb-2" />
                   <p className="text-sm text-gray-600 mb-2">
-                    Drag and drop your images here, or click to select
+                    Drag and drop your images or videos here, or click to select
                   </p>
                   <input
                     type="file"
                     multiple
-                    accept="image/*"
-                    onChange={handleImageUpload}
+                    accept="image/*,video/*"
+                    onChange={handleMediaUpload}
                     disabled={uploading}
                     className="block mx-auto text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                   />
+                  <p className="text-xs text-gray-500 mt-2">Supported: JPG, PNG, GIF, MP4, WebM, Ogg</p>
                 </div>
               </div>
             </div>
@@ -307,35 +319,46 @@ export default function AddGalleryPage() {
             {uploading && (
               <div className="flex items-center gap-2 text-blue-600">
                 <Loader className="h-4 w-4 animate-spin" />
-                <span>Uploading images...</span>
+                <span>Uploading files...</span>
               </div>
             )}
 
-            {/* Uploaded Images Preview */}
-            {formData.images.length > 0 && (
+            {/* Uploaded Media Preview */}
+            {formData.media.length > 0 && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Uploaded Images ({formData.images.length})
+                  Uploaded Media ({formData.media.length})
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4">
-                  {formData.images.map((img, index) => (
+                  {formData.media.map((media, index) => (
                     <div key={index} className="relative group">
-                      <Image
-                        src={img.url}
-                        alt={img.alt || `Image ${index + 1}`}
-                        width={200}
-                        height={128}
-                        className="w-full h-24 sm:h-32 object-cover rounded-lg"
-                      />
+                      {media.type === 'video' ? (
+                        <video
+                          src={media.url}
+                          controls
+                          className="w-full h-24 sm:h-32 object-cover rounded-lg bg-black"
+                        />
+                      ) : (
+                        <Image
+                          src={media.url}
+                          alt={media.alt || `Media ${index + 1}`}
+                          width={200}
+                          height={128}
+                          className="w-full h-24 sm:h-32 object-cover rounded-lg"
+                        />
+                      )}
+                      <div className="absolute top-1 left-1 bg-gray-900 bg-opacity-70 text-white text-xs px-2 py-1 rounded">
+                        {media.type === 'video' ? '🎬 Video' : '🖼️ Image'}
+                      </div>
                       <button
                         type="button"
-                        onClick={() => removeImage(index)}
+                        onClick={() => removeMedia(index)}
                         className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 bg-red-500 text-white rounded-full p-0.5 sm:p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                       >
                         <X className="h-3 w-3 sm:h-4 sm:w-4" />
                       </button>
                       <p className="text-xs text-gray-600 mt-1">
-                        {img.displayOrder + 1}/{formData.images.length}
+                        {media.displayOrder + 1}/{formData.media.length}
                       </p>
                     </div>
                   ))}
@@ -347,7 +370,7 @@ export default function AddGalleryPage() {
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 pt-4 sm:pt-6">
               <button
                 type="submit"
-                disabled={loading || uploading || formData.images.length === 0}
+                disabled={loading || uploading || formData.media.length === 0}
                 className="flex-1 bg-blue-600 text-white py-2.5 px-4 text-sm sm:text-base rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
               >
                 {loading ? (

@@ -230,9 +230,9 @@ export default function AllGalleriesPage() {
                 >
                   {/* Gallery Image */}
                   <div className="relative h-48 bg-gray-200 overflow-hidden">
-                    {gallery.images && gallery.images.length > 0 ? (
+                    {(gallery.media && gallery.media.length > 0) || (gallery.images && gallery.images.length > 0) ? (
                       <img
-                        src={gallery.images[0].url}
+                        src={(gallery.media?.[0] || gallery.images?.[0])?.url}
                         alt={gallery.title}
                         className="w-full h-full object-cover"
                       />
@@ -258,7 +258,7 @@ export default function AllGalleriesPage() {
                       </div>
                     )}
                     <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
-                      {gallery.images?.length || 0} images
+                      {(gallery.media?.length || gallery.images?.length || 0)} items
                     </div>
                   </div>
 

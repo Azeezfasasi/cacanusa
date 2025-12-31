@@ -64,7 +64,7 @@ export default function HomeAbout() {
               alt={section.image?.alt || defaultSection.image.alt}
               fill
               sizes='100%'
-              className="object-cover"
+              className="object-fill"
             />
           </div>
         </div>

@@ -12,6 +12,7 @@ export default function Hero() {
   const [drag, setDrag] = useState({ active: false, startX: 0, dx: 0 })
   const containerRef = useRef(null)
   const [slideWidth, setSlideWidth] = useState(0)
+  const [paused, setPaused] = useState(false)
 
   // Fetch slides from API on mount
   useEffect(() => {
@@ -68,6 +69,7 @@ export default function Hero() {
   function handlePointerDown(e) {
     const x = e.clientX ?? (e.touches && e.touches[0].clientX)
     setDrag({ active: true, startX: x, dx: 0 })
+    setPaused(true)
   }
 
   function handlePointerMove(e) {
@@ -78,11 +80,12 @@ export default function Hero() {
   }
 
   function handlePointerUp() {
-    if (!drag.active) return
+    if (!drag.active) { setPaused(false); return }
     const threshold = (containerRef.current?.offsetWidth || 600) * 0.15
     if (drag.dx > threshold) setIndex(i => Math.max(0, i - 1))
     else if (drag.dx < -threshold) setIndex(i => Math.min(slides.length - 1, i + 1))
     setDrag({ active: false, startX: 0, dx: 0 })
+    setPaused(false)
   }
 
   // keyboard navigation
@@ -105,6 +108,16 @@ export default function Hero() {
     window.addEventListener('resize', update)
     return () => window.removeEventListener('resize', update)
   }, [])
+
+  // Auto-slide interval (pauses on hover or during drag)
+  useEffect(() => {
+    if (slides.length <= 1) return
+    if (drag.active || paused) return
+    const id = setInterval(() => {
+      setIndex(i => (i + 1) % slides.length)
+    }, 4000)
+    return () => clearInterval(id)
+  }, [slides.length, drag.active, paused])
 
   return (
     <section className="w-full">

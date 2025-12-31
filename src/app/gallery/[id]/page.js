@@ -38,19 +38,93 @@ export default function GalleryDetailPage() {
   useEffect(() => {
     if (params.id) {
       fetchGallery();
+      fetchLikeStatus();
     }
     // eslint-disable-line
   }, [params.id]);
 
+  const fetchLikeStatus = async () => {
+    try {
+      const userId = localStorage.getItem('userId') || 'anonymous';
+      const response = await fetch(`/api/gallery/${params.id}/like?userId=${userId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setLiked(data.isLiked);
+      }
+    } catch (error) {
+      console.error('Error fetching like status:', error);
+    }
+  };
+
+  const handleLikeToggle = async () => {
+    const newLikedState = !liked;
+    setLiked(newLikedState);
+
+    try {
+      const userId = localStorage.getItem('userId') || 'anonymous';
+      const response = await fetch(`/api/gallery/${params.id}/like`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          liked: newLikedState,
+          userId,
+        }),
+      });
+
+      if (!response.ok) {
+        setLiked(!newLikedState); // Revert on error
+        console.error('Failed to update like');
+      }
+    } catch (error) {
+      console.error('Error updating like:', error);
+      setLiked(!newLikedState); // Revert on error
+    }
+  };
+
+  const handleShare = async () => {
+    const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/gallery/${params.id}`;
+    const shareTitle = gallery.title;
+    const shareText = `Check out this gallery: ${gallery.title}`;
+
+    // Try native Web Share API first
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl,
+        });
+        return;
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          console.error('Error sharing:', error);
+        }
+      }
+    }
+
+    // Fallback: Copy to clipboard
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      alert('Gallery link copied to clipboard!');
+    } catch (error) {
+      console.error('Error copying to clipboard:', error);
+      alert('Failed to share. Please try again.');
+    }
+  };
+
   const nextImage = () => {
-    if (gallery?.images) {
-      setCurrentImageIndex((prev) => (prev + 1) % gallery.images.length);
+    const items = gallery?.media || gallery?.images;
+    if (items) {
+      setCurrentImageIndex((prev) => (prev + 1) % items.length);
     }
   };
 
   const prevImage = () => {
-    if (gallery?.images) {
-      setCurrentImageIndex((prev) => (prev - 1 + gallery.images.length) % gallery.images.length);
+    const items = gallery?.media || gallery?.images;
+    if (items) {
+      setCurrentImageIndex((prev) => (prev - 1 + items.length) % items.length);
     }
   };
 
@@ -92,7 +166,8 @@ export default function GalleryDetailPage() {
     );
   }
 
-  const currentImage = gallery.images?.[currentImageIndex];
+  const currentMedia = (gallery?.media || gallery?.images)?.[currentImageIndex];
+  const allMedia = gallery?.media || gallery?.images || [];
   const categoryLabel = gallery.category?.charAt(0).toUpperCase() + gallery.category?.slice(1);
 
   return (
@@ -113,14 +188,23 @@ export default function GalleryDetailPage() {
             <div className="bg-white rounded-xl shadow-lg overflow-hidden">
               {/* Image Container */}
               <div className="relative bg-gray-200 aspect-video sm:aspect-auto sm:h-96">
-                {currentImage ? (
-                  <Image
-                    src={currentImage.url}
-                    alt={currentImage.alt || gallery.title}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
+                {currentMedia ? (
+                  currentMedia.type === 'video' ? (
+                    <video
+                      src={currentMedia.url}
+                      controls
+                      className="w-full h-full object-contain"
+                      autoPlay
+                    />
+                  ) : (
+                    <Image
+                      src={currentMedia.url}
+                      alt={currentMedia.alt || gallery.title}
+                      fill
+                      className="object-contain"
+                      priority
+                    />
+                  )
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
                     <Building2 className="h-16 w-16 text-gray-600" />
@@ -128,7 +212,7 @@ export default function GalleryDetailPage() {
                 )}
 
                 {/* Navigation Arrows */}
-                {gallery.images && gallery.images.length > 1 && (
+                {allMedia && allMedia.length > 1 && (
                   <>
                     <button
                       onClick={prevImage}
@@ -146,9 +230,9 @@ export default function GalleryDetailPage() {
                 )}
 
                 {/* Image Counter */}
-                {gallery.images && gallery.images.length > 1 && (
+                {allMedia && allMedia.length > 1 && (
                   <div className="absolute bottom-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium">
-                    {currentImageIndex + 1} / {gallery.images.length}
+                    {currentImageIndex + 1} / {allMedia.length}
                   </div>
                 )}
 
@@ -161,10 +245,10 @@ export default function GalleryDetailPage() {
               </div>
 
               {/* Thumbnail Carousel */}
-              {gallery.images && gallery.images.length > 1 && (
+              {allMedia && allMedia.length > 1 && (
                 <div className="p-3 sm:p-4 border-t border-gray-200 bg-gray-50">
                   <div className="flex gap-2 overflow-x-auto pb-2">
-                    {gallery.images.map((img, idx) => (
+                    {allMedia.map((item, idx) => (
                       <button
                         key={idx}
                         onClick={() => setCurrentImageIndex(idx)}
@@ -174,12 +258,24 @@ export default function GalleryDetailPage() {
                             : 'opacity-70 hover:opacity-100 ring-1 ring-gray-300'
                         }`}
                       >
-                        <Image
-                          src={img.url}
-                          alt={`Thumbnail ${idx + 1}`}
-                          fill
-                          className="object-cover"
-                        />
+                        {item.type === 'video' ? (
+                          <>
+                            <video
+                              src={item.url}
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
+                              <span className="text-white text-xs">🎬</span>
+                            </div>
+                          </>
+                        ) : (
+                          <Image
+                            src={item.url}
+                            alt={`Thumbnail ${idx + 1}`}
+                            fill
+                            className="object-cover"
+                          />
+                        )}
                       </button>
                     ))}
                   </div>
@@ -233,7 +329,7 @@ export default function GalleryDetailPage() {
               {/* Like & Share Buttons */}
               <div className="flex gap-2 mb-4">
                 <button
-                  onClick={() => setLiked(!liked)}
+                  onClick={handleLikeToggle}
                   className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg font-medium transition-all ${
                     liked
                       ? 'bg-red-100 text-red-600'
@@ -243,7 +339,7 @@ export default function GalleryDetailPage() {
                   <Heart className={`h-5 w-5 ${liked ? 'fill-current' : ''}`} />
                   <span className="text-sm">{liked ? 'Liked' : 'Like'}</span>
                 </button>
-                <button className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all">
+                <button className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all" onClick={handleShare}>
                   <Share2 className="h-5 w-5" />
                   <span className="text-sm">Share</span>
                 </button>
@@ -251,7 +347,7 @@ export default function GalleryDetailPage() {
 
               {/* View Count */}
               <div className="text-sm text-gray-600 text-center py-2 border-t border-gray-200">
-                {gallery.viewCount || 0} views
+                {gallery.views || 0} views
               </div>
             </div>
 

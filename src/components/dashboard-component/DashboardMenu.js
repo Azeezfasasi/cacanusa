@@ -106,7 +106,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
       icon: 'Gallery',
       roles: ['admin', 'it-support'],
       children: [
-        { href: '/dashboard/hero-content', label: 'Hero Content', roles: ['admin', 'it-support'] },
+        { href: '/dashboard/hero-content', label: 'Hero Slider', roles: ['admin', 'it-support'] },
         { href: '/dashboard/welcome-cta-content', label: 'Welcome CTA', roles: ['admin', 'it-support'] },
         { href: '/dashboard/company-overview-content', label: 'Company Overview', roles: ['admin', 'it-support'] },
         { href: '/dashboard/member-support-content', label: 'Member Support', roles: ['admin', 'it-support'] },
@@ -123,6 +123,15 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
         { href: '/dashboard/company-overview-content', label: 'Company Overview', roles: ['admin', 'it-support'] },
         { href: '/dashboard/team-content', label: 'Team', roles: ['admin', 'it-support'] },
         { href: '/dashboard/why-choose-us-content', label: 'Why Choose Us', roles: ['admin', 'it-support'] },
+      ]
+    },
+    {
+      href: '/dashboard/logo',
+      label: 'Website Logo',
+      icon: 'Gallery',
+      roles: ['admin', 'it-support'],
+      children: [
+        { href: '/dashboard/website-logo', label: 'Website Logo', roles: ['admin', 'it-support'] },
       ]
     },
     {
@@ -150,7 +159,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
 
   // Desktop / large screens: persistent sidebar
   const desktopNav = (
-    <nav className={`hidden md:flex h-full bg-blue-900 border-r border-gray-100 ${collapsed ? 'w-16' : 'w-75'} transition-width duration-200`} aria-label="Dashboard navigation">
+    <nav className={`hidden md:flex pt-[30px] h-full bg-blue-900 border-r border-gray-100 ${collapsed ? 'w-16' : 'w-75'} transition-width duration-200`} aria-label="Dashboard navigation">
       <div className="h-full overflow-y-auto py-6 px-2">
         <ul className="space-y-1">
           {items.map(i => {

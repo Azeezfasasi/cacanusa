@@ -14,6 +14,8 @@ export default function MainHeader() {
   const { user, logout } = useAuth()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef(null)
+  const [logo, setLogo] = useState(null)
+  const [logoLoading, setLogoLoading] = useState(true)
 
   // Close on Escape or click outside
   useEffect(() => {
@@ -83,6 +85,27 @@ export default function MainHeader() {
     }
   }, [dropdownOpen])
 
+  // Fetch logo
+  useEffect(() => {
+    const fetchLogo = async () => {
+      try {
+        const response = await fetch('/api/logo')
+        if (response.ok) {
+          const data = await response.json()
+          if (data.logo) {
+            setLogo(data.logo)
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching logo:', error)
+      } finally {
+        setLogoLoading(false)
+      }
+    }
+    
+    fetchLogo()
+  }, [])
+
   const isActive = (href) => {
     if (!pathname) return false
     if (href === '/') return pathname === '/'
@@ -97,7 +120,20 @@ export default function MainHeader() {
           {/* Logo */}
           <div className="flex items-center gap-3 p-1">
             <Link href="/" className="flex items-center gap-3">
-              <Image src="/images/cananusatrans.png" alt="CANANUSA Logo" width={170} height={50} className="w-[70px] md:w-24 block rounded-md" />
+              {!logoLoading && logo ? (
+                <div style={{ width: `${logo.width}px`, height: `${logo.height}px`, position: 'relative', maxWidth: '200px' }}>
+                  <Image
+                    src={logo.url}
+                    alt={logo.alt}
+                    fill
+                    sizes="(max-width: 768px) 80px, 150px"
+                    className="object-contain rounded-md"
+                    priority
+                  />
+                </div>
+              ) : (
+                <Image src="/images/cananusnew.png" alt="CANANUSA Logo" width={150} height={100} className="w-[150px] md:w-[150px] block rounded-md" priority />
+              )}
             </Link>
           </div>
 
@@ -242,7 +278,20 @@ export default function MainHeader() {
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
               <Link href="/" className="flex items-center gap-3">
-                <Image src="/images/cananusatrans.png" alt="Cananusa Logo" width={100} height={50} className="w-30 block rounded-md" />
+                {!logoLoading && logo ? (
+                  <div style={{ width: `${logo.width}px`, height: `${logo.height}px`, position: 'relative', maxWidth: '150px' }}>
+                    <Image
+                      src={logo.url}
+                      alt={logo.alt}
+                      fill
+                      sizes="80px"
+                      className="object-contain rounded-md"
+                      priority
+                    />
+                  </div>
+                ) : (
+                  <Image src="/images/cananusatrans.png" alt="Cananusa Logo" width={100} height={50} className="w-30 block rounded-md" priority />
+                )}
               </Link>
               <button onClick={() => setOpen(false)} className="text-red-600 text-2xl font-semibold">✕</button>
             </div>

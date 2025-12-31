@@ -129,8 +129,8 @@ export const createGallery = async (galleryData) => {
       throw new Error('Title is required');
     }
 
-    if (!galleryData.images || galleryData.images.length === 0) {
-      throw new Error('At least one image is required');
+    if (!galleryData.media || galleryData.media.length === 0) {
+      throw new Error('At least one image or video is required');
     }
 
     const response = await fetch(`${API_BASE}/api/gallery`, {

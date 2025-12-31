@@ -88,10 +88,12 @@ export async function POST(req) {
     return Response.json(responseData, { status: statusCode });
   } catch (error) {
     console.error('Gallery POST error:', error);
+    console.error('Error stack:', error.stack);
     return Response.json(
       {
         message: 'Error creating gallery',
         error: error.message,
+        details: error.stack,
       },
       { status: 500 }
     );
