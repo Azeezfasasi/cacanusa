@@ -3,6 +3,11 @@ import PageTitle from '@/components/home-component/PageTitle'
 import AddBlogPage from '@/app/dashboard/add-blog/page'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 
+export const metadata = {
+  title: 'Create Blog Post | CANAN USA',
+  description: 'Create and publish new blog posts to share updates and insights with your audience.',
+}
+
 export default function CreateBlogPage() {
 	return (
 		<ProtectedRoute allowedRoles={['admin', 'committee', 'it-support']}>

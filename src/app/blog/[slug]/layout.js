@@ -1,27 +1,22 @@
-import React from 'react'
-import Gallery from '@/components/home-component/Gallery'
-
 export const metadata = {
-  title: 'Gallery | CANAN USA',
+  title: 'Blog | CANAN USA',
   description: 'Learn more about our company, values, team, and what makes us different. Discover our mission and membership levels.',
-  keywords: ['gallery', 'community', 'events', 'photos', 'videos'],
+  keywords: ['about us', 'company', 'team', 'values', 'membership'],
   openGraph: {
-    title: 'Gallery | CANAN USA',
+    title: 'Blog | CANAN USA',
     description: 'Learn more about our company, values, team, and what makes us different.',
     type: 'website',
-    url: 'https://cananusa.com/gallery',
+    url: 'https://cananusa.com/blog',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Gallery | CANAN USA',
+    title: 'Blog | CANAN USA',
     description: 'Learn more about our company, values, team, and what makes us different.',
   },
   robots: 'index, follow',
-  canonical: 'https://cananusa.com/gallery',
+  canonical: 'https://cananusa.com/blog',
 }
 
-export default function GalleryComponent() {
-  return (
-    <Gallery />
-  )
+export default function LeadershipLayout({ children }) {
+  return children
 }
