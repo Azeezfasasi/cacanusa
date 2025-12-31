@@ -17,21 +17,21 @@ export default function DashboardBottomNav() {
       label: 'Home',
       icon: Home,
       href: '/',
-      size: 24
+      size: 16
     },
     {
       id: 'dashboard',
       label: 'Dashboard',
       icon: LayoutDashboard,
       href: '/dashboard',
-      size: 24
+      size: 16
     },
     {
       id: 'requests',
       label: 'Requests',
       icon: Users,
       href: '/dashboard/member-registration-request',
-      size: 24
+      size: 16
     }
   ]
 
@@ -71,7 +71,7 @@ export default function DashboardBottomNav() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 md:hidden z-50 bg-white border-t border-gray-200 shadow-2xl">
+    <div className="fixed bottom-0 left-0 right-0 md:hidden z-40 bg-white border-t border-gray-200 shadow-2xl">
       {/* Navigation Items */}
       <div className="flex items-center justify-between px-2 py-3">
         {/* Regular Nav Items */}
@@ -125,7 +125,7 @@ export default function DashboardBottomNav() {
               ? 'text-gray-400'
               : 'text-gray-600 hover:text-red-600'
           }`}>
-            <LogOut size={24} strokeWidth={2} />
+            <LogOut size={16} strokeWidth={2} />
           </div>
           <span className={`text-xs font-semibold transition-all duration-200 ${
             isLoggingOut

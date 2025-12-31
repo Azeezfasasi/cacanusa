@@ -337,9 +337,9 @@ export default function ManageLeadershipPage() {
                       <tr>
                         <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Photo</th>
                         <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Name</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Position</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Department</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Contact</th>
+                        <th className="hidden sm:table-cell px-4 py-3 text-left text-sm font-semibold text-gray-900">Position</th>
+                        <th className="hidden md:table-cell px-4 py-3 text-left text-sm font-semibold text-gray-900">Department</th>
+                        <th className="hidden lg:table-cell px-4 py-3 text-left text-sm font-semibold text-gray-900">Contact</th>
                         <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Actions</th>
                       </tr>
                     </thead>
@@ -362,27 +362,27 @@ export default function ManageLeadershipPage() {
                             )}
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-900 font-medium">{leader.name}</td>
-                          <td className="px-4 py-3 text-sm text-gray-600">{leader.position}</td>
-                          <td className="px-4 py-3 text-sm text-gray-600">
+                          <td className="hidden sm:table-cell px-4 py-3 text-sm text-gray-600">{leader.position}</td>
+                          <td className="hidden md:table-cell px-4 py-3 text-sm text-gray-600">
                             {leader.department?.name || 'N/A'}
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-600">
+                          <td className="hidden lg:table-cell px-4 py-3 text-sm text-gray-600">
                             {leader.email || leader.phone || '-'}
                           </td>
-                          <td className="px-4 py-3 flex gap-2">
+                          <td className="px-4 py-3 flex flex-col sm:flex-row gap-2">
                             <button
                               onClick={() => openModal(leader)}
-                              className="inline-flex items-center gap-1 bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100 text-sm"
+                              className="inline-flex items-center justify-center gap-1 bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100 text-xs sm:text-sm whitespace-nowrap"
                             >
                               <Edit className="h-4 w-4" />
-                              Edit
+                              <span className="hidden sm:inline">Edit</span>
                             </button>
                             <button
                               onClick={() => handleDelete(leader._id, leader.name)}
-                              className="inline-flex items-center gap-1 bg-red-50 text-red-600 px-2 py-1 rounded hover:bg-red-100 text-sm"
+                              className="inline-flex items-center justify-center gap-1 bg-red-50 text-red-600 px-2 py-1 rounded hover:bg-red-100 text-xs sm:text-sm whitespace-nowrap"
                             >
                               <Trash2 className="h-4 w-4" />
-                              Delete
+                              <span className="hidden sm:inline">Delete</span>
                             </button>
                           </td>
                         </tr>
