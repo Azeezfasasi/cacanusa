@@ -57,7 +57,58 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
     fetchLogo();
   }, []);
 
-  // Fetch notifications when notification dropdown opens
+  // Fetch notifications when component mounts and refresh periodically
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      setNotificationsLoading(true);
+      try {
+        const [registrationRes, welcomeRes] = await Promise.all([
+          fetch('/api/joinus?status=pending&limit=5'),
+          fetch('/api/welcome?limit=5')
+        ]);
+
+        const registrationData = registrationRes.ok ? await registrationRes.json() : { data: [] };
+        const welcomeData = welcomeRes.ok ? await welcomeRes.json() : { data: [] };
+
+        const combinedNotifications = [
+          ...(registrationData.data || []).map(item => ({
+            id: item._id,
+            type: 'registration',
+            title: `Registration Request: ${item.firstName} ${item.lastName}`,
+            message: item.email,
+            timestamp: item.createdAt,
+            data: item
+          })),
+          ...(welcomeData.data || []).map(item => ({
+            id: item._id,
+            type: 'welcome',
+            title: `Welcome Form: ${item.title}`,
+            message: item.description1 || 'New submission',
+            timestamp: item.createdAt,
+            data: item
+          }))
+        ];
+
+        // Sort by timestamp, newest first
+        combinedNotifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        setNotifications(combinedNotifications);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      } finally {
+        setNotificationsLoading(false);
+      }
+    };
+
+    // Fetch on mount
+    fetchNotifications();
+
+    // Refresh notifications every 30 seconds
+    const interval = setInterval(fetchNotifications, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Refresh notifications when dropdown opens
   useEffect(() => {
     if (!notificationDropdownOpen) return;
 
@@ -119,7 +170,7 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
             <button
               aria-label="Open menu"
               onClick={onToggleMobileMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900 md:hidden"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900 lg:hidden"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -129,7 +180,7 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
             <button
               aria-label="Toggle sidebar"
               onClick={onToggleSidebar}
-              className="hidden md:inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900"
+              className="hidden lg:inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -163,7 +214,7 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
           </div>
 
           {/* Notifications section */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-8">
             <div className="relative" ref={notificationRef}>
               <button 
                 aria-label="Notifications" 
@@ -182,7 +233,7 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
 
               {/* Notifications Dropdown */}
               {notificationDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-md shadow-lg z-50 animate-fade-in max-h-96 overflow-y-auto">
+                <div className="fixed md:absolute md:right-0 left-0 right-0 md:left-auto dtop-auto md:top-full md:mt-2 top-[80px] md:bottom-auto w-full md:w-80 bg-white border border-gray-200 rounded-t-md md:rounded-md shadow-lg z-50 animate-fade-in max-h-96 overflow-y-auto md:max-h-96 mx-0 md:mx-0">
                   <div className="p-4 border-b border-gray-200 bg-gray-50">
                     <h3 className="font-semibold text-gray-900">Notifications</h3>
                   </div>
@@ -198,7 +249,7 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
                           <Link 
                             href={notification.type === 'registration' 
                               ? '/dashboard/member-registration-request' 
-                              : '/dashboard/contact-details'}
+                              : '/dashboard/contact-form-responses'}
                             className="block px-4 py-3"
                             onClick={() => setNotificationDropdownOpen(false)}
                           >

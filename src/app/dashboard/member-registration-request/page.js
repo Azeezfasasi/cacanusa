@@ -147,13 +147,13 @@ export default function MemberRegRequest() {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20 sm:pb-0 md:pb-0 mx-auto">
-      <div className="max-w-7xl mx-auto px-0 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 lg:py-12 ">
+      <div className="max-w-7xl mx-auto px-0 sm:px-4 md:px-0 lg:px-8 py-4 sm:py-6 md:py-8 lg:py-12">
         <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-8">Membership Applications</h1>
 
         {/* Statistics */}
         {stats && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8">
-            <div className="bg-white rounded-lg p-3 sm:p-5 md:p-6 shadow hover:shadow-sm transition">
+          <div className="w-full md:w-[80%] lg:w-full grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-8 lg:gap-6 mb-4 sm:mb-6 md:mb-8">
+            <div className="bg-white rounded-lg p-3 sm:p-5 md:p-0 lg:p-6 shadow hover:shadow-sm transition">
               <p className="text-gray-600 text-xs font-medium mb-1.5">Total Applications</p>
               <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">{stats.totalApplications}</p>
             </div>
@@ -203,7 +203,7 @@ export default function MemberRegRequest() {
           ) : (
             <>
               {/* Desktop Table */}
-              <div className="hidden md:block overflow-x-auto">
+              <div className="hidden lg:block overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-gray-50 border-b">
                     <tr>
@@ -271,7 +271,7 @@ export default function MemberRegRequest() {
               </div>
 
               {/* Mobile Card View */}
-              <div className="md:hidden divide-y">
+              <div className="lg:hidden divide-y">
                 {applications.map(app => (
                   <div key={app._id} className="p-3 sm:p-4 border-b hover:bg-gray-50 transition">
                     <div className="flex justify-between items-start gap-2 mb-3">

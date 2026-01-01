@@ -34,9 +34,9 @@ export default function DashboardLayout({ children }) {
 
           <main className="flex-1 p-6 pt-4">{children}</main>
         </div>
-        <div className="mt-[100px]">
+        {/* <div className="mt-[100px]">
           <DashboardBottomNav />
-        </div>
+        </div> */}
       </div>
     </ProtectedRoute>
   )

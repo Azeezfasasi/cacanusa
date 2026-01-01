@@ -143,7 +143,7 @@ const ManageBlogPage = () => {
 		<ProtectedRoute allowedRoles={['admin', 'committee', 'it-support']}>
 		<div className="space-y-6 overflow-x-hidden mt-4">
 			{/* Header with Create Button */}
-			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+			<div className="w-full md:w-[85%] lg:w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 				<h2 className="text-xl md:text-2xl font-bold text-gray-900">Manage Blog Posts</h2>
 				<Link
 					href="/dashboard/add-blog"
@@ -154,8 +154,8 @@ const ManageBlogPage = () => {
 			</div>
 
 			{/* Filters Section */}
-			<div className="bg-white rounded-lg border border-gray-200 p-3 md:p-4 shadow-sm overflow-hidden">
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+			<div className="bg-white rounded-lg border border-gray-200 p-3 lg:p-4 shadow-sm overflow-hidden">
+				<div className="w-full md:w-[70%] lg:w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
 					{/* Search */}
 					<div>
 						<label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">Search</label>
@@ -283,33 +283,36 @@ const ManageBlogPage = () => {
 						<table className="w-full text-sm">
 							<thead className="bg-gray-50 border-b border-gray-200">
 								<tr>
-									<th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-gray-900">Title</th>
-									<th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-gray-900 hidden sm:table-cell">Author</th>
-									<th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-gray-900">Status</th>
-									<th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-gray-900 hidden md:table-cell">Date</th>
-									<th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-gray-900 hidden lg:table-cell">Views</th>
-									<th className="px-3 md:px-6 py-2 md:py-3 text-right text-xs md:text-sm font-semibold text-gray-900">Actions</th>
+									<th className="px-3 lg:px-6 py-2 lg:py-3 text-left text-xs md:text-sm font-semibold text-gray-900">Title</th>
+									<th className="px-3 lg:px-6 py-2 lg:py-3 text-left text-xs lg:text-sm font-semibold text-gray-900 hidden sm:table-cell">Author</th>
+									<th className="px-3 lg:px-6 py-2 lg:py-3 text-left text-xs lg:text-sm font-semibold text-gray-900">Status</th>
+									<th className="px-3 lg:px-6 py-2 lg:py-3 text-left text-xs lg:text-sm font-semibold text-gray-900 hidden md:table-cell">Date</th>
+									<th className="px-3 lg:px-6 py-2 lg:py-3 text-left text-xs lg:text-sm font-semibold text-gray-900 hidden lg:table-cell">Views</th>
+									<th className="px-3 lg:px-6 py-2 lg:py-3 text-right text-xs lg:text-sm font-semibold text-gray-900">Actions</th>
 								</tr>
 							</thead>
 							<tbody className="divide-y divide-gray-200">
 								{currentPosts.map((post) => (
 									<tr key={post._id} className="hover:bg-gray-50 transition-colors">
-										<td className="px-3 md:px-6 py-2 md:py-4 text-xs md:text-sm">
+										<td className="px-3 lg:px-6 py-2 lg:py-4 text-xs lg:text-sm">
 											<div>
-												<p className="font-medium text-gray-900 line-clamp-2">{post.postTitle}</p>
-												<p className="text-xs text-gray-500 truncate hidden sm:block">{post.content?.slice(0, 80) || ''}</p>
+												<p className="font-medium text-gray-900 line-clamp-2">
+													{post.postTitle?.slice(0, 50)}
+													{post.postTitle?.length > 50 && "..."}
+												</p>
+												<p className="text-xs text-gray-500 truncate hidden lg:block">{post.content?.slice(0, 80) || ''}</p>
 											</div>
 										</td>
-										<td className="px-3 md:px-6 py-2 md:py-4 text-xs md:text-sm text-gray-700 hidden sm:table-cell">{post.author}</td>
-										<td className="px-3 md:px-6 py-2 md:py-4 text-xs md:text-sm">
-											<div className="flex items-center gap-1 md:gap-2">
+										<td className="px-3 lg:px-6 py-2 lg:py-4 text-xs lg:text-sm text-gray-700 hidden sm:table-cell">{post.author}</td>
+										<td className="px-3 lg:px-6 py-2 lg:py-4 text-xs lg:text-sm">
+											<div className="flex items-center gap-1 lg:gap-2">
 												{post.status === 'published' ? (
-													<Eye className="w-3 h-3 md:w-4 md:h-4 text-green-600" />
+													<Eye className="w-3 h-3 lg:w-4 lg:h-4 text-green-600" />
 												) : (
-													<EyeOff className="w-3 h-3 md:w-4 md:h-4 text-yellow-600" />
+													<EyeOff className="w-3 h-3 lg:w-4 lg:h-4 text-yellow-600" />
 												)}
 												<span
-													className={`px-2 md:px-3 py-1 rounded-full text-xs font-medium ${
+													className={`px-2 lg:px-3 py-1 rounded-full text-xs font-medium ${
 														post.status === 'published'
 															? 'bg-green-100 text-green-700'
 															: 'bg-yellow-100 text-yellow-700'
@@ -319,24 +322,24 @@ const ManageBlogPage = () => {
 												</span>
 											</div>
 										</td>
-										<td className="px-3 md:px-6 py-2 md:py-4 text-xs md:text-sm text-gray-700 hidden md:table-cell">{formatDate(post.publishDate)}</td>
-										<td className="px-3 md:px-6 py-2 md:py-4 text-xs md:text-sm text-gray-700 hidden lg:table-cell">{post.views || 0}</td>
-										<td className="px-3 md:px-6 py-2 md:py-4 text-right">
-											<div className="flex items-center justify-end gap-1 md:gap-2">
+										<td className="px-3 lg:px-6 py-2 lg:py-4 text-xs lg:text-sm text-gray-700 hidden md:table-cell">{formatDate(post.publishDate)}</td>
+										<td className="px-3 lg:px-6 py-2 lg:py-4 text-xs lg:text-sm text-gray-700 hidden lg:table-cell">{post.views || 0}</td>
+										<td className="px-3 lg:px-6 py-2 lg:py-4 text-right">
+											<div className="flex items-center justify-end gap-1 lg:gap-2">
 												{/* Status Toggle Dropdown */}
 												<div className="relative group">
 													<button
 														title="Change Status"
-														className={`p-1 md:p-2 rounded-lg transition-colors ${
+														className={`p-1 lg:p-2 rounded-lg transition-colors ${
 															post.status === 'published'
 																? 'text-green-600 hover:bg-green-100 bg-green-50'
 																: 'text-yellow-600 hover:bg-yellow-100 bg-yellow-50'
 														}`}
 													>
 														{post.status === 'published' ? (
-															<Eye className="w-3 h-3 md:w-4 md:h-4" />
+															<Eye className="w-3 h-3 lg:w-4 lg:h-4" />
 														) : (
-															<EyeOff className="w-3 h-3 md:w-4 md:h-4" />
+															<EyeOff className="w-3 h-3 lg:w-4 lg:h-4" />
 														)}
 													</button>
 													<div className="absolute right-0 bottom-full mb-2 hidden group-hover:block bg-white border border-gray-200 rounded-lg shadow-lg z-10">
@@ -347,7 +350,7 @@ const ManageBlogPage = () => {
 																	post.status === 'published' ? 'draft' : 'published'
 																)
 															}
-															className="block w-full px-3 md:px-4 py-2 text-left text-xs md:text-sm hover:bg-gray-100 whitespace-nowrap first:rounded-t-lg last:rounded-b-lg"
+															className="block w-full px-3 lg:px-4 py-2 text-left text-xs lg:text-sm hover:bg-gray-100 whitespace-nowrap first:rounded-t-lg last:rounded-b-lg"
 														>
 															{post.status === 'published' ? 'Move to Draft' : 'Publish'}
 														</button>
@@ -357,18 +360,18 @@ const ManageBlogPage = () => {
 												<button
 													onClick={() => handleEdit(post._id)}
 													title="Edit Post"
-													className="p-1 md:p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors bg-blue-50"
+													className="p-1 lg:p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors bg-blue-50"
 												>
-													<Edit2 className="w-3 h-3 md:w-4 md:h-4" />
+													<Edit2 className="w-3 h-3 lg:w-4 lg:h-4" />
 												</button>
 
 												{/* Delete Button */}
 												<button
 													onClick={() => handleDeleteClick(post)}
 													title="Delete Post"
-													className="p-1 md:p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors bg-red-50"
+													className="p-1 lg:p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors bg-red-50"
 												>
-													<Trash2 className="w-3 h-3 md:w-4 md:h-4" />
+													<Trash2 className="w-3 h-3 lg:w-4 lg:h-4" />
 												</button>
 											</div>
 										</td>

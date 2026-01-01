@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Briefcase, NotepadText, Contact, TableProperties, Users, Mails, Images } from 'lucide-react';
+import { LayoutDashboard, Briefcase, NotepadText, Contact, TableProperties, Users, Mails, Images, UserPen, House, SearchSlash, Target, UsersRound, FilePlusCorner } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext'
 
 function Icon({ name }) {
@@ -11,6 +11,10 @@ function Icon({ name }) {
     case 'dashboard':
       return (
         <LayoutDashboard className="w-5 h-5" />
+      )
+    case 'Home':
+      return (
+        <House className="w-5 h-5" />
       )
     case 'projects':
       return (
@@ -36,9 +40,33 @@ function Icon({ name }) {
     return (
       <Mails className="w-5 h-5" />
     )
+    case 'Profile':
+    return (
+      <UserPen className="w-5 h-5" />
+    )
+    case 'About':
+    return (
+      <SearchSlash className="w-5 h-5" />
+    )
     case 'Gallery':
     return (
       <Images className="w-5 h-5" />
+    )
+    case 'Website Logo':
+    return (
+      <Target className="w-5 h-5" />
+    )
+    case 'Manage Leadership':
+    return (
+      <UsersRound className="w-5 h-5" />
+    )
+    case 'Contact Page':
+    return (
+      <Contact className="w-5 h-5" />
+    )
+    case 'Join Us':
+    return (
+      <FilePlusCorner className="w-5 h-5" />
     )
     default:
       return null
@@ -62,8 +90,8 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
         { href: '/dashboard/manage-blog', label: 'Manage Blogs', roles: ['admin', 'committee', 'it-support'] }
       ]
     },
-    { href: '/blog', label: 'View Blogs', icon: 'dashboard', roles: ['member'] },
-    { href: '/join-us', label: 'Join Us', icon: 'dashboard', roles: ['member'] },
+    { href: '/blog', label: 'View Blogs', icon: 'blog', roles: ['member'] },
+    { href: '/join-us', label: 'Join Us', icon: 'Join Us', roles: ['member'] },
     {
       href: '/dashboard/users',
       label: 'Manage Users',
@@ -72,7 +100,6 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
       children: [
         { href: '/dashboard/all-users', label: 'All Users', roles: ['admin'] },
         { href: '/dashboard/add-user', label: 'Add User', roles: ['admin'] },
-        // { href: '/dashboard/change-user-password', label: 'Change User Password', roles: ['admin'] }
       ]
     },
     {
@@ -97,13 +124,13 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
       ]
     },
     { href: '/gallery', label: 'Our Gallery', icon: 'projects', roles: ['member'] },
-    { href: '/dashboard/my-profile', label: 'Profile', icon: 'dashboard', roles: ['admin', 'member', 'committee', 'it-support'] },
+    { href: '/dashboard/my-profile', label: 'Profile', icon: 'Profile', roles: ['admin', 'member', 'committee', 'it-support'] },
 
     // Page Content Management
     {
       href: '/dashboard/homepage-contents',
       label: 'HomePage Contents',
-      icon: 'Gallery',
+      icon: 'Home',
       roles: ['admin', 'it-support'],
       children: [
         { href: '/dashboard/hero-content', label: 'Hero Slider', roles: ['admin', 'it-support'] },
@@ -117,7 +144,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
     {
       href: '/dashboard/about-contents',
       label: 'About Page Contents',
-      icon: 'Gallery',
+      icon: 'About',
       roles: ['admin', 'it-support'],
       children: [
         { href: '/dashboard/company-overview-content', label: 'Company Overview', roles: ['admin', 'it-support'] },
@@ -128,7 +155,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
     {
       href: '/dashboard/logo',
       label: 'Website Logo',
-      icon: 'Gallery',
+      icon: 'Website Logo',
       roles: ['admin', 'it-support'],
       children: [
         { href: '/dashboard/website-logo', label: 'Website Logo', roles: ['admin', 'it-support'] },
@@ -137,7 +164,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
     {
       href: '/dashboard/our-leadership',
       label: 'Manage Leadership',
-      icon: 'Gallery',
+      icon: 'Manage Leadership',
       roles: ['admin', 'it-support'],
       children: [
         { href: '/dashboard/manage-leadership', label: 'Leadership', roles: ['admin', 'it-support'] },
@@ -147,7 +174,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
     {
       href: '/dashboard/contact-contents',
       label: 'Contact Page Contents',
-      icon: 'Gallery',
+      icon: 'Contact Page',
       roles: ['admin', 'it-support'],
       children: [
         { href: '/dashboard/contact-details-content', label: 'Contact Details', roles: ['admin', 'it-support'] },
@@ -169,7 +196,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
 
   // Desktop / large screens: persistent sidebar
   const desktopNav = (
-    <nav className={`hidden md:flex pt-[15px] h-full bg-blue-900 border-r border-gray-100 ${collapsed ? 'w-16' : 'w-75'} transition-width duration-200`} aria-label="Dashboard navigation">
+    <nav className={`hidden lg:flex pt-[15px] h-full bg-blue-900 border-r border-gray-100 ${collapsed ? 'w-16' : 'w-75'} transition-width duration-200`} aria-label="Dashboard navigation">
       <div className="h-full overflow-y-auto py-6 px-2">
         <ul className="space-y-1">
           {items.map(i => {
@@ -230,10 +257,10 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
 
   // Mobile overlay nav: only visible when mobileOpen is true
   const mobileNav = mobileOpen ? (
-    <div className="fixed inset-0 z-40 md:hidden" role="dialog" aria-modal="true">
+    <div className="fixed inset-0 z-40 lg:hidden" role="dialog" aria-modal="true">
       <div className="fixed inset-0 bg-black/40" onClick={onClose} />
 
-      <nav className="relative z-50 h-full w-[85%] bg-blue-900 border-r border-gray-100">
+      <nav className="relative z-50 h-full w-[85%] md:w-[50%] bg-blue-900 border-r border-gray-100">
         <div className="h-full overflow-y-auto py-6 px-4">
           <div className="flex items-center justify-between mb-6">
             <Link href="/" className="flex flex-col items-center gap-3">
