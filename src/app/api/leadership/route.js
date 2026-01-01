@@ -10,16 +10,16 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const department = searchParams.get('department');
     const search = searchParams.get('search');
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '20');
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
+    const limit = Math.max(1, Math.min(100, parseInt(searchParams.get('limit') || '20')));
 
     let query = { isActive: true };
 
-    if (department) {
+    if (department && department.trim()) {
       query.department = department;
     }
 
-    if (search) {
+    if (search && search.trim()) {
       query.$or = [
         { name: { $regex: search, $options: 'i' } },
         { position: { $regex: search, $options: 'i' } },
@@ -45,9 +45,9 @@ export async function GET(request) {
       },
     });
   } catch (error) {
-    console.error('Error fetching leadership:', error);
+    console.error('Error fetching leadership:', error.message);
     return NextResponse.json(
-      { error: 'Failed to fetch leadership' },
+      { error: 'Failed to fetch leadership members' },
       { status: 500 }
     );
   }
