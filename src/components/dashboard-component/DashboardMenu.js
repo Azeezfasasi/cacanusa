@@ -123,6 +123,19 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
         { href: '/dashboard/all-gallery', label: 'All Gallery', roles: ['admin', 'committee', 'it-support'] },
       ]
     },
+    {
+      href: '/dashboard/canan-donation',
+      label: 'Manage Donations',
+      icon: 'Gallery',
+      roles: ['admin', 'committee'],
+      children: [
+        { href: '/dashboard/all-donations', label: 'All Donations', roles: ['admin', 'committee'] },
+        { href: '/dashboard/donation-bank-details', label: 'Donation Bank Details', roles: ['admin', 'committee'] },
+        { href: '/dashboard/donation-type', label: 'Donation Type', roles: ['admin', 'committee'] },
+        { href: '/dashboard/donation-currency', label: 'Donation Currency', roles: ['admin', 'committee'] },
+        { href: '/dashboard/payment-methods', label: 'Payment Methods', roles: ['admin', 'committee'] },
+      ]
+    },
     { href: '/gallery', label: 'Our Gallery', icon: 'projects', roles: ['member'] },
     { href: '/dashboard/my-profile', label: 'Profile', icon: 'Profile', roles: ['admin', 'member', 'committee', 'it-support'] },
 

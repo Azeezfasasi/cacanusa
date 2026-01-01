@@ -42,6 +42,7 @@ export default function MainHeader() {
     { href: '/membership', label: 'Membership' },
     { href: '/join-us', label: 'Join Us' },
     { href: '/blog', label: 'Blog' },
+    { href: '/donate', label: 'Donate' },
     { href: '/contact-us', label: 'Contact Us' }
   ]
   const pathname = usePathname()
