@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { connectDB } from '@/utils/db';
 import Leadership from '@/app/server/models/Leadership';
+import Department from '@/app/server/models/Department';
 
 // GET all leadership members
 export async function GET(request) {
