@@ -1,4 +1,5 @@
 import Donation from '../models/Donation';
+import User from '../models/User';
 import { NextResponse } from 'next/server';
 import { sendEmail } from '../services/emailService';
 
@@ -71,6 +72,48 @@ export async function createDonation(req) {
     } catch (emailError) {
       console.error('Email sending error:', emailError);
       // Don't fail the donation creation if email fails
+    }
+
+    // Send notification email to all admins
+    try {
+      const admins = await User.find({ role: 'admin', isActive: true });
+      
+      if (admins.length > 0) {
+        // Send individual emails to each admin
+        const adminEmailPromises = admins.map(admin =>
+          sendEmail({
+            to: admin.email,
+            subject: 'New Donation Submitted - CANAN USA',
+            htmlContent: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2 style="color: #2563eb;">New Donation Submission</h2>
+                <p>Dear ${admin.firstName},</p>
+                <p>A new donation has been submitted and requires your attention.</p>
+                <div style="background-color: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                  <h3 style="margin-top: 0;">Donor Information</h3>
+                  <p><strong>Name:</strong> ${donorName}</p>
+                  <p><strong>Email:</strong> ${donorEmail}</p>
+                  ${donorPhone ? `<p><strong>Phone:</strong> ${donorPhone}</p>` : ''}
+                  <h3 style="margin-top: 20px;">Donation Details</h3>
+                  <p><strong>Transaction ID:</strong> ${transactionId}</p>
+                  <p><strong>Amount:</strong> ${currency} ${amount}</p>
+                  <p><strong>Type:</strong> ${donationType}</p>
+                  <p><strong>Payment Method:</strong> ${paymentMethod}</p>
+                  <p><strong>Status:</strong> Pending Review</p>
+                  ${donorMessage ? `<p><strong>Donor Message:</strong> ${donorMessage}</p>` : ''}
+                </div>
+                <p style="color: #666; font-size: 14px;">Please log in to the admin panel to review and update the donation status.</p>
+                <p>CANAN USA Team</p>
+              </div>
+            `,
+          })
+        );
+        
+        await Promise.all(adminEmailPromises);
+      }
+    } catch (adminEmailError) {
+      console.error('Admin notification email error:', adminEmailError);
+      // Don't fail the donation creation if admin notification fails
     }
 
     return NextResponse.json(
@@ -172,13 +215,86 @@ export async function updateDonationStatus(body, donationId) {
         processedAt: new Date(),
       },
       { new: true, runValidators: true }
-    );
+    ).populate('processedBy', 'firstName lastName email');
 
     if (!donation) {
       return NextResponse.json(
         { error: 'Donation not found' },
         { status: 404 }
       );
+    }
+
+    // Send status update email to donor
+    try {
+      const statusMessage = {
+        pending: 'Your donation is currently pending review.',
+        confirmed: 'Your donation has been confirmed. Thank you for your generous contribution!',
+        cancelled: 'Your donation has been cancelled. Please contact us if you have any questions.',
+      };
+
+      await sendEmail({
+        to: donation.donorEmail,
+        subject: `Donation Status Update - CANAN USA`,
+        htmlContent: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #2563eb;">Donation Status Update</h2>
+            <p>Dear ${donation.donorName},</p>
+            <p>${statusMessage[status] || 'Your donation status has been updated.'}</p>
+            <div style="background-color: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="margin-top: 0;">Donation Details</h3>
+              <p><strong>Transaction ID:</strong> ${donation.transactionId}</p>
+              <p><strong>Amount:</strong> ${donation.currency} ${donation.amount}</p>
+              <p><strong>Donation Type:</strong> ${donation.donationType}</p>
+              <p><strong>Status:</strong> <span style="font-weight: bold; color: ${status === 'confirmed' ? '#16a34a' : status === 'cancelled' ? '#dc2626' : '#f59e0b'};">${status.charAt(0).toUpperCase() + status.slice(1)}</span></p>
+              ${notes ? `<p><strong>Notes:</strong> ${notes}</p>` : ''}
+            </div>
+            <p>If you have any questions, please contact us at your earliest convenience.</p>
+            <p>God bless you!</p>
+            <p><strong>CANAN USA Team</strong></p>
+          </div>
+        `,
+      });
+    } catch (donorEmailError) {
+      console.error('Donor notification email error:', donorEmailError);
+      // Don't fail the status update if email fails
+    }
+
+    // Send status update notification to all admins
+    try {
+      const admins = await User.find({ role: 'admin', isActive: true });
+      
+      if (admins.length > 0) {
+        // Send individual emails to each admin
+        const adminEmailPromises = admins.map(admin =>
+          sendEmail({
+            to: admin.email,
+            subject: `Donation Status Updated - CANAN USA`,
+            htmlContent: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2 style="color: #2563eb;">Donation Status Update Notification</h2>
+                <p>Dear ${admin.firstName},</p>
+                <p>A donation status has been updated. Please see the details below.</p>
+                <div style="background-color: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                  <h3 style="margin-top: 0;">Donation Details</h3>
+                  <p><strong>Donor:</strong> ${donation.donorName}</p>
+                  <p><strong>Email:</strong> ${donation.donorEmail}</p>
+                  <p><strong>Transaction ID:</strong> ${donation.transactionId}</p>
+                  <p><strong>Amount:</strong> ${donation.currency} ${donation.amount}</p>
+                  <p><strong>New Status:</strong> <span style="font-weight: bold; color: ${status === 'confirmed' ? '#16a34a' : status === 'cancelled' ? '#dc2626' : '#f59e0b'};">${status.charAt(0).toUpperCase() + status.slice(1)}</span></p>
+                  ${notes ? `<p><strong>Notes:</strong> ${notes}</p>` : ''}
+                  <p><strong>Updated At:</strong> ${new Date().toLocaleString()}</p>
+                </div>
+                <p>CANAN USA Team</p>
+              </div>
+            `,
+          })
+        );
+        
+        await Promise.all(adminEmailPromises);
+      }
+    } catch (adminEmailError) {
+      console.error('Admin notification email error:', adminEmailError);
+      // Don't fail the status update if email fails
     }
 
     return NextResponse.json(donation, { status: 200 });
