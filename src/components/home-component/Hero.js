@@ -160,7 +160,7 @@ export default function Hero() {
                       <p className="text-gray-300 mb-6">{s.subtitle}</p>
                       <div className="flex gap-3">
                         <Link href={s.cta.href} className="inline-block px-2 md:px-5 py-3 bg-green-700 text-white rounded-md font-medium">{s.cta.label}</Link>
-                        <Link href="/about-us" className="inline-block px-2 md:px-5 py-3 border border-red-700 rounded-md font-medium text-gray-300">Learn More</Link>
+                        <Link href="/about-us" className="inline-block px-2 md:px-5 py-3 border border-green-600 rounded-md font-medium text-gray-300">Learn More</Link>
                       </div>
                     </div>
                     {/* Right Image - visible on lg (laptop) and up only */}
