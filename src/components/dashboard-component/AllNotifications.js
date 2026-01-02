@@ -31,14 +31,14 @@ export default function AllNotifications() {
     const fetchNotifications = async () => {
       setLoading(true);
       try {
-        const [registrationRes, welcomeRes, donationsRes] = await Promise.all([
+        const [registrationRes, contactRes, donationsRes] = await Promise.all([
           fetch('/api/joinus?status=pending&limit=50'),
-          fetch('/api/welcome?limit=50'),
+          fetch('/api/contact?status=pending&limit=50'),
           fetch('/api/donations?status=pending&limit=50'),
         ]);
 
         const registrationData = registrationRes.ok ? await registrationRes.json() : { data: [] };
-        const welcomeData = welcomeRes.ok ? await welcomeRes.json() : { data: [] };
+        const contactData = contactRes.ok ? await contactRes.json() : { data: [] };
         const donationsData = donationsRes.ok ? await donationsRes.json() : { donations: [] };
 
         const allNotifications = [
@@ -53,14 +53,14 @@ export default function AllNotifications() {
             status: item.status || 'pending',
             data: item
           })),
-          ...(welcomeData.data || []).map(item => ({
+          ...(contactData.data || []).map(item => ({
             id: item._id,
             type: 'contact',
-            title: item.title || 'Contact Form Submission',
+            title: item.name || 'Contact Form Submission',
             email: item.email,
-            message: item.description1 || 'New contact form submission',
+            message: item.subject || 'New contact form submission',
             timestamp: item.createdAt,
-            status: 'pending',
+            status: item.status || 'pending',
             data: item
           })),
           ...(donationsData.donations || []).map(item => ({

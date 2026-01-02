@@ -1,4 +1,6 @@
 import axios from 'axios';
+import User from '../models/User.js';
+import { connectDB } from '../db/connect.js';
 
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
 const BREVO_SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL;
@@ -292,9 +294,22 @@ export const sendAdminReply = async (memberData) => {
 };
 
 /**
- * Send admin notification for new application
+ * Send admin notification for new application to all admin users
  */
 export const sendAdminNotification = async (memberData) => {
+  try {
+    await connectDB();
+    
+    // Fetch all admin users
+    const admins = await User.find({ role: 'admin' }).select('email firstName lastName');
+    
+    if (admins.length === 0) {
+      console.warn('No admin users found to send notification');
+      return { success: false, error: 'No admin users found' };
+    }
+    
+    const adminEmails = admins.map(admin => admin.email);
+  
   const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -353,24 +368,41 @@ export const sendAdminNotification = async (memberData) => {
         </div>
         
         <div class="footer">
-          <p>&copy; 2024 CANAN USA. All rights reserved.</p>
+          <p>&copy; 2026 CANAN USA. All rights reserved.</p>
         </div>
       </div>
     </body>
     </html>
   `;
 
-  return sendEmail({
-    to: ADMIN_NOTIFICATION_EMAIL,
-    subject: `New Membership Application - ${memberData.firstName} ${memberData.lastName}`,
-    htmlContent,
-  });
+    return sendEmailToMultiple({
+      recipients: adminEmails,
+      subject: `New Membership Application - ${memberData.firstName} ${memberData.lastName}`,
+      htmlContent,
+    });
+  } catch (error) {
+    console.error('Error sending admin notification:', error);
+    return { success: false, error: error.message };
+  }
 };
 
 /**
- * Send admin notification when application is updated
+ * Send admin notification when application is updated (to all admin users)
  */
 export const sendAdminUpdateNotification = async (memberData, updateType) => {
+  try {
+    await connectDB();
+    
+    // Fetch all admin users
+    const admins = await User.find({ role: 'admin' }).select('email firstName lastName');
+    
+    if (admins.length === 0) {
+      console.warn('No admin users found to send update notification');
+      return { success: false, error: 'No admin users found' };
+    }
+    
+    const adminEmails = admins.map(admin => admin.email);
+  
   const updateLabels = {
     'status-changed': 'Status Changed',
     'reply-sent': 'Reply Sent',
@@ -428,16 +460,20 @@ export const sendAdminUpdateNotification = async (memberData, updateType) => {
         </div>
         
         <div class="footer">
-          <p>&copy; 2024 CANAN USA. All rights reserved.</p>
+          <p>&copy; 2026 CANAN USA. All rights reserved.</p>
         </div>
       </div>
     </body>
     </html>
   `;
 
-  return sendEmail({
-    to: ADMIN_NOTIFICATION_EMAIL,
-    subject: `Application Update: ${memberData.firstName} ${memberData.lastName} - ${updateLabels[updateType]}`,
-    htmlContent,
-  });
+    return sendEmailToMultiple({
+      recipients: adminEmails,
+      subject: `Application Update: ${memberData.firstName} ${memberData.lastName} - ${updateLabels[updateType]}`,
+      htmlContent,
+    });
+  } catch (error) {
+    console.error('Error sending admin update notification:', error);
+    return { success: false, error: error.message };
+  }
 };

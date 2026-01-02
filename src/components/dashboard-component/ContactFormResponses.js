@@ -4,6 +4,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { Trash2, Eye, Reply, Search, Filter, ChevronLeft, ChevronRight, X } from 'lucide-react'
 
 const ContactFormResponses = () => {
+	console.log('🎯 ContactFormResponses component mounted')
 	const [responses, setResponses] = useState([])
 	const [filteredResponses, setFilteredResponses] = useState([])
 	const [loading, setLoading] = useState(false)
@@ -19,168 +20,69 @@ const ContactFormResponses = () => {
 
 	const responsesPerPage = 10
 
-	// Mock data - Replace with actual API calls
-	useEffect(() => {
-		loadResponses()
-		// eslint-disable-next-line
-	}, [])
-
-	const loadResponses = async () => {
+	const loadResponses = useCallback(async () => {
 		setLoading(true)
 		try {
-			// Mock API call - Replace with actual endpoint
-			const mockResponses = [
-				{
-					id: 1,
-					name: 'John Smithson',
-					email: 'john.smith@example.com',
-					subject: 'Project Inquiry - Commercial Building',
-					message: 'Hello, I would like to inquire about your commercial building services...',
-					status: 'new',
-					createdAt: new Date('2025-01-15T10:30:00'),
-					replied: false,
-				},
-				{
-					id: 2,
-					name: 'Mary Johnson',
-					email: 'mary.j@company.com',
-					subject: 'Partnership Opportunity',
-					message: 'We are interested in partnering with CANAN USA for upcoming projects...',
-					status: 'replied',
-					createdAt: new Date('2025-01-14T14:20:00'),
-					replied: true,
-					replyDate: new Date('2025-01-14T15:45:00'),
-				},
-				{
-					id: 3,
-					name: 'Ahmed Hassan',
-					email: 'ahmed.hassan@mail.com',
-					subject: 'General Inquiry',
-					message: 'Can you provide information about your company and services?',
-					status: 'new',
-					createdAt: new Date('2025-01-13T09:15:00'),
-					replied: false,
-				},
-				{
-					id: 4,
-					name: 'Blessing Okonkwo',
-					email: 'blessing.ok@email.com',
-					subject: 'Project Proposal Request',
-					message: 'We have a construction project that requires professional engineering services...',
-					status: 'replied',
-					createdAt: new Date('2025-01-12T11:00:00'),
-					replied: true,
-					replyDate: new Date('2025-01-12T16:30:00'),
-				},
-				{
-					id: 5,
-					name: 'Zainab Muhammed',
-					email: 'zainab.m@company.ng',
-					subject: 'Support Request',
-					message: 'I need technical support regarding a previous project...',
-					status: 'new',
-					createdAt: new Date('2025-01-11T13:45:00'),
-					replied: false,
-				},
-				{
-					id: 6,
-					name: 'David Okoye',
-					email: 'david.okoye@firm.com',
-					subject: 'Consultation Request',
-					message: 'Looking for consultation on infrastructure project planning...',
-					status: 'archived',
-					createdAt: new Date('2025-01-10T08:20:00'),
-					replied: false,
-				},
-				{
-					id: 7,
-					name: 'Chioma Eze',
-					email: 'chioma.eze@mail.ng',
-					subject: 'Service Inquiry',
-					message: 'Interested in learning more about your structural engineering services...',
-					status: 'new',
-					createdAt: new Date('2025-01-09T16:00:00'),
-					replied: false,
-				},
-				{
-					id: 8,
-					name: 'Peter Adeyemi',
-					email: 'peter.adeyemi@company.com',
-					subject: 'Urgent: Project Update',
-					message: 'Need urgent update on the ongoing construction project status...',
-					status: 'replied',
-					createdAt: new Date('2025-01-08T10:30:00'),
-					replied: true,
-					replyDate: new Date('2025-01-08T11:15:00'),
-				},
-				{
-					id: 9,
-					name: 'Ngozi Chukwu',
-					email: 'ngozi.chukwu@email.ng',
-					subject: 'Feedback on Service',
-					message: 'Great service! Would like to discuss future collaborations...',
-					status: 'new',
-					createdAt: new Date('2025-01-07T14:20:00'),
-					replied: false,
-				},
-				{
-					id: 10,
-					name: 'Ibrahim Yusuf',
-					email: 'ibrahim.yusuf@firm.ng',
-					subject: 'Quote Request',
-					message: 'Requesting detailed quote for the proposed commercial development...',
-					status: 'new',
-					createdAt: new Date('2025-01-06T09:00:00'),
-					replied: false,
-				},
-			]
-
-			setResponses(mockResponses)
-			applyFilters(mockResponses, searchQuery, statusFilter)
+			const statusParam = statusFilter !== 'all' ? `&status=${statusFilter}` : ''
+			const url = `/api/contact?page=${currentPage}&limit=${responsesPerPage}${statusParam}`
+			console.log('🔄 Fetching from:', url)
+			
+			const response = await fetch(url)
+			const data = await response.json()
+			
+			console.log('✅ API Response:', data)
+			
+			if (data.success || data.data) {
+				const contactsData = data.data || data.contacts || []
+				console.log('📊 Contacts Data:', contactsData)
+				setResponses(contactsData)
+				setFilteredResponses(contactsData)
+			} else {
+				console.warn('⚠️ No data in response')
+				setResponses([])
+				setFilteredResponses([])
+			}
 		} catch (error) {
-			console.error('Failed to load responses:', error)
+			console.error('❌ Error loading responses:', error)
+			setResponses([])
+			setFilteredResponses([])
 		} finally {
 			setLoading(false)
 		}
-	}
+	}, [statusFilter, currentPage])
 
-	const applyFilters = useCallback((data, search, status) => {
-		let filtered = data
+	// Fetch responses from API
+	useEffect(() => {
+		console.log('📍 useEffect triggered - loading responses')
+		loadResponses()
+	}, [loadResponses])
 
-		// Search filter
-		if (search.trim()) {
-			filtered = filtered.filter(
-				(response) =>
-					response.name.toLowerCase().includes(search.toLowerCase()) ||
-					response.email.toLowerCase().includes(search.toLowerCase()) ||
-					response.subject.toLowerCase().includes(search.toLowerCase()) ||
-					response.message.toLowerCase().includes(search.toLowerCase())
-			)
-		}
-
-		// Status filter
-		if (status !== 'all') {
-			filtered = filtered.filter((response) => response.status === status)
-		}
-
-		// Sort by date (newest first)
-		filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-
-		setFilteredResponses(filtered)
-		setCurrentPage(1)
+	// Initial load on mount
+	useEffect(() => {
+		console.log('🚀 Component mounted - triggering initial load')
+		loadResponses()
 	}, [])
 
 	// Handle search
 	const handleSearch = (e) => {
 		const query = e.target.value
 		setSearchQuery(query)
-		applyFilters(responses, query, statusFilter)
+		// Filter locally while API filters by page
+		const filtered = responses.filter(
+			(response) =>
+				response.name.toLowerCase().includes(query.toLowerCase()) ||
+				response.email.toLowerCase().includes(query.toLowerCase()) ||
+				response.subject.toLowerCase().includes(query.toLowerCase()) ||
+				response.message.toLowerCase().includes(query.toLowerCase())
+		)
+		setSearchQuery(query)
+		setFilteredResponses(filtered)
 	}
 
 	// Handle status filter
 	const handleStatusFilter = (status) => {
 		setStatusFilter(status)
-		applyFilters(responses, searchQuery, status)
+		setCurrentPage(1)
 	}
 
 	// Clear filters
@@ -188,7 +90,6 @@ const ContactFormResponses = () => {
 		setSearchQuery('')
 		setStatusFilter('all')
 		setCurrentPage(1)
-		setFilteredResponses(responses)
 	}
 
 	// View response
@@ -213,29 +114,24 @@ const ContactFormResponses = () => {
 		}
 
 		try {
-			// Mock API call - Replace with actual endpoint
-			// const response = await fetch(`/api/contact-responses/${selectedResponse.id}/reply`, {
-			//   method: 'POST',
-			//   headers: { 'Content-Type': 'application/json' },
-			//   body: JSON.stringify({ reply: replyText, replyEmail })
-			// })
+			const response = await fetch(`/api/contact/${selectedResponse._id}`, {
+				method: 'PATCH',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ 
+					status: 'replied',
+					reply: replyText,
+					replyEmail 
+				})
+			})
 
-			// Update local state
-			const updatedResponses = responses.map((r) =>
-				r.id === selectedResponse.id
-					? {
-							...r,
-							status: 'replied',
-							replied: true,
-							replyDate: new Date(),
-					  }
-					: r
-			)
-			setResponses(updatedResponses)
-			applyFilters(updatedResponses, searchQuery, statusFilter)
-
-			setShowReplyModal(false)
-			alert('Reply sent successfully!')
+			if (response.ok) {
+				setShowReplyModal(false)
+				setReplyText('')
+				loadResponses()
+				alert('Reply sent successfully!')
+			} else {
+				alert('Failed to send reply')
+			}
 		} catch (error) {
 			console.error('Failed to send reply:', error)
 			alert('Failed to send reply')
@@ -245,15 +141,17 @@ const ContactFormResponses = () => {
 	// Delete response
 	const handleDelete = async () => {
 		try {
-			// Mock API call - Replace with actual endpoint
-			// await fetch(`/api/contact-responses/${selectedResponse.id}`, { method: 'DELETE' })
+			const response = await fetch(`/api/contact/${selectedResponse._id}`, { 
+				method: 'DELETE'
+			})
 
-			const updatedResponses = responses.filter((r) => r.id !== selectedResponse.id)
-			setResponses(updatedResponses)
-			applyFilters(updatedResponses, searchQuery, statusFilter)
-
-			setShowDeleteModal(false)
-			alert('Response deleted successfully!')
+			if (response.ok) {
+				setShowDeleteModal(false)
+				loadResponses()
+				alert('Response deleted successfully!')
+			} else {
+				alert('Failed to delete response')
+			}
 		} catch (error) {
 			console.error('Failed to delete response:', error)
 			alert('Failed to delete response')
@@ -261,19 +159,14 @@ const ContactFormResponses = () => {
 	}
 
 	// Pagination
-	const totalPages = Math.ceil(filteredResponses.length / responsesPerPage)
-	const startIndex = (currentPage - 1) * responsesPerPage
-	const endIndex = startIndex + responsesPerPage
-	const currentResponses = filteredResponses.slice(startIndex, endIndex)
-
 	// Get status badge color
 	const getStatusColor = (status) => {
 		switch (status) {
-			case 'new':
+			case 'pending':
 				return 'bg-blue-100 text-blue-800'
 			case 'replied':
 				return 'bg-green-100 text-green-800'
-			case 'archived':
+			case 'closed':
 				return 'bg-gray-100 text-gray-800'
 			default:
 				return 'bg-gray-100 text-gray-800'
@@ -331,14 +224,14 @@ const ContactFormResponses = () => {
 									All ({responses.length})
 								</button>
 								<button
-									onClick={() => handleStatusFilter('new')}
+									onClick={() => handleStatusFilter('pending')}
 									className={`px-4 py-2 rounded-lg font-medium transition ${
-										statusFilter === 'new'
+										statusFilter === 'pending'
 											? 'bg-blue-900 text-white'
 											: 'bg-gray-100 text-gray-700 hover:bg-gray-200'
 									}`}
 								>
-									New ({responses.filter((r) => r.status === 'new').length})
+									Pending ({responses.filter((r) => r.status === 'pending').length})
 								</button>
 								<button
 									onClick={() => handleStatusFilter('replied')}
@@ -351,14 +244,14 @@ const ContactFormResponses = () => {
 									Replied ({responses.filter((r) => r.status === 'replied').length})
 								</button>
 								<button
-									onClick={() => handleStatusFilter('archived')}
+									onClick={() => handleStatusFilter('closed')}
 									className={`px-4 py-2 rounded-lg font-medium transition ${
-										statusFilter === 'archived'
+										statusFilter === 'closed'
 											? 'bg-gray-600 text-white'
 											: 'bg-gray-100 text-gray-700 hover:bg-gray-200'
 									}`}
 								>
-									Archived ({responses.filter((r) => r.status === 'archived').length})
+									Closed ({responses.filter((r) => r.status === 'closed').length})
 								</button>
 							</div>
 
@@ -376,12 +269,12 @@ const ContactFormResponses = () => {
 
 				{/* Results Summary */}
 				<div className="mb-4 text-sm text-gray-600">
-					Showing {currentResponses.length > 0 ? startIndex + 1 : 0} to{' '}
-					{Math.min(endIndex, filteredResponses.length)} of {filteredResponses.length} responses
+					Showing {responses.length > 0 ? (currentPage - 1) * responsesPerPage + 1 : 0} to{' '}
+					{Math.min(currentPage * responsesPerPage, responses.length)} of {responses.length} responses
 				</div>
 
 				{/* Responses Table */}
-				{filteredResponses.length === 0 ? (
+				{responses.length === 0 ? (
 					<div className="bg-white rounded-lg shadow-sm p-12 text-center">
 						<Filter className="mx-auto w-12 h-12 text-gray-400 mb-4" />
 						<p className="text-gray-600 text-lg font-medium">No responses found</p>
@@ -411,8 +304,8 @@ const ContactFormResponses = () => {
 									</tr>
 								</thead>
 								<tbody className="divide-y divide-gray-200">
-									{currentResponses.map((response) => (
-										<tr key={response.id} className="hover:bg-gray-50 transition">
+									{responses.map((response) => (
+										<tr key={response._id} className="hover:bg-gray-50 transition">
 											<td className="px-6 py-4 whitespace-nowrap">
 												<div className="font-medium text-gray-900">{response.name}</div>
 												<div className="text-sm text-gray-500">{response.email}</div>
@@ -425,7 +318,7 @@ const ContactFormResponses = () => {
 											</td>
 											<td className="px-6 py-4 whitespace-nowrap">
 												<span className={`inline-flex px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(response.status)}`}>
-													{response.status === 'new' ? '🔵 New' : response.status === 'replied' ? '✓ Replied' : '📦 Archived'}
+													{response.status === 'pending' ? '🔵 Pending' : response.status === 'replied' ? '✓ Replied' : '✖ Closed'}
 												</span>
 											</td>
 											<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
@@ -466,38 +359,23 @@ const ContactFormResponses = () => {
 						</div>
 
 						{/* Pagination */}
-						{totalPages > 1 && (
-							<div className="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-								<p className="text-sm text-gray-600">Page {currentPage} of {totalPages}</p>
-								<div className="flex gap-2">
-									<button
-										onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-										disabled={currentPage === 1}
-										className="p-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
-									>
-										<ChevronLeft className="w-5 h-5" />
-									</button>
-									{Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-										<button
-											key={page}
-											onClick={() => setCurrentPage(page)}
-											className={`px-3 py-1 rounded-lg font-medium transition ${
-												currentPage === page
-													? 'bg-orange-600 text-white'
-													: 'border border-gray-300 text-gray-700 hover:bg-gray-100'
-											}`}
-										>
-											{page}
-										</button>
-									))}
-									<button
-										onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-										disabled={currentPage === totalPages}
-										className="p-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
-									>
-										<ChevronRight className="w-5 h-5" />
-									</button>
-								</div>
+						{responses.length >= responsesPerPage && (
+							<div className="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-center gap-2">
+								<button
+									onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+									disabled={currentPage === 1}
+									className="p-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+								>
+									<ChevronLeft className="w-5 h-5" />
+								</button>
+								<span className="text-sm text-gray-600">Page {currentPage}</span>
+								<button
+									onClick={() => setCurrentPage(currentPage + 1)}
+									disabled={responses.length < responsesPerPage}
+									className="p-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+								>
+									<ChevronRight className="w-5 h-5" />
+								</button>
 							</div>
 						)}
 					</div>

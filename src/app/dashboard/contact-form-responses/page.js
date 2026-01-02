@@ -7,32 +7,10 @@ import { Commet } from "react-loading-indicators";
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const ContactFormResponses = () => {
+	console.log('🎯 ContactFormResponses component mounted')
 	const { user } = useAuth();
 
-	useEffect(() => {
-		loadResponses();
-		// eslint-disable-next-line
-	}, []);
-
-	async function loadResponses() {
-		setLoading(true);
-		try {
-			const res = await fetch('/api/contact');
-			const data = await res.json();
-			if (data.success && Array.isArray(data.contacts)) {
-				setResponses(data.contacts);
-				applyFilters(data.contacts, searchQuery, statusFilter);
-			} else {
-				setResponses([]);
-				applyFilters([], searchQuery, statusFilter);
-			}
-		} catch (error) {
-			setResponses([]);
-			applyFilters([], searchQuery, statusFilter);
-		} finally {
-			setLoading(false);
-		}
-	}
+	// Define state first
 	const [responses, setResponses] = useState([])
 	const [filteredResponses, setFilteredResponses] = useState([])
 	const [loading, setLoading] = useState(false)
@@ -48,13 +26,40 @@ const ContactFormResponses = () => {
 	const [replyEmail, setReplyEmail] = useState('')
 	const [newStatus, setNewStatus] = useState('')
 	const responsesPerPage = 10;
-	// If you use AuthContext, import and use it here:
-	// import { useAuth } from '../../../context/AuthContext';
-	// const { user } = useAuth();
-	// For now, set user to null to avoid errors if not using AuthContext
-	// const user = null;
-	// You must define loadResponses and useEffect for fetching data
-	// Add your loadResponses and useEffect here if not present
+
+	// Then define loadResponses with useCallback
+	const loadResponses = useCallback(async () => {
+		console.log('🔄 loadResponses called')
+		setLoading(true);
+		try {
+			const statusParam = statusFilter !== 'all' ? `&status=${statusFilter}` : ''
+			const url = `/api/contact?page=${currentPage}&limit=${responsesPerPage}${statusParam}`
+			console.log('📡 Fetching from:', url)
+			
+			const res = await fetch(url);
+			const data = await res.json();
+			console.log('✅ API Response:', data)
+			
+			// API returns { success: true, data: [...], pagination: {...} }
+			if (data.success && Array.isArray(data.data)) {
+				console.log('📊 Setting responses:', data.data)
+				setResponses(data.data);
+			} else if (Array.isArray(data.data)) {
+				console.log('📊 Setting responses (no success flag):', data.data)
+				setResponses(data.data);
+			} else {
+				console.warn('⚠️ Unexpected response format:', data)
+				setResponses([]);
+			}
+		} catch (error) {
+			console.error('❌ Error loading responses:', error)
+			setResponses([]);
+		} finally {
+			setLoading(false);
+		}
+	}, [currentPage, statusFilter, responsesPerPage])
+
+	// Define applyFilters before using it in useEffect
 	const applyFilters = useCallback((data, search, status) => {
 		let filtered = data
 
@@ -80,6 +85,18 @@ const ContactFormResponses = () => {
 		setFilteredResponses(filtered)
 		setCurrentPage(1)
 	}, [])
+
+	// Load responses on mount and when filters change
+	useEffect(() => {
+		console.log('🚀 useEffect triggered for initial load')
+		loadResponses();
+	}, [loadResponses]);
+
+	// Apply filters whenever responses or filter criteria change
+	useEffect(() => {
+		console.log('📋 Applying filters to responses:', responses.length)
+		applyFilters(responses, searchQuery, statusFilter)
+	}, [responses, searchQuery, statusFilter, applyFilters])
 
 	// Handle search
 	const handleSearch = (e) => {
