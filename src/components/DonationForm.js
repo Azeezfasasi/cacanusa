@@ -445,6 +445,28 @@ export default function DonationForm() {
                   />
                 </div>
 
+                {/* Success Message */}
+                {status === 'success' && (
+                  <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
+                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h3 className="font-semibold text-green-900 mb-1">Success!</h3>
+                      <p className="text-green-800">{successMessage}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Error Message */}
+                {status === 'error' && (
+                  <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+                    <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h3 className="font-semibold text-red-900 mb-1">Error</h3>
+                      <p className="text-red-800">{errorMessage}</p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Submit Button */}
                 <div className="pt-4">
                   <button

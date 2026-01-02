@@ -1,5 +1,6 @@
 import Donation from '../models/Donation';
 import User from '../models/User';
+import BankDetails from '../models/BankDetails';
 import { NextResponse } from 'next/server';
 import { sendEmail } from '../services/emailService';
 
@@ -46,11 +47,36 @@ export async function createDonation(req) {
 
     await donation.save();
 
+    // Fetch bank details for payment instructions
+    let bankDetails = null;
+    try {
+      bankDetails = await BankDetails.findOne({ isActive: true });
+    } catch (bankError) {
+      console.error('Error fetching bank details:', bankError);
+    }
+
     // Send confirmation email to donor
     try {
+      const bankDetailsHTML = bankDetails ? `
+        <div style="background-color: #fef3c7; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f59e0b;">
+          <h3 style="margin-top: 0; color: #92400e;">Payment Instructions</h3>
+          <p><strong>Bank Name:</strong> ${bankDetails.bankName}</p>
+          <p><strong>Account Name:</strong> ${bankDetails.accountName}</p>
+          <p><strong>Account Number:</strong> ${bankDetails.accountNumber}</p>
+          ${bankDetails.routingNumber ? `<p><strong>Routing Number:</strong> ${bankDetails.routingNumber}</p>` : ''}
+          ${bankDetails.swiftCode ? `<p><strong>SWIFT Code:</strong> ${bankDetails.swiftCode}</p>` : ''}
+          ${bankDetails.ibanCode ? `<p><strong>IBAN Code:</strong> ${bankDetails.ibanCode}</p>` : ''}
+          ${bankDetails.address ? `<p><strong>Bank Address:</strong> ${bankDetails.address}</p>` : ''}
+          ${bankDetails.phone ? `<p><strong>Bank Phone:</strong> ${bankDetails.phone}</p>` : ''}
+          ${bankDetails.email ? `<p><strong>Bank Email:</strong> ${bankDetails.email}</p>` : ''}
+          ${bankDetails.currency ? `<p><strong>Currency:</strong> ${bankDetails.currency}</p>` : ''}
+        </div>
+      ` : '';
+
       await sendEmail({
         to: donorEmail,
         subject: 'Donation Confirmation - CANAN USA',
+        transactionId,
         htmlContent: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2 style="color: #2563eb;">Donation Received</h2>
@@ -62,6 +88,7 @@ export async function createDonation(req) {
               <p><strong>Type:</strong> ${donationType}</p>
               <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
             </div>
+            ${bankDetailsHTML}
             <p>A receipt will be sent to you once your donation has been confirmed by our team.</p>
             <p>If you have any questions, please don't hesitate to contact us.</p>
             <p>God bless you!</p>
@@ -83,7 +110,8 @@ export async function createDonation(req) {
         const adminEmailPromises = admins.map(admin =>
           sendEmail({
             to: admin.email,
-            subject: 'New Donation Submitted - CANAN USA',
+            subject: `New Donation Submitted - CANAN USA | ${transactionId}`,
+            transactionId,
             htmlContent: `
               <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                 <h2 style="color: #2563eb;">New Donation Submission</h2>
@@ -235,6 +263,7 @@ export async function updateDonationStatus(body, donationId) {
       await sendEmail({
         to: donation.donorEmail,
         subject: `Donation Status Update - CANAN USA`,
+        transactionId: donation.transactionId,
         htmlContent: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2 style="color: #2563eb;">Donation Status Update</h2>
@@ -269,6 +298,7 @@ export async function updateDonationStatus(body, donationId) {
           sendEmail({
             to: admin.email,
             subject: `Donation Status Updated - CANAN USA`,
+            transactionId: donation.transactionId,
             htmlContent: `
               <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                 <h2 style="color: #2563eb;">Donation Status Update Notification</h2>
@@ -324,6 +354,7 @@ export async function sendReceiptEmail(donationId) {
     await sendEmail({
       to: donation.donorEmail,
       subject: `Donation Receipt #${receiptNumber} - CANAN USA`,
+      transactionId: donation.transactionId,
       htmlContent: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #2563eb;">Official Donation Receipt</h2>

@@ -22,9 +22,10 @@ export const sendEmail = async ({
   htmlContent,
   textContent,
   replyTo = BREVO_SENDER_EMAIL,
+  transactionId,
 }) => {
   try {
-    const response = await brevoClient.post('/smtp/email', {
+    const emailPayload = {
       sender: {
         name: BREVO_SENDER_NAME,
         email: BREVO_SENDER_EMAIL,
@@ -41,7 +42,16 @@ export const sendEmail = async ({
         email: replyTo,
         name: BREVO_SENDER_NAME,
       },
-    });
+    };
+
+    // Add transaction ID as a header for tracking
+    if (transactionId) {
+      emailPayload.headers = {
+        'X-Transaction-ID': transactionId,
+      };
+    }
+
+    const response = await brevoClient.post('/smtp/email', emailPayload);
 
     return { success: true, data: response.data };
   } catch (error) {
