@@ -75,7 +75,7 @@ export async function createDonation(req) {
 
       await sendEmail({
         to: donorEmail,
-        subject: 'Donation Confirmation - CANAN USA',
+        subject: `Donation Confirmation - CANAN USA | ${donation.transactionId}`,
         transactionId,
         htmlContent: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -262,7 +262,7 @@ export async function updateDonationStatus(body, donationId) {
 
       await sendEmail({
         to: donation.donorEmail,
-        subject: `Donation Status Update - CANAN USA`,
+        subject: `Donation Status Update - CANAN USA | ${donation.transactionId}`,
         transactionId: donation.transactionId,
         htmlContent: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -297,7 +297,7 @@ export async function updateDonationStatus(body, donationId) {
         const adminEmailPromises = admins.map(admin =>
           sendEmail({
             to: admin.email,
-            subject: `Donation Status Updated - CANAN USA`,
+            subject: `Donation Status Updated - CANAN USA | ${donation.transactionId}`,
             transactionId: donation.transactionId,
             htmlContent: `
               <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
