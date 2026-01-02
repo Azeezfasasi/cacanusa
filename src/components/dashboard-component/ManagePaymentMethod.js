@@ -261,26 +261,7 @@ export default function ManagePaymentMethod() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Basic Info Section */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Value Input */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Identifier <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="value"
-                  value={formData.value}
-                  onChange={handleInputChange}
-                  placeholder="e.g., bank-transfer"
-                  disabled={!!editingId}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
-                  required
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  {editingId ? 'Cannot be changed' : 'Auto-generated from label'}
-                </p>
-              </div>
-
+            
               {/* Label Input */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -297,6 +278,27 @@ export default function ManagePaymentMethod() {
                 />
               </div>
             </div>
+
+            {/* Value Input */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Identifier <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="value"
+                  value={formData.value}
+                  onChange={handleInputChange}
+                  placeholder="e.g., bank-transfer"
+                  disabled={!!editingId}
+                  readOnly
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                  required
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  {editingId ? 'Cannot be changed' : 'Auto-generated from label'}
+                </p>
+              </div>
 
             {/* Description */}
             <div>

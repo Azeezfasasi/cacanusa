@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Briefcase, NotepadText, Contact, TableProperties, Users, Mails, Images, UserPen, House, SearchSlash, Target, UsersRound, FilePlusCorner } from 'lucide-react';
+import { LayoutDashboard, Briefcase, NotepadText, Contact, TableProperties, Users, Mails, Images, UserPen, House, SearchSlash, Target, UsersRound, FilePlusCorner, HandHeart } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext'
 
 function Icon({ name }) {
@@ -67,6 +67,10 @@ function Icon({ name }) {
     case 'Join Us':
     return (
       <FilePlusCorner className="w-5 h-5" />
+      )
+    case 'Donate':
+    return (
+      <HandHeart className="w-5 h-5" />
     )
     default:
       return null
@@ -126,7 +130,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
     {
       href: '/dashboard/canan-donation',
       label: 'Manage Donations',
-      icon: 'Gallery',
+      icon: 'Donate',
       roles: ['admin', 'committee'],
       children: [
         { href: '/dashboard/all-donations', label: 'All Donations', roles: ['admin', 'committee'] },
