@@ -132,7 +132,7 @@ export default function DashboardMenu({ collapsed, mobileOpen = false, onClose =
         { href: '/dashboard/all-donations', label: 'All Donations', roles: ['admin', 'committee'] },
         { href: '/dashboard/donation-bank-details', label: 'Donation Bank Details', roles: ['admin', 'committee'] },
         { href: '/dashboard/donation-type', label: 'Donation Type', roles: ['admin', 'committee'] },
-        { href: '/dashboard/donation-currency', label: 'Donation Currency', roles: ['admin', 'committee'] },
+        // { href: '/dashboard/donation-currency', label: 'Donation Currency', roles: ['admin', 'committee'] },
         { href: '/dashboard/payment-methods', label: 'Payment Methods', roles: ['admin', 'committee'] },
       ]
     },
