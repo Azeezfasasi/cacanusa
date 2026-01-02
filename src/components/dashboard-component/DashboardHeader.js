@@ -62,13 +62,15 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
     const fetchNotifications = async () => {
       setNotificationsLoading(true);
       try {
-        const [registrationRes, welcomeRes] = await Promise.all([
+        const [registrationRes, welcomeRes, donationsRes] = await Promise.all([
           fetch('/api/joinus?status=pending&limit=5'),
-          fetch('/api/welcome?limit=5')
+          fetch('/api/welcome?limit=5'),
+          fetch('/api/donations?status=pending&limit=5')
         ]);
 
         const registrationData = registrationRes.ok ? await registrationRes.json() : { data: [] };
         const welcomeData = welcomeRes.ok ? await welcomeRes.json() : { data: [] };
+        const donationsData = donationsRes.ok ? await donationsRes.json() : { donations: [] };
 
         const combinedNotifications = [
           ...(registrationData.data || []).map(item => ({
@@ -84,6 +86,14 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
             type: 'welcome',
             title: `Welcome Form: ${item.title}`,
             message: item.description1 || 'New submission',
+            timestamp: item.createdAt,
+            data: item
+          })),
+          ...(donationsData.donations || []).map(item => ({
+            id: item._id,
+            type: 'donation',
+            title: `New Donation: ${item.donationType || 'Donation'}`,
+            message: `${item.currency} ${item.amount}`,
             timestamp: item.createdAt,
             data: item
           }))
@@ -115,13 +125,15 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
     const fetchNotifications = async () => {
       setNotificationsLoading(true);
       try {
-        const [registrationRes, welcomeRes] = await Promise.all([
+        const [registrationRes, welcomeRes, donationsRes] = await Promise.all([
           fetch('/api/joinus?status=pending&limit=5'),
-          fetch('/api/welcome?limit=5')
+          fetch('/api/welcome?limit=5'),
+          fetch('/api/donations?status=pending&limit=5')
         ]);
 
         const registrationData = registrationRes.ok ? await registrationRes.json() : { data: [] };
         const welcomeData = welcomeRes.ok ? await welcomeRes.json() : { data: [] };
+        const donationsData = donationsRes.ok ? await donationsRes.json() : { donations: [] };
 
         const combinedNotifications = [
           ...(registrationData.data || []).map(item => ({
@@ -137,6 +149,14 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
             type: 'welcome',
             title: `Welcome Form: ${item.title}`,
             message: item.description1 || 'New submission',
+            timestamp: item.createdAt,
+            data: item
+          })),
+          ...(donationsData.donations || []).map(item => ({
+            id: item._id,
+            type: 'donation',
+            title: `New Donation: ${item.donationType || 'Donation'}`,
+            message: `${item.currency} ${item.amount}`,
             timestamp: item.createdAt,
             data: item
           }))
@@ -249,13 +269,15 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
                           <Link 
                             href={notification.type === 'registration' 
                               ? '/dashboard/member-registration-request' 
+                              : notification.type === 'donation'
+                              ? '/dashboard/all-donations'
                               : '/dashboard/contact-form-responses'}
                             className="block px-4 py-3"
                             onClick={() => setNotificationDropdownOpen(false)}
                           >
                             <div className="flex items-start gap-3">
                               <div className={`flex-shrink-0 w-2 h-2 rounded-full mt-2 ${
-                                notification.type === 'registration' ? 'bg-blue-500' : 'bg-green-500'
+                                notification.type === 'registration' ? 'bg-blue-500' : notification.type === 'donation' ? 'bg-purple-500' : 'bg-green-500'
                               }`}></div>
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-medium text-gray-900 truncate">
@@ -271,9 +293,11 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
                               <span className={`text-xs font-semibold px-2 py-1 rounded whitespace-nowrap ${
                                 notification.type === 'registration' 
                                   ? 'bg-blue-100 text-blue-800' 
+                                  : notification.type === 'donation'
+                                  ? 'bg-purple-100 text-purple-800'
                                   : 'bg-green-100 text-green-800'
                               }`}>
-                                {notification.type === 'registration' ? 'Registration' : 'Welcome'}
+                                {notification.type === 'registration' ? 'Registration' : notification.type === 'donation' ? 'Donation' : 'Welcome'}
                               </span>
                             </div>
                           </Link>
@@ -284,7 +308,7 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
                   
                   <div className="p-3 border-t border-gray-200 bg-gray-50">
                     <Link 
-                      href="/dashboard/member-registration-request" 
+                      href="/dashboard/all-notifications" 
                       className="block text-center text-sm font-medium text-blue-600 hover:text-blue-800 py-2"
                       onClick={() => setNotificationDropdownOpen(false)}
                     >
