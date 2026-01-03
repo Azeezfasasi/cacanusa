@@ -629,15 +629,15 @@ export default function DonationForm() {
             </p>
           </div>
           <div className="bg-white rounded-lg p-6 shadow">
-            <h4 className="font-semibold text-gray-900 mb-2">Tax Deductible</h4>
+            <h4 className="font-semibold text-gray-900 mb-2">Trusted Organization</h4>
             <p className="text-gray-600 text-sm">
-              CANAN USA is a registered non-profit organization
+              CANAN USA is a verified organization committed to transparency and accountability.
             </p>
           </div>
           <div className="bg-white rounded-lg p-6 shadow">
-            <h4 className="font-semibold text-gray-900 mb-2">Instant Receipt</h4>
+            <h4 className="font-semibold text-gray-900 mb-2">Instant Confirmation</h4>
             <p className="text-gray-600 text-sm">
-              Receive automatic confirmation via email
+              Receive an immediate confirmation and receipt via email after your donation.
             </p>
           </div>
         </div>
