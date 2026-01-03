@@ -1,4 +1,4 @@
-import { connectDB } from '@/utils/db';
+import { connectDB } from '@/app/server/db/connect';
 import Gallery from '@/app/server/models/Gallery';
 
 export async function POST(request, { params }) {

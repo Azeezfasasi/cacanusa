@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { connectDB } from '@/utils/db';
+import { connectDB } from '@/app/server/db/connect';
 import Department from '@/app/server/models/Department';
 
 // GET single department

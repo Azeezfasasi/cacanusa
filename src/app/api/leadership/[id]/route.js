@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { connectDB } from '@/utils/db';
+import { connectDB } from '@/app/server/db/connect';
 import Leadership from '@/app/server/models/Leadership';
 import { deleteFromCloudinary } from '@/app/server/utils/cloudinaryService';
 

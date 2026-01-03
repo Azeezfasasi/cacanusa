@@ -1,4 +1,4 @@
-import { connectDB } from '../../../utils/db';
+import { connectDB } from '@/app/server/db/connect';
 import { createBlog, getAllBlogs } from '../../server/controllers/blogController';
 
 export async function POST(req, res) {

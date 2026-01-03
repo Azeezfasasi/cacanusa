@@ -1,4 +1,4 @@
-import { connectDB } from '../../../utils/db';
+import { connectDB } from '@/app/server/db/connect';
 import {
   getAllPaymentMethods,
   getPaymentMethodById,

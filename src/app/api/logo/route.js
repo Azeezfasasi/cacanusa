@@ -1,4 +1,4 @@
-import { connectDB } from '@/utils/db';
+import { connectDB } from '@/app/server/db/connect';
 import Logo from '@/app/server/models/Logo';
 import { deleteFromCloudinary } from '@/app/server/utils/cloudinaryService';
 
