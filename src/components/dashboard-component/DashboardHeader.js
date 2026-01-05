@@ -343,7 +343,7 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
                     </li>
                     {user?.role === 'admin' || user?.role === 'committee' || user?.role === 'it-support' ? (
                     <li>
-                      <Link href="https://accounts.zoho.com/" target='_blank' className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition w-full text-left">Access Zoho Email</Link>
+                      <Link href="https://mail.zoho.com/" target='_blank' className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition w-full text-left">Access Zoho Email</Link>
                     </li>
                     ) : null}
                     {user?.role === 'admin' || user?.role === 'committee' || user?.role === 'it-support' ? (
