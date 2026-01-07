@@ -153,8 +153,8 @@ export default function Hero() {
           >
             {slides.map((s, i) => (
               <div key={i} className="min-w-full flex-none" style={{ flex: '0 0 100%' }}>
-                <div className="h-[420px] md:h-[540px] flex items-center">
-                  <div className="w-full h-full p-8 md:p-12 flex items-center justify-between gap-6" style={{ background: s.bg }}>
+                <div className="h-[550px] md:h-[540px] flex items-center">
+                  <div className="w-full h-full p-6 md:p-16 flex flex-col lg:flex-row items-center justify-between gap-6" style={{ background: s.bg }}>
                     <div className="flex-1 max-w-full md:max-w-2xl">
                       <h2 className="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-4">{s.title}</h2>
                       <p className="text-gray-300 mb-6">{s.subtitle}</p>
@@ -164,13 +164,13 @@ export default function Hero() {
                       </div>
                     </div>
                     {/* Right Image - visible on lg (laptop) and up only */}
-                    <div className="hidden lg:block shrink-0 lg:w-[40%]">
+                    <div className="block shrink-0 w-full lg:w-[40%]">
                       <Image
                         src={s.image?.src}
                         alt={s.image?.alt}
                         width={420}
-                        height={500}
-                        className="rounded-2xl object-cover w-full h-[500px]"
+                        height={50}
+                        className="rounded-2xl object-cover w-full h-full md:h-[500px]"
                       />
                     </div>
                   </div>

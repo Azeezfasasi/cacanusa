@@ -139,10 +139,13 @@ export default function AddGalleryPage() {
 
   return (
     <ProtectedRoute allowedRoles={['admin', 'committee', 'it-support']}>
-    <div className="min-h-screen bg-gray-50 py-6 sm:py-8 mx-auto">
-      <div className="max-w-2xl mx-auto px-3 sm:px-4">
+    <div className="min-h-screen bg-gray-50 py-6 sm:py-8 mx-auto w-[95%] lg:w-full">
+      <div className="max-w-2xl mx-auto px-0 sm:px-4 ml-[-10px] lg:ml-auto">
         <div className="bg-white rounded-lg shadow-md p-4 sm:p-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8">Add New Gallery</h1>
+          <div className='bg-blue-50 p-2 border border-blue-200 rounded-lg mb-8'>
+            <marquee className="text-blue-700 font-medium">You can add up to 10 <span className='text-red-600'>videos</span> or <span className='text-red-600'>images</span> for this gallery.</marquee>
+          </div>
 
           {error && (
             <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
@@ -160,7 +163,7 @@ export default function AddGalleryPage() {
             {/* Title */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Title *
+                Title <span className='text-red-600 text-[16px]'>*</span>
               </label>
               <input
                 type="text"
@@ -190,7 +193,7 @@ export default function AddGalleryPage() {
             {/* Category */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Category *
+                Category <span className='text-red-600 text-[16px]'>*</span>
               </label>
               <select
                 name="category"
