@@ -55,39 +55,50 @@ export default function AddGalleryPage() {
     setError('');
 
     try {
-      for (const file of files) {
-        const isVideo = file.type.startsWith('video/');
-        const isImage = file.type.startsWith('image/');
+      const uploadPromises = files.map(file => {
+        return new Promise((resolve, reject) => {
+          const isVideo = file.type.startsWith('video/');
+          const isImage = file.type.startsWith('image/');
 
-        if (!isImage && !isVideo) {
-          setError(`${file.name} is not a valid image or video file`);
-          continue;
-        }
-
-        // Convert file to base64
-        const reader = new FileReader();
-        reader.onloadend = async () => {
-          const base64 = reader.result;
-
-          try {
-            const result = await uploadImageToCloudinary(base64, 'cananusa/gallery');
-
-            setFormData(prev => ({
-              ...prev,
-              media: [...prev.media, {
-                url: result.url,
-                publicId: result.publicId,
-                alt: '',
-                type: isVideo ? 'video' : 'image',
-                displayOrder: prev.media.length,
-              }],
-            }));
-          } catch (err) {
-            setError(`Failed to upload ${file.name}: ${err.message}`);
+          if (!isImage && !isVideo) {
+            setError(`${file.name} is not a valid image or video file`);
+            resolve(null);
+            return;
           }
-        };
-        reader.readAsDataURL(file);
-      }
+
+          // Convert file to base64
+          const reader = new FileReader();
+          reader.onloadend = async () => {
+            const base64 = reader.result;
+
+            try {
+              const result = await uploadImageToCloudinary(base64, 'cananusa/gallery');
+
+              setFormData(prev => ({
+                ...prev,
+                media: [...prev.media, {
+                  url: result.url,
+                  publicId: result.publicId,
+                  alt: '',
+                  type: isVideo ? 'video' : 'image',
+                  displayOrder: prev.media.length,
+                }],
+              }));
+              resolve(true);
+            } catch (err) {
+              setError(`Failed to upload ${file.name}: ${err.message}`);
+              reject(err);
+            }
+          };
+          reader.onerror = () => {
+            reject(new Error(`Failed to read ${file.name}`));
+          };
+          reader.readAsDataURL(file);
+        });
+      });
+
+      // Wait for all uploads to complete
+      await Promise.all(uploadPromises);
 
       setSuccess(`${files.length} file(s) uploaded successfully`);
       setTimeout(() => setSuccess(''), 3000);

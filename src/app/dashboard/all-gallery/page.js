@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchGalleries, deleteGallery } from '@/app/utils/galleryApi';
-import { Plus, Edit, Trash2, Eye, Loader, Search } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, Loader, Search, Play } from 'lucide-react';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const CATEGORIES = ['awareness-campaign', 'humanitarian-support', 'prayer-mobilization', 'community event', 'congressional-engagement', 'legal-interventions', 'leadership-development', 'others'];
@@ -231,11 +231,30 @@ export default function AllGalleriesPage() {
                   {/* Gallery Image */}
                   <div className="relative h-48 bg-gray-200 overflow-hidden">
                     {(gallery.media && gallery.media.length > 0) || (gallery.images && gallery.images.length > 0) ? (
-                      <img
-                        src={(gallery.media?.[0] || gallery.images?.[0])?.url}
-                        alt={gallery.title}
-                        className="w-full h-full object-cover"
-                      />
+                      <>
+                        {(() => {
+                          // Find the first image in the media array
+                          const mediaArray = gallery.media || gallery.images || [];
+                          const firstImage = mediaArray.find(m => m.type === 'image' || !m.type);
+                          
+                          if (firstImage) {
+                            return (
+                              <img
+                                src={firstImage.url}
+                                alt={gallery.title}
+                                className="w-full h-full object-cover"
+                              />
+                            );
+                          } else {
+                            // No images, only videos - show video placeholder
+                            return (
+                              <div className="w-full h-full flex items-center justify-center bg-black">
+                                <Play className="h-16 w-16 text-white fill-white" />
+                              </div>
+                            );
+                          }
+                        })()}
+                      </>
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-gray-400">
                         No image

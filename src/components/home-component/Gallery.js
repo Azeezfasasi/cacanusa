@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Search, ChevronDown, Grid3x3, List, Heart, Eye, MapPin, Building2, Tag } from 'lucide-react';
+import { Search, ChevronDown, Grid3x3, List, Heart, Eye, MapPin, Building2, Tag, Play } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Gallery() {
@@ -244,12 +244,29 @@ export default function Gallery() {
                       {/* Image Container */}
                       <div className="relative overflow-hidden bg-gray-200 h-48 sm:h-56">
                         {((gallery.media && gallery.media.length > 0) || (gallery.images && gallery.images.length > 0)) ? (
-                          <Image
-                            src={(gallery.media?.[0] || gallery.images?.[0])?.url}
-                            alt={gallery.title}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
+                          <>
+                            {(() => {
+                              const mediaArray = gallery.media || gallery.images || [];
+                              const firstImage = mediaArray.find(m => m.type === 'image' || !m.type);
+                              
+                              if (firstImage) {
+                                return (
+                                  <Image
+                                    src={firstImage.url}
+                                    alt={gallery.title}
+                                    fill
+                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                  />
+                                );
+                              } else {
+                                return (
+                                  <div className="w-full h-full bg-black flex items-center justify-center">
+                                    <Play className="h-16 w-16 text-white fill-white" />
+                                  </div>
+                                );
+                              }
+                            })()}
+                          </>
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
                             <Building2 className="h-12 w-12 text-gray-600" />
@@ -361,12 +378,29 @@ export default function Gallery() {
                       {/* Image */}
                       <div className="relative w-24 sm:w-32 h-24 sm:h-32 shrink-0 rounded-lg overflow-hidden bg-gray-200">
                         {((gallery.media && gallery.media.length > 0) || (gallery.images && gallery.images.length > 0)) ? (
-                          <Image
-                            src={(gallery.media?.[0] || gallery.images?.[0])?.url}
-                            alt={gallery.title}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
+                          <>
+                            {(() => {
+                              const mediaArray = gallery.media || gallery.images || [];
+                              const firstImage = mediaArray.find(m => m.type === 'image' || !m.type);
+                              
+                              if (firstImage) {
+                                return (
+                                  <Image
+                                    src={firstImage.url}
+                                    alt={gallery.title}
+                                    fill
+                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                  />
+                                );
+                              } else {
+                                return (
+                                  <div className="w-full h-full bg-black flex items-center justify-center">
+                                    <Play className="h-8 w-8 text-white fill-white" />
+                                  </div>
+                                );
+                              }
+                            })()}
+                          </>
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
                             <Building2 className="h-8 w-8 text-gray-600" />
