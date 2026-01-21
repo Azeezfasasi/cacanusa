@@ -366,10 +366,13 @@ export default function MemberRegRequest() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-3 sm:p-4 md:p-6 z-50 overflow-y-auto">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto my-4 sm:my-auto">
             <div className="p-4 sm:p-6 border-b sticky top-0 bg-white flex justify-between items-center gap-3">
-              <h2 className="text-base sm:text-xl md:text-2xl font-bold truncate">{selectedApp.firstName} {selectedApp.lastName}</h2>
+              <div className='w-full flex flex-row justify-between items-center'>
+                <h2 className="text-base sm:text-xl md:text-2xl font-bold truncate">{selectedApp.firstName} {selectedApp.lastName}</h2>
+                <div className='capitalize bg-blue-100 px-2 py-1 rounded font-bold'><span className='text-blue-700'>{selectedApp.status}</span></div>
+              </div>
               <button
                 onClick={() => setSelectedApp(null)}
-                className="text-gray-400 hover:text-gray-600 text-2xl flex-shrink-0 transition"
+                className="text-red-600 hover:text-gray-600 text-3xl flex-shrink-0 transition"
               >
                 ×
               </button>
@@ -394,6 +397,30 @@ export default function MemberRegRequest() {
                   <p className="text-xs sm:text-sm text-gray-600">Membership Type</p>
                   <p className="font-semibold text-sm sm:text-base capitalize">{selectedApp.membershipType}</p>
                 </div>
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-600">Date of Birth</p>
+                  <p className="font-semibold text-sm sm:text-base capitalize">{selectedApp.dateOfBirth || 'N/A'}</p>
+                </div>
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-600">Gender</p>
+                  <p className="font-semibold text-sm sm:text-base capitalize">{selectedApp.gender || 'N/A'}</p>
+                </div>
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-600">Country</p>
+                  <p className="font-semibold text-sm sm:text-base capitalize">{selectedApp.country || 'N/A'}</p>
+                </div>
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-600">State</p>
+                  <p className="font-semibold text-sm sm:text-base capitalize">{selectedApp.state || 'N/A'}</p>
+                </div>
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-600">Special Skills</p>
+                  <p className="font-semibold text-sm sm:text-base capitalize">{selectedApp.specialSkills || 'N/A'}</p>
+                </div>
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-600">Additional Skills</p>
+                  <p className="font-semibold text-sm sm:text-base capitalize">{selectedApp.skills || 'N/A'}</p>
+                </div>
               </div>
 
               <div>
@@ -415,6 +442,11 @@ export default function MemberRegRequest() {
                 <p className="text-gray-900 text-sm sm:text-base leading-relaxed mt-2">{selectedApp.motivation}</p>
               </div>
 
+              <div>
+                <p className="text-xs sm:text-sm text-gray-600">How Heard About</p>
+                <p className="font-semibold text-sm sm:text-base capitalize">{selectedApp.howHeardAbout || 'N/A'}</p>
+              </div>
+
               {selectedApp.adminNotes && (
                 <div className="space-y-2 bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <p className="text-xs sm:text-sm font-medium text-gray-600">Admin Notes</p>
@@ -423,25 +455,36 @@ export default function MemberRegRequest() {
               )}
 
               <div className="border-t pt-5 flex flex-col sm:flex-row gap-3">
-                <select
+                <div className='w-full'>
+                  <p className="text-xs sm:text-sm text-gray-600 mb-2 font-medium">Change Status</p>
+                  <select
                   onChange={e => {
                     handleStatusChange(selectedApp._id, e.target.value);
                     setSelectedApp(null);
                   }}
-                  className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-900"
-                >
-                  <option value="">Change Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="under-review">Under Review</option>
-                  <option value="approved">Approved</option>
-                  <option value="rejected">Rejected</option>
-                </select>
+                  className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-900 w-full"
+                  >
+                    <option value="">Change Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="under-review">Under Review</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+                </div>
                 <button
                   onClick={() => setShowReplyModal(true)}
                   className="w-full sm:w-auto px-4 sm:px-6 py-2.5 bg-blue-900 text-white rounded-lg hover:bg-blue-800 active:bg-blue-900 transition text-sm font-semibold"
                 >
                   Reply
                 </button>
+              </div>
+              <div className='flex justify-center'>
+                <button
+                onClick={() => setSelectedApp(null)}
+                className="bg-red-200 px-4 py-2 text-red-600 hover:text-red-700 hover:bg-red-300 text-[16px] md:text-2xl flex-shrink-0 transition rounded-md"
+              >
+                Close
+              </button>
               </div>
             </div>
           </div>
