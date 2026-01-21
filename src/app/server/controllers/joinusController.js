@@ -29,6 +29,8 @@ export const createApplication = async (req, res) => {
       'city',
       'membershipType',
       'interests',
+      // 'skills',
+      // 'specialSkills',
       'motivation',
       'howHeardAbout',
       'agreeToTerms',

@@ -70,6 +70,10 @@ const joinusSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    specialSkills: {
+      type: String,
+      trim: true,
+    },
 
     // Why Join (Step 4)
     motivation: {

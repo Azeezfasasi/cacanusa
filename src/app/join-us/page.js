@@ -24,6 +24,7 @@ export default function JoinUs() {
     // Step 3: Interests & Involvement
     membershipType: 'regular',
     interests: [],
+    specialSkills: '',
     skills: '',
     
     // Step 4: Why Join
@@ -57,6 +58,15 @@ export default function JoinUs() {
     'Professional Networking',
     'Social Justice',
     'Community Service',
+  ];
+
+  const SPECIAL_SKILLS = [
+    'Fundraising',
+    'Social Media Marketing',
+    'Community/Event Organizing',
+    'Press/Media Campaign',
+    'Training/Development',
+    'Technical/Video/Photography and Editing.',
   ];
 
   const handleInputChange = (e) => {
@@ -103,6 +113,7 @@ export default function JoinUs() {
 
     if (step === 3) {
       if (formData.interests.length === 0) newErrors.interests = 'Please select at least one interest';
+      // if (!formData.specialSkills) newErrors.specialSkills = 'Please select a special skill';
     }
 
     if (step === 4) {
@@ -489,6 +500,28 @@ export default function JoinUs() {
                       </button>
                     ))}
                   </div>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Volunteer Skills
+                  </label>
+                  <select
+                    name="specialSkills"
+                    value={formData.specialSkills}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 transition ${
+                      errors.specialSkills ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  >
+                    <option value="">-- Select your special skills --</option>
+                    {SPECIAL_SKILLS.map(skill => (
+                      <option key={skill} value={skill}>
+                        {skill}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.specialSkills && <p className="text-red-500 text-sm mt-1">{errors.specialSkills}</p>}
                 </div>
 
                 <div>

@@ -23,6 +23,8 @@ export async function POST(request) {
       'city',
       'membershipType',
       'interests',
+      // 'skills',
+      // 'specialSkills',
       'motivation',
       'howHeardAbout',
       'agreeToTerms',

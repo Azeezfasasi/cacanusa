@@ -126,6 +126,7 @@ export const sendApplicationConfirmation = async (memberData) => {
             <p><strong>Phone:</strong> ${memberData.phone}</p>
             <p><strong>Location:</strong> ${memberData.city}, ${memberData.state}, ${memberData.country}</p>
             <p><strong>Membership Type:</strong> ${memberData.membershipType.charAt(0).toUpperCase() + memberData.membershipType.slice(1)}</p>
+            <p><strong>Volunteer Skills:</strong> ${memberData.specialSkills}</p>
           </div>
           
           <div class="info-box">
@@ -354,6 +355,7 @@ export const sendAdminNotification = async (memberData) => {
             <p><strong>Membership Type:</strong> ${memberData.membershipType.charAt(0).toUpperCase() + memberData.membershipType.slice(1)}</p>
             <p><strong>Interests:</strong> ${memberData.interests.join(', ')}</p>
             <p><strong>Skills:</strong> ${memberData.skills || 'Not specified'}</p>
+            <p><strong>Special Skills:</strong> ${memberData.specialSkills || 'Not specified'}</p>
           </div>
           
           <div class="info-box">
