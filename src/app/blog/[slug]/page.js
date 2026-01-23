@@ -5,6 +5,9 @@ import { useParams } from 'next/navigation';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+
+const PDFViewer = dynamic(() => import('@/components/PDFViewer'), { ssr: false });
 
 export default function BlogDetailPage() {
   const { slug } = useParams();
@@ -191,6 +194,9 @@ export default function BlogDetailPage() {
             <img src={blog.featuredImage} alt={blog.postTitle} className="w-full h-full object-cover" />
           </div>
         )}
+
+        {/* PDF Viewer */}
+        {blog.pdfFile && <PDFViewer pdfUrl={blog.pdfFile} />}
 
         {/* Content */}
         <div className="bg-white rounded-lg shadow-md p-8 mb-8">

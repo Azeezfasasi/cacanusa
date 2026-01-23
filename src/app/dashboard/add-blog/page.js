@@ -14,7 +14,9 @@ export default function AddBlogPage() {
     featuredImage: null,
     featuredImagePreview: '',
     blogImages: [],
-    blogImagePreviews: []
+    blogImagePreviews: [],
+    pdfFile: null,
+    pdfFileName: ''
   })
 
   const [loading, setLoading] = useState(false)
@@ -88,6 +90,36 @@ export default function AddBlogPage() {
     }))
   }
 
+  function handlePdfChange(e) {
+    const file = e.target.files?.[0] || null
+    if (file) {
+      // Validate PDF file
+      if (file.type !== 'application/pdf') {
+        setMessage({ type: 'error', text: 'Please upload a valid PDF file' })
+        return
+      }
+      const MAX_SIZE = 10 * 1024 * 1024; // 10MB limit for Cloudinary free plan
+      if (file.size > MAX_SIZE) {
+        const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        setMessage({ type: 'error', text: `PDF file is too large (${sizeMB}MB). Cloudinary free plan supports maximum 10MB. Please compress the PDF or upgrade your Cloudinary plan.` })
+        return
+      }
+      setFormData(prev => ({ 
+        ...prev, 
+        pdfFile: file,
+        pdfFileName: file.name
+      }))
+    }
+  }
+
+  function removePdf() {
+    setFormData(prev => ({ 
+      ...prev, 
+      pdfFile: null,
+      pdfFileName: ''
+    }))
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
     setLoading(true)
@@ -124,7 +156,7 @@ export default function AddBlogPage() {
       if (response.ok) {
         setMessage({ type: 'success', text: 'Blog post created successfully!' })
         setFormData({
-          postTitle: '', urlSlug: '', content: '', category: '', tags: '', author: '', featuredImage: null, blogImages: []
+          postTitle: '', urlSlug: '', content: '', category: '', tags: '', author: '', featuredImage: null, blogImages: [], pdfFile: null, pdfFileName: ''
         })
         setCharCount(0)
       } else {
@@ -268,6 +300,47 @@ export default function AddBlogPage() {
                   </div>
                 </div>
               )}
+            </div>
+
+            {/* PDF File Upload */}
+            <div className="mt-8 pt-8 border-t">
+              <label htmlFor="pdfFile" className="block text-sm font-medium text-gray-700 mb-2">PDF File <span className='text-blue-500'>(Optional)</span></label>
+              <p className='text-blue-800 mb-2'>Upload a PDF file (up to 5MB) - will be displayed with PDF Flip viewer</p>
+              
+              {/* PDF File Preview */}
+              {formData.pdfFileName && (
+                <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm1 2a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 11-2 0V6H7v4a1 1 0 11-2 0V5z" />
+                    </svg>
+                    <div>
+                      <p className="font-semibold text-blue-900">{formData.pdfFileName}</p>
+                      <p className="text-xs text-blue-700">{(formData.pdfFile?.size / 1024 / 1024).toFixed(2)} MB</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={removePdf}
+                    className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
+                  >
+                    Remove
+                  </button>
+                </div>
+              )}
+              
+              <div className="flex items-center justify-center w-full">
+                <label htmlFor="pdfFile" className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg className="w-8 h-8 mb-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    <p className="text-sm text-gray-600"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                    <p className="text-xs text-gray-500">PDF file up to 10MB (Cloudinary free plan limit)</p>
+                  </div>
+                  <input type="file" id="pdfFile" name="pdfFile" onChange={handlePdfChange} accept=".pdf" className="hidden" />
+                </label>
+              </div>
             </div>
           </fieldset>
 

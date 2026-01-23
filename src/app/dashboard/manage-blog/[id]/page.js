@@ -24,6 +24,9 @@ function EditBlogContent() {
 		featuredImagePreview: '',
 		blogImages: [],
 		blogImagePreviews: [],
+		pdfFile: null,
+		pdfFileName: '',
+		pdfFileUrl: '',
 		status: 'draft',
 		publishDate: '',
 	})
@@ -57,6 +60,9 @@ function EditBlogContent() {
 				featuredImagePreview: blog.featuredImage || '',
 				blogImages: [],
 				blogImagePreviews: Array.isArray(blog.blogImages) ? blog.blogImages : [],
+				pdfFile: null,
+				pdfFileName: blog.pdfFile ? 'existing-pdf' : '',
+				pdfFileUrl: blog.pdfFile || '',
 				status: blog.status || 'draft',
 				publishDate: blog.publishDate ? new Date(blog.publishDate).toISOString().split('T')[0] : '',
 			})
@@ -164,6 +170,40 @@ function EditBlogContent() {
 		setHasChanges(true)
 	}
 
+	function handlePdfChange(e) {
+		const file = e.target.files?.[0] || null
+		if (file) {
+			// Validate PDF file
+			if (file.type !== 'application/pdf') {
+				setMessage({ type: 'error', text: 'Please upload a valid PDF file' })
+				return
+			}
+			const MAX_SIZE = 10 * 1024 * 1024; // 10MB limit for Cloudinary free plan
+			if (file.size > MAX_SIZE) {
+				const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+				setMessage({ type: 'error', text: `PDF file is too large (${sizeMB}MB). Cloudinary free plan supports maximum 10MB. Please compress the PDF or upgrade your Cloudinary plan.` })
+				return
+			}
+			setFormData(prev => ({ 
+				...prev, 
+				pdfFile: file,
+				pdfFileName: file.name,
+				pdfFileUrl: ''
+			}))
+			setHasChanges(true)
+		}
+	}
+
+	function removePdf() {
+		setFormData(prev => ({ 
+			...prev, 
+			pdfFile: null,
+			pdfFileName: '',
+			pdfFileUrl: ''
+		}))
+		setHasChanges(true)
+	}
+
 	async function handleSubmit(e) {
 		e.preventDefault()
 		setSaving(true)
@@ -189,6 +229,14 @@ function EditBlogContent() {
 			// Add featured image if changed
 			if (formData.featuredImage instanceof File) {
 				data.append('featuredImage', formData.featuredImage)
+			}
+			
+			// Add PDF file if new one is selected
+			if (formData.pdfFile instanceof File) {
+				data.append('pdfFile', formData.pdfFile)
+			} else if (formData.pdfFileUrl) {
+				// Keep existing PDF URL
+				data.append('pdfFileUrl', formData.pdfFileUrl)
 			}
 			
 			// Add existing blog image URLs (those that start with http or https)
@@ -590,6 +638,68 @@ function EditBlogContent() {
 									</div>
 								</div>
 							)}
+						</div>
+					</fieldset>
+
+					{/* PDF File Upload */}
+					<fieldset>
+						<legend className="text-lg font-semibold text-gray-900 mb-4">PDF Document</legend>
+						<div>
+							<label htmlFor="pdfFile" className="block text-sm font-medium text-gray-700 mb-2">
+								PDF File (Optional)
+							</label>
+							<p className='text-blue-800 mb-2'>Upload a PDF file (up to 100MB) - will be displayed with PDF viewer</p>
+							
+							{/* Current PDF Preview */}
+							{(formData.pdfFileName || formData.pdfFileUrl) && (
+								<div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
+									<div className="flex items-center gap-3">
+										<svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+											<path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm1 2a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 11-2 0V6H7v4a1 1 0 11-2 0V5z" />
+										</svg>
+										<div>
+											<p className="font-semibold text-blue-900">
+												{formData.pdfFileName ? formData.pdfFileName : 'PDF Document'}
+											</p>
+											{formData.pdfFile && (
+												<p className="text-xs text-blue-700">{(formData.pdfFile.size / 1024 / 1024).toFixed(2)} MB</p>
+											)}
+										</div>
+									</div>
+									<button
+										type="button"
+										onClick={removePdf}
+										className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
+									>
+										Remove
+									</button>
+								</div>
+							)}
+							
+							<div className="flex items-center justify-center w-full">
+								<label 
+									htmlFor="pdfFile" 
+									className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition"
+								>
+									<div className="flex flex-col items-center justify-center pt-5 pb-6">
+										<svg className="w-8 h-8 mb-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+										</svg>
+										<p className="text-sm text-gray-600">
+											<span className="font-semibold">Click to upload</span> or drag and drop
+										</p>
+										<p className="text-xs text-gray-500">PDF file up to 10MB (Cloudinary free plan limit)</p>
+									</div>
+									<input 
+										type="file" 
+										id="pdfFile" 
+										name="pdfFile" 
+										onChange={handlePdfChange} 
+										accept=".pdf" 
+										className="hidden" 
+									/>
+								</label>
+							</div>
 						</div>
 					</fieldset>
 

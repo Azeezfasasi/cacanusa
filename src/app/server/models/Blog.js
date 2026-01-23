@@ -29,7 +29,8 @@ const BlogSchema = new mongoose.Schema({
   tags: [{ type: String }],
   featuredImage: { type: String },
   blogImages: [{ type: String }],
-  status: { type: String, enum: ['draft', 'published'], default: 'draft' },
+  pdfFile: { type: String },
+  status: { type: String, enum: ['draft', 'published'], default: 'published' },
   likes: {
     type: Number,
     default: 0,

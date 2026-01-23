@@ -12,13 +12,21 @@ cloudinary.config({
 
 // Helper function to upload file to Cloudinary
 async function uploadToCloudinary(fileBuffer, fileName, folder = 'blog') {
+  const uploadOptions = {
+    folder: folder,
+    resource_type: 'auto',
+    public_id: fileName.split('.')[0],
+  };
+  
+  // For PDFs, set specific resource type
+  if (fileName && fileName.toLowerCase().endsWith('.pdf')) {
+    uploadOptions.resource_type = 'raw';
+  }
+  
+  // Use upload_stream which handles buffers correctly
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
-      {
-        folder: folder,
-        resource_type: 'auto',
-        public_id: fileName.split('.')[0],
-      },
+      uploadOptions,
       (error, result) => {
         if (error) reject(error);
         else resolve(result);
@@ -35,7 +43,7 @@ export async function createBlog(req) {
     const blogData = {};
     
     for (const [key, value] of form.entries()) {
-      if (key === 'blogImages' || key === 'featuredImage') {
+      if (key === 'blogImages' || key === 'featuredImage' || key === 'pdfFile') {
         if (value instanceof File) {
           // Convert file to buffer and upload to Cloudinary
           const buffer = await value.arrayBuffer();
@@ -50,6 +58,8 @@ export async function createBlog(req) {
           } else if (key === 'blogImages') {
             if (!blogData[key]) blogData[key] = [];
             blogData[key].push(uploadResult.secure_url);
+          } else if (key === 'pdfFile') {
+            blogData[key] = uploadResult.secure_url;
           }
         }
       } else {
@@ -79,7 +89,8 @@ export async function getAllBlogs() {
 export async function getBlogById(req, { params }) {
   await connectDB();
   try {
-    const blog = await Blog.findById(params.id);
+    const { id } = await params;
+    const blog = await Blog.findById(id);
     if (!blog) return new Response(JSON.stringify({ error: 'Blog not found' }), { status: 404 });
     return new Response(JSON.stringify(blog), { status: 200 });
   } catch (err) {
@@ -114,6 +125,15 @@ export async function updateBlog(req, { params }) {
           'blog'
         );
         newBlogImages.push(uploadResult.secure_url);
+      } else if (key === 'pdfFile' && value instanceof File) {
+        // Upload new PDF file to Cloudinary
+        const buffer = await value.arrayBuffer();
+        const uploadResult = await uploadToCloudinary(
+          Buffer.from(buffer),
+          value.name,
+          'blog'
+        );
+        blogData[key] = uploadResult.secure_url;
       } else if (key === 'existingBlogImages') {
         // Parse existing image URLs from JSON string
         try {
@@ -132,7 +152,7 @@ export async function updateBlog(req, { params }) {
       } else if (key === 'publishDate' && value) {
         // Convert date string to ISO format
         blogData[key] = new Date(value).toISOString();
-      } else if (value && key !== 'featuredImagePreview' && key !== 'blogImages') {
+      } else if (value && key !== 'featuredImagePreview' && key !== 'blogImages' && key !== 'pdfFileUrl') {
         blogData[key] = value;
       }
     }
@@ -154,7 +174,8 @@ export async function updateBlog(req, { params }) {
 export async function deleteBlog(req, { params }) {
   await connectDB();
   try {
-    const blog = await Blog.findByIdAndDelete(params.id);
+    const { id } = await params;
+    const blog = await Blog.findByIdAndDelete(id);
     if (!blog) return new Response(JSON.stringify({ error: 'Blog not found' }), { status: 404 });
     return new Response(JSON.stringify({ message: 'Blog deleted' }), { status: 200 });
   } catch (err) {
@@ -165,11 +186,12 @@ export async function deleteBlog(req, { params }) {
 export async function changeBlogStatus(req, { params }) {
   await connectDB();
   try {
+    const { id } = await params;
     const { status } = await req.json();
     if (!['draft', 'published'].includes(status)) {
       return new Response(JSON.stringify({ error: 'Invalid status' }), { status: 400 });
     }
-    const blog = await Blog.findByIdAndUpdate(params.id, { status }, { new: true });
+    const blog = await Blog.findByIdAndUpdate(id, { status }, { new: true });
     if (!blog) return new Response(JSON.stringify({ error: 'Blog not found' }), { status: 404 });
     return new Response(JSON.stringify(blog), { status: 200 });
   } catch (err) {
@@ -181,12 +203,13 @@ export async function changeBlogStatus(req, { params }) {
 export async function addLike(req, { params }) {
   await connectDB();
   try {
+    const { id } = await params;
     const { userId } = await req.json();
     if (!userId) {
       return new Response(JSON.stringify({ error: 'User ID required' }), { status: 400 });
     }
 
-    const blog = await Blog.findById(params.id);
+    const blog = await Blog.findById(id);
     if (!blog) return new Response(JSON.stringify({ error: 'Blog not found' }), { status: 404 });
 
     // Check if user already liked
@@ -208,12 +231,13 @@ export async function addLike(req, { params }) {
 export async function removeLike(req, { params }) {
   await connectDB();
   try {
+    const { id } = await params;
     const { userId } = await req.json();
     if (!userId) {
       return new Response(JSON.stringify({ error: 'User ID required' }), { status: 400 });
     }
 
-    const blog = await Blog.findById(params.id);
+    const blog = await Blog.findById(id);
     if (!blog) return new Response(JSON.stringify({ error: 'Blog not found' }), { status: 404 });
 
     // Check if user liked
@@ -235,13 +259,14 @@ export async function removeLike(req, { params }) {
 export async function addComment(req, { params }) {
   await connectDB();
   try {
+    const { id } = await params;
     const { userId, userName, userEmail, userAvatar, text } = await req.json();
 
     if (!text || !userName) {
       return new Response(JSON.stringify({ error: 'Comment text and user name required' }), { status: 400 });
     }
 
-    const blog = await Blog.findById(params.id);
+    const blog = await Blog.findById(id);
     if (!blog) return new Response(JSON.stringify({ error: 'Blog not found' }), { status: 404 });
 
     const comment = {
@@ -266,12 +291,13 @@ export async function addComment(req, { params }) {
 export async function deleteComment(req, { params }) {
   await connectDB();
   try {
+    const { id } = await params;
     const { commentId } = await req.json();
     if (!commentId) {
       return new Response(JSON.stringify({ error: 'Comment ID required' }), { status: 400 });
     }
 
-    const blog = await Blog.findById(params.id);
+    const blog = await Blog.findById(id);
     if (!blog) return new Response(JSON.stringify({ error: 'Blog not found' }), { status: 404 });
 
     blog.comments = blog.comments.filter(comment => comment._id.toString() !== commentId);
