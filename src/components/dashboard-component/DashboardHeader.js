@@ -222,7 +222,7 @@ export default function DashboardHeader({ onToggleSidebar, onToggleMobileMenu })
                 </div>
               ) : (
                 <Image 
-                  src="/images/cananusatrans.png" 
+                  src="/images/canannew.png" 
                   alt="CANAN USA Logo" 
                   width={80} 
                   height={40} 

@@ -299,7 +299,7 @@ export default function AddGalleryPage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Images & Videos * (At least 1 required)
-                <span className="block text-xs text-blue-600">You can upload multiple (images or videos) files at once.</span>
+                <span className="block text-xs text-blue-600">You can upload multiple (images or videos) files at once up to 5MB.</span>
               </label>
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-6">
                 <div className="text-center">

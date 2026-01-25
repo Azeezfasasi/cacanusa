@@ -133,7 +133,7 @@ export default function MainHeader() {
                   />
                 </div>
               ) : (
-                <Image src="/images/cananusnew.png" alt="CANANUSA Logo" width={150} height={100} className="w-[150px] md:w-[150px] block rounded-md" priority />
+                <Image src="/images/canannew.png" alt="CANANUSA Logo" width={150} height={100} className="w-[150px] md:w-[150px] block rounded-md" priority />
               )}
             </Link>
           </div>
