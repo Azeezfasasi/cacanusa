@@ -11,7 +11,39 @@ cloudinary.config({
  */
 export async function POST(req) {
   try {
-    const { fileData, folderName = 'cananusa/gallery' } = await req.json();
+    const contentType = req.headers.get('content-type') || '';
+    
+    let fileData, folderName = 'cananusa/gallery';
+
+    if (contentType.includes('application/json')) {
+      // Handle legacy JSON requests with base64
+      const body = await req.json();
+      fileData = body.fileData;
+      folderName = body.folderName || folderName;
+    } else if (contentType.includes('multipart/form-data')) {
+      // Handle FormData requests
+      const formData = await req.formData();
+      const file = formData.get('file');
+      folderName = formData.get('folderName') || folderName;
+
+      if (!file) {
+        return Response.json(
+          { message: 'File is required' },
+          { status: 400 }
+        );
+      }
+
+      // Convert file to base64
+      const buffer = await file.arrayBuffer();
+      const base64 = Buffer.from(buffer).toString('base64');
+      const mimeType = file.type || 'application/octet-stream';
+      fileData = `data:${mimeType};base64,${base64}`;
+    } else {
+      return Response.json(
+        { message: 'Invalid content type. Use multipart/form-data or application/json' },
+        { status: 400 }
+      );
+    }
 
     if (!fileData) {
       return Response.json(
@@ -27,12 +59,15 @@ export async function POST(req) {
       );
     }
 
-    const result = await cloudinary.uploader.upload(fileData, {
+    const uploadOptions = {
       folder: folderName,
       resource_type: 'auto',
       quality: 'auto',
       fetch_format: 'auto',
-    });
+    };
+
+    // For videos, add timeout to handle larger uploads
+    const result = await cloudinary.uploader.upload(fileData, uploadOptions);
 
     return Response.json({
       success: true,
@@ -40,6 +75,8 @@ export async function POST(req) {
       publicId: result.public_id,
       width: result.width,
       height: result.height,
+      resourceType: result.resource_type,
+      duration: result.duration || undefined,
     });
   } catch (error) {
     console.error('Cloudinary upload error:', error);

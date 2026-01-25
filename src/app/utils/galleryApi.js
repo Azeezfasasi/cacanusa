@@ -11,20 +11,42 @@ const getApiBase = () => {
 const API_BASE = getApiBase();
 
 /**
- * Upload image to Cloudinary via API
+ * Upload image/video to Cloudinary via API
+ * Accepts either a File object or base64 data string
  */
-export const uploadImageToCloudinary = async (fileData, folderName = 'cananusa/gallery') => {
+export const uploadImageToCloudinary = async (fileDataOrFile, folderName = 'cananusa/gallery') => {
   try {
-    if (!fileData) {
+    if (!fileDataOrFile) {
       throw new Error('File data is required');
     }
 
+    let formData = new FormData();
+    
+    // Check if it's a File object or a base64 string
+    if (fileDataOrFile instanceof File) {
+      // Use the file directly
+      formData.append('file', fileDataOrFile);
+    } else if (typeof fileDataOrFile === 'string' && fileDataOrFile.startsWith('data:')) {
+      // Convert base64 data URL to File object
+      const [header, data] = fileDataOrFile.split(',');
+      const mimeType = header.match(/:(.*?);/)?.[1] || 'application/octet-stream';
+      const binary = atob(data);
+      const array = [];
+      for (let i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+      }
+      const blob = new Blob([new Uint8Array(array)], { type: mimeType });
+      formData.append('file', blob);
+    } else {
+      throw new Error('Invalid file format. Provide a File object or base64 data URL');
+    }
+    
+    formData.append('folderName', folderName);
+
     const response = await fetch(`${API_BASE}/api/cloudinary`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ fileData, folderName }),
+      body: formData,
+      // Don't set Content-Type header; the browser will set it with the boundary
     });
 
     if (!response.ok) {

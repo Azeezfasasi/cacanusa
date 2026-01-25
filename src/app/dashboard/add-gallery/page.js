@@ -66,14 +66,9 @@ export default function AddGalleryPage() {
             return;
           }
 
-          // Convert file to base64
-          const reader = new FileReader();
-          reader.onloadend = async () => {
-            const base64 = reader.result;
-
-            try {
-              const result = await uploadImageToCloudinary(base64, 'cananusa/gallery');
-
+          // Upload the file directly
+          uploadImageToCloudinary(file, 'cananusa/gallery')
+            .then(result => {
               setFormData(prev => ({
                 ...prev,
                 media: [...prev.media, {
@@ -85,15 +80,11 @@ export default function AddGalleryPage() {
                 }],
               }));
               resolve(true);
-            } catch (err) {
+            })
+            .catch(err => {
               setError(`Failed to upload ${file.name}: ${err.message}`);
               reject(err);
-            }
-          };
-          reader.onerror = () => {
-            reject(new Error(`Failed to read ${file.name}`));
-          };
-          reader.readAsDataURL(file);
+            });
         });
       });
 
