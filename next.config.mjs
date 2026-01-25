@@ -9,6 +9,11 @@ const nextConfig = {
       },
     ],
   },
+  api: {
+    bodyParser: {
+      sizeLimit: '100mb',
+    },
+  },
   /* config options here */
 };
 
